@@ -22,10 +22,10 @@ export class CalendariosComponent {
 
     let getLastDayThisMonth = new Date(ano,mes+1,0).getDate();
 
-    for (var i = -firstDayOfWeek; i < (42-firstDayOfWeek); i++) {
+    for (var i = -firstDayOfWeek,index = 0; i < (42-firstDayOfWeek); i++, index++) {
       let dt = new Date(ano, mes, i);
       let dtNow = new Date();
-      let dayTable = tableDays!.getElementsByTagName('td')[i];
+      let dayTable = tableDays!.getElementsByTagName('td')[index];
       console.log(dayTable);
       dayTable.innerHTML = dt.getDate()!.toString()!;
       // dayTable.classList.remove('mes-anterior');
