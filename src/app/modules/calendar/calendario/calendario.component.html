@@ -1,0 +1,18 @@
+<div class="calendar">
+  <div class="grid">
+    <div class="col-12 md:col-6 lg:col-6">
+      <div class="calendar-container">
+        <p-card *ngFor="let item of listaNumeros; index as i">
+          <div class="number">{{i + 1}} {{item}}</div>
+        </p-card>
+      </div>
+    </div>
+    <div class="col-12 md:col-6 lg:col-6">
+      <div class="calendar-container">
+        <p-card *ngFor="let item of listaNumeros; index as i">
+          <div class="number">{{i + 1}} {{item}}</div>
+        </p-card>
+      </div>
+    </div>
+  </div>
+</div>

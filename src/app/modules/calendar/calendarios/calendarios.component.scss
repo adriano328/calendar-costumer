@@ -1,0 +1,95 @@
+.calendar-contianer {
+  display: flex;
+  justify-content: center;
+  flex-direction: column;
+
+  .header {
+    border: 1px solid #cecece;
+    padding: 0.5em;
+    display: flex;
+    flex-direction: row;
+
+    .icons {
+      margin: 0 2em 0 2em;
+      font-size: 24px;
+    }
+  }
+
+  table {
+    border-collapse: collapse;
+  }
+
+  thead {
+    border-top: 2px solid red;
+    border-right: 2px solid red;
+    background-color: white;
+    font-weight: 600;
+    border-bottom: 2px solid red;
+  }
+
+  thead td{
+    height: 67.4px;
+  }
+
+  thead td:first-child{
+    border-left: 2px solid red;
+  }
+
+  td {
+    border: 1px solid #cbd1d2;
+    height: 71.4px;
+    width: 71.4px;
+    text-align: center;
+    font-weight: 500;
+  }
+
+  tbody td {
+    cursor: pointer;
+  }
+
+  tbody td:hover {
+    background: rgba(0, 173, 223, 0.8);
+    color: #f9f9f9;
+  }
+
+  table .dia-atual {
+    background: #00adff;
+    color: #f9f9f9;
+  }
+
+  .mes-anterior,
+  .proximo-mes {
+    color: #cbd1d2;
+  }
+
+  .mes-anterior:hover,
+  .proximo-mes:hover {
+    background: #98a0a0;
+  }
+
+  .event {
+    position: relative;
+  }
+
+  .event::after {
+    content: '';
+    width: 7px;
+    height: 7px;
+    left: 50%;
+    bottom: 7px;
+    margin: 3.5px 0 0 -3.5px;
+    background: #00adff;
+    display: block;
+    position: absolute;
+    border-radius: 50%;
+  }
+
+  .event:hover {
+    background: #f9f9f9;
+
+  }
+
+  .event.dia-atual::after {
+    background: #f9f9f9;
+  }
+}
