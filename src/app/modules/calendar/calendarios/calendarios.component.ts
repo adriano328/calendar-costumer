@@ -77,10 +77,9 @@ export class CalendariosComponent {
 
   mesAnterior() {
     this.mes--;
-
-    if (this.mes > 0) {
+    if (this.mes < 0) {
       this.mes = 11;
-      this.ano++;
+      this.ano--;
     }
 
     this.getDaysCalendar(this.mes, this.ano)
