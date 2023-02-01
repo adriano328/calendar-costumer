@@ -8,40 +8,47 @@ import { Component } from '@angular/core';
 export class CalendariosComponent {
 
   monthsBR: any;
-  ano!: any;
+  // ano!: any;
+  now = new Date();
+  mes = this.now.getMonth();
+  ano = this.now.getFullYear();
 
   getDaysCalendar(mes: number, ano: number) {
     document.getElementById('mes')!.innerHTML = this.monthsBR[mes];
-    document.getElementById('ano')!.innerHTML = ano.toString();
+    document.getElementById('ano')!.innerHTML = String(ano);
 
     const tableDays = document.getElementById('dias')!;
-    // console.log(tableDays);
 
     let firstDayOfWeek = new Date(ano, mes, 1).getDay()-1;
-    console.log(firstDayOfWeek);
 
     let getLastDayThisMonth = new Date(ano,mes+1,0).getDate();
 
     for (var i = -firstDayOfWeek,index = 0; i < (42-firstDayOfWeek); i++, index++) {
       let dt = new Date(ano, mes, i);
       let dtNow = new Date();
-      let dayTable = tableDays!.getElementsByTagName('td')[index];
-      console.log(dayTable);
-      dayTable.innerHTML = dt.getDate()!.toString()!;
-      // dayTable.classList.remove('mes-anterior');
-      // dayTable.classList.remove('proximo-mes');
-      // dayTable.classList.remove('dia-atual');
+      // console.log(index);
 
-      // if (dt.getFullYear() == dtNow.getFullYear() && dt.getMonth() == dtNow.getMonth() && dt.getDate() == dtNow.getDate()) {
-      //   dayTable!.classList.add('dia-atual')
-      // }
-      // if (i < 1) {
-      //   dayTable!.classList.add('mes-anterior')
-      // }
+      var dayTable = tableDays!.getElementsByTagName('td')[index];
 
-      // if (i > getLastDayThisMonth) {
-      //   dayTable!.classList.add('proximo-mes')
-      // }
+      if(dayTable){
+        dayTable.innerHTML = dt.getDate()!.toString()!;
+
+        dayTable.classList.remove('mes-anterior');
+        dayTable.classList.remove('proximo-mes');
+        dayTable.classList.remove('dia-atual');
+
+        if (dt.getFullYear() == dtNow.getFullYear() && dt.getMonth() == dtNow.getMonth() && dt.getDate() == dtNow.getDate()) {
+          dayTable!.classList.add('dia-atual')
+        }
+        if (i < 1) {
+          dayTable!.classList.add('mes-anterior')
+        }
+
+        if (i > getLastDayThisMonth) {
+          dayTable!.classList.add('proximo-mes')
+        }
+      }
+
     }
   }
 
@@ -58,29 +65,24 @@ export class CalendariosComponent {
   }
 
   proximoMes() {
-    let now = new Date();
-    let mes = now.getMonth();
-    let ano = now.getFullYear();
-    const botao_proximo = document.getElementById('btn_prev');
-    mes++;
-    if (mes > 11) {
-      mes = 0;
-      ano++;
+    this.mes++;
+
+    if (this.mes > 11) {
+      this.mes = 0;
+      this.ano++;
     }
-    this.getDaysCalendar(mes, ano)
+
+    this.getDaysCalendar(this.mes, this.ano)
   }
 
   mesAnterior() {
-    let now = new Date();
-    let mes = now.getMonth();
-    let ano = now.getFullYear();
-    const botao_anterior = document.getElementById('btn_ant');
-    mes--;
-    if (mes > 0) {
-      mes = 11;
-      ano++;
-    }
-    this.getDaysCalendar(mes, ano)
-  }
+    this.mes--;
 
+    if (this.mes > 0) {
+      this.mes = 11;
+      this.ano++;
+    }
+
+    this.getDaysCalendar(this.mes, this.ano)
+  }
 }
