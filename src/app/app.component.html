@@ -1,147 +1,158 @@
 <div class="calendar">
   <div class="calendar-contianer">
-    <div class="first-calendar">
-      <h2 class="ano" id="ano"></h2>
-      <div class="header">
-        <i class="pi pi-arrow-circle-left icons" id="btn_ant" (click)="mesAnterior()"></i>
-        <div class="mes" id="mes">
+    <div class="grid">
+      <div class="col-12 md:col-6 lg:col-6">
+        <div class="first-calendar">
+          <h2 class="ano" id="ano"></h2>
+          <div class="header">
+            <i class="pi pi-arrow-circle-left icons" id="btn_ant" (click)="mesAnterior()"></i>
+            <div class="mes" id="mes">
+            </div>
+            <i class="pi pi-arrow-circle-right icons" id="btn_prev" (click)="proximoMes()"></i>
+          </div>
+          <div class="table-container">
+            <table class="table">
+              <thead>
+                <tr>
+                  <td>DOM</td>
+                  <td>SEG</td>
+                  <td>TER</td>
+                  <td>QUA</td>
+                  <td>QUI</td>
+                  <td>SEX</td>
+                  <td>SÁB</td>
+                </tr>
+              </thead>
+              <tbody id="dias">
+                <tr>
+                  <td>1</td>
+                  <td>2</td>
+                  <td>3</td>
+                  <td>4</td>
+                  <td>5</td>
+                  <td>6</td>
+                  <td>7</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>2</td>
+                  <td>3</td>
+                  <td>4</td>
+                  <td>5</td>
+                  <td>6</td>
+                  <td>7</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>2</td>
+                  <td>3</td>
+                  <td>4</td>
+                  <td>5</td>
+                  <td>6</td>
+                  <td>7</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>2</td>
+                  <td>3</td>
+                  <td>4</td>
+                  <td>5</td>
+                  <td>6</td>
+                  <td>7</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>2</td>
+                  <td>3</td>
+                  <td>4</td>
+                  <td>5</td>
+                  <td>6</td>
+                  <td>7</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
         </div>
-        <i class="pi pi-arrow-circle-right icons" id="btn_prev" (click)="proximoMes()"></i>
       </div>
-      <div class="table">
-        <table>
-          <thead>
-            <tr>
-              <td>DOM</td>
-              <td>SEG</td>
-              <td>TER</td>
-              <td>QUA</td>
-              <td>QUI</td>
-              <td>SEX</td>
-              <td>SÁB</td>
-            </tr>
-          </thead>
-          <tbody id="dias">
-            <tr>
-              <td>1</td>
-              <td>2</td>
-              <td>3</td>
-              <td>4</td>
-              <td>5</td>
-              <td>6</td>
-              <td>7</td>
-            </tr>
-            <tr>
-              <td>1</td>
-              <td>2</td>
-              <td>3</td>
-              <td>4</td>
-              <td>5</td>
-              <td>6</td>
-              <td>7</td>
-            </tr>
-            <tr>
-              <td>1</td>
-              <td>2</td>
-              <td>3</td>
-              <td>4</td>
-              <td>5</td>
-              <td>6</td>
-              <td>7</td>
-            </tr>
-            <tr>
-              <td>1</td>
-              <td>2</td>
-              <td>3</td>
-              <td>4</td>
-              <td>5</td>
-              <td>6</td>
-              <td>7</td>
-            </tr>
-            <tr>
-              <td>1</td>
-              <td>2</td>
-              <td>3</td>
-              <td>4</td>
-              <td>5</td>
-              <td>6</td>
-              <td>7</td>
-            </tr>
-          </tbody>
-        </table>
+      <div class="col-12 md:col-6 lg:col-6">
+        <div class="second-calendar">
+          <h2 class="ano" id="anoSecond">2023</h2>
+          <div class="header">
+            <i class="pi pi-arrow-circle-left icons" (click)="mesAnteriorSecond()"></i>
+            <div class="mes" id="mesSecond">
+            </div>
+            <i class="pi pi-arrow-circle-right icons" (click)="proximoMesSecond()"></i>
+          </div>
+          <div class="table-container">
+            <table class="table">
+              <thead>
+                <tr>
+                  <td>DOM</td>
+                  <td>SEG</td>
+                  <td>TER</td>
+                  <td>QUA</td>
+                  <td>QUI</td>
+                  <td>SEX</td>
+                  <td>SÁB</td>
+                </tr>
+              </thead>
+              <tbody id="diasSecond">
+                <tr>
+                  <td>1</td>
+                  <td>2</td>
+                  <td>3</td>
+                  <td>4</td>
+                  <td>5</td>
+                  <td>6</td>
+                  <td>7</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>2</td>
+                  <td>3</td>
+                  <td>4</td>
+                  <td>5</td>
+                  <td>6</td>
+                  <td>7</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>2</td>
+                  <td>3</td>
+                  <td>4</td>
+                  <td>5</td>
+                  <td>6</td>
+                  <td>7</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>2</td>
+                  <td>3</td>
+                  <td>4</td>
+                  <td>5</td>
+                  <td>6</td>
+                  <td>7</td>
+                </tr>
+                <tr>
+                  <td>1</td>
+                  <td>2</td>
+                  <td>3</td>
+                  <td>4</td>
+                  <td>5</td>
+                  <td>6</td>
+                  <td>7</td>
+                </tr>
+              </tbody>
+            </table>
+          </div>
+        </div>
       </div>
     </div>
-    <div class="second-calendar">
-      <h2 class="ano" id="ano">2023</h2>
-      <div class="header">
-        <i class="pi pi-arrow-circle-left icons" id="btn_ant" (click)="mesAnterior()"></i>
-        <div id="mes">
-        </div>
-        <i class="pi pi-arrow-circle-right icons" id="btn_prev" (click)="proximoMes()"></i>
-      </div>
-      <div class="table">
-        <table>
-          <thead>
-            <tr>
-              <td>DOM</td>
-              <td>SEG</td>
-              <td>TER</td>
-              <td>QUA</td>
-              <td>QUI</td>
-              <td>SEX</td>
-              <td>SÁB</td>
-            </tr>
-          </thead>
-          <tbody id="dias">
-            <tr>
-              <td>1</td>
-              <td>2</td>
-              <td>3</td>
-              <td>4</td>
-              <td>5</td>
-              <td>6</td>
-              <td>7</td>
-            </tr>
-            <tr>
-              <td>1</td>
-              <td>2</td>
-              <td>3</td>
-              <td>4</td>
-              <td>5</td>
-              <td>6</td>
-              <td>7</td>
-            </tr>
-            <tr>
-              <td>1</td>
-              <td>2</td>
-              <td>3</td>
-              <td>4</td>
-              <td>5</td>
-              <td>6</td>
-              <td>7</td>
-            </tr>
-            <tr>
-              <td>1</td>
-              <td>2</td>
-              <td>3</td>
-              <td>4</td>
-              <td>5</td>
-              <td>6</td>
-              <td>7</td>
-            </tr>
-            <tr>
-              <td>1</td>
-              <td>2</td>
-              <td>3</td>
-              <td>4</td>
-              <td>5</td>
-              <td>6</td>
-              <td>7</td>
-            </tr>
-          </tbody>
-        </table>
-      </div>
-    </div>
+  </div>
+  <div class="borda">
+  </div>
+  <div class="base-footer">
+    <p class="footer" style="text-align: center;">ASSEMBLEIA DE DEUS <img src="/assets/logo.png" style="width: 30px; height: 25px;"> EM CUIABÁ E REGIÃO</p>
   </div>
 </div>
 <router-outlet></router-outlet>
