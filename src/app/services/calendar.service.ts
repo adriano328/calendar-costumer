@@ -14,6 +14,6 @@ export class CalendarService {
   ) { }
 
   async listarEventos(eventos: IEventos, idCampoEclesiastico: number, page: number) {
-    const result = await this.http.get<IPage<IEventos>>(`${environment.url}/agendaEvento/getEventList`, { headers: { Authorization: 'Bearer ' + window.localStorage.getItem('token') }, params: new HttpParams().set('idCampoEclesiastico', idCampoEclesiastico!).set('page' ,page!) }).toPromise();
+    const result = await this.http.get<IPage<IEventos>>(`${environment.url}/agendaEvento/getEventList/${idCampoEclesiastico}`, { headers: { Authorization: 'Bearer ' + window.localStorage.getItem('token') }}).toPromise();
   }
 }
