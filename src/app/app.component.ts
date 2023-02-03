@@ -10,7 +10,8 @@ import { IEventos } from './shared/interfaces/IEventos';
 })
 export class AppComponent {
   title = 'calendar-costumer';
-  listagemEventos: IEventos[] = [];
+  listagemEventosFirstCalendar: IEventos[] = [];
+  listagemEventosSecondCalendar: IEventos[] = [];
   monthsBR: any;
   now = new Date();
   mes = this.now.getMonth();
@@ -86,7 +87,7 @@ export class AppComponent {
     this.getDaysCalendarFirst(mes, ano);
     this.getDaysCalendarSecond(mes + 1, ano)
     this.calendarService.listarEventos(1);
-    this.listarEventos();
+    this.listarEventosFirstCalendar();
   }
 
   proximoMes() {
@@ -125,15 +126,25 @@ export class AppComponent {
     this.getDaysCalendarSecond(this.mes, this.ano)
   }
 
-  async listarEventos() {
+  async listarEventosFirstCalendar() {
     const idCampoEclesiastico = JSON.parse(localStorage.getItem('idCampoEclesiastico')!);
     const result = await this.calendarService.listarEventos(idCampoEclesiastico);
     result?.content.forEach(data => {
       data.dataInicial = moment(data.dataInicial).utc().format('DD/MM/YYYY');
       data.dataFinal = moment(data.dataFinal).utc().format('DD/MM/YYYY');
     })
-    this.listagemEventos = result!.content
-    console.log(this.listagemEventos);
+    this.listagemEventosFirstCalendar = result!.content
+    console.log(this.listagemEventosFirstCalendar);
+  }
 
+  async listarEventosSecondCalendar() {
+    const idCampoEclesiastico = JSON.parse(localStorage.getItem('idCampoEclesiastico')!);
+    const result = await this.calendarService.listarEventos(idCampoEclesiastico);
+    result?.content.forEach(data => {
+      data.dataInicial = moment(data.dataInicial).utc().format('DD/MM/YYYY');
+      data.dataFinal = moment(data.dataFinal).utc().format('DD/MM/YYYY');
+    })
+    this.listagemEventosFirstCalendar = result!.content
+    console.log(this.listagemEventosFirstCalendar);
   }
 }
