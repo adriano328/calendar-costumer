@@ -13,7 +13,7 @@ export class CalendarService {
     private http: HttpClient
   ) { }
 
-  async listarEventos(eventos: IEventos, idCampoEclesiastico: number, page: number) {
-    const result = await this.http.get<IPage<IEventos>>(`${environment.url}/agendaEvento/getEventList/${idCampoEclesiastico}`, { headers: { Authorization: 'Bearer ' + window.localStorage.getItem('token') }}).toPromise();
+  async listarEventos(idCampoEclesiastico: number) {
+    return await this.http.get<IPage<IEventos>>(`${environment.url}/agendaEvento/getEventList/${idCampoEclesiastico}`, { headers: { Authorization: 'Bearer ' + window.localStorage.getItem('token') }}).toPromise();
   }
 }

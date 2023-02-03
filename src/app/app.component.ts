@@ -82,6 +82,9 @@ export class AppComponent {
     let ano = now.getFullYear();
     this.getDaysCalendarFirst(mes, ano);
     this.getDaysCalendarSecond(mes+1, ano)
+
+    console.log(mes+1);
+
   }
 
   proximoMes() {
