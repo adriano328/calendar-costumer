@@ -1,4 +1,5 @@
 import { Component } from '@angular/core';
+import { CalendarService } from './services/calendar.service';
 
 @Component({
   selector: 'app-root',
@@ -71,7 +72,7 @@ export class AppComponent {
     }
   }
 
-  constructor() {
+  constructor(private calendarService: CalendarService) {
     this.monthsBR = ['JANEIRO', 'FEVEREIRO', 'MARÇO', 'ABRIL', 'MAIO', 'JUNHO', 'JULHO',
       'AGOSTO', 'SETEMBRO', 'OUTUBRO', 'NOVEMBRO', 'DEZEMBRO'];
   }
@@ -84,6 +85,8 @@ export class AppComponent {
     this.getDaysCalendarSecond(mes+1, ano)
 
     console.log(mes+1);
+
+    this.calendarService.listarEventos(1);
 
   }
 
