@@ -1,5 +1,7 @@
 import { Component } from '@angular/core';
+import * as moment from 'moment';
 import { CalendarService } from './services/calendar.service';
+import { IEventos } from './shared/interfaces/IEventos';
 
 @Component({
   selector: 'app-root',
@@ -8,7 +10,7 @@ import { CalendarService } from './services/calendar.service';
 })
 export class AppComponent {
   title = 'calendar-costumer';
-
+  listagemEventos: IEventos[] = [];
   monthsBR: any;
   now = new Date();
   mes = this.now.getMonth();
@@ -82,12 +84,9 @@ export class AppComponent {
     let mes = now.getMonth();
     let ano = now.getFullYear();
     this.getDaysCalendarFirst(mes, ano);
-    this.getDaysCalendarSecond(mes+1, ano)
-
-    console.log(mes+1);
-
+    this.getDaysCalendarSecond(mes + 1, ano)
     this.calendarService.listarEventos(1);
-
+    this.listarEventos();
   }
 
   proximoMes() {
@@ -124,5 +123,17 @@ export class AppComponent {
       this.ano--;
     }
     this.getDaysCalendarSecond(this.mes, this.ano)
+  }
+
+  async listarEventos() {
+    const idCampoEclesiastico = JSON.parse(localStorage.getItem('idCampoEclesiastico')!);
+    const result = await this.calendarService.listarEventos(idCampoEclesiastico);
+    result?.content.forEach(data => {
+      data.dataInicial = moment(data.dataInicial).utc().format('DD/MM/YYYY');
+      data.dataFinal = moment(data.dataFinal).utc().format('DD/MM/YYYY');
+    })
+    this.listagemEventos = result!.content
+    console.log(this.listagemEventos);
+
   }
 }

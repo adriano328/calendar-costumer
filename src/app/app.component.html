@@ -71,6 +71,16 @@
                 </tr>
               </tbody>
             </table>
+            <div class="painel-eventos">
+              <p-panel header="Eventos do mês">
+                <ul *ngFor="let item of listagemEventos">
+                  <li>Evento: {{item.nome}}</li>
+                  <li>Data Inicio: {{item.dataInicial}} - Data Final: {{item.dataFinal}}</li>
+                  <li>Descrição: {{item.descricao}}</li>
+                  <li>Local: {{item.local}}</li>
+                </ul>
+              </p-panel>
+            </div>
           </div>
         </div>
       </div>
@@ -144,6 +154,16 @@
                 </tr>
               </tbody>
             </table>
+            <div class="painel-eventos">
+              <p-panel header="Eventos do mês">
+                <ul *ngFor="let item of listagemEventos">
+                  <li>Evento: {{item.nome}}</li>
+                  <li>Data Inicio: {{item.dataInicial}} - Data Final: {{item.dataFinal}}</li>
+                  <li>Descrição: {{item.descricao}}</li>
+                  <li>Local: {{item.local}}</li>
+                </ul>
+              </p-panel>
+            </div>
           </div>
         </div>
       </div>

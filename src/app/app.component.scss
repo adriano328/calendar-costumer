@@ -84,6 +84,19 @@
       td {
         font-size: 14px;
       }
+
+      .painel-eventos {
+        margin-top: 1em;
+
+        li {
+          list-style-type: none;
+          font-size: 14px;
+        }
+
+        ul {
+          border-bottom: 1px solid #cecece;
+        }
+      }
     }
 
     .second-calendar {
@@ -119,6 +132,19 @@
 
       td {
         font-size: 14px;
+      }
+
+      .painel-eventos {
+        margin-top: 1em;
+
+        li {
+          list-style-type: none;
+          font-size: 14px;
+        }
+
+        ul {
+          border-bottom: 1px solid #cecece;
+        }
       }
     }
 
@@ -214,7 +240,12 @@
   }
   .img {
     position: relative;
-    margin-top: -2em !important;
+    margin-top: -5em !important;
+
+    img {
+      height: 43vh;
+      width: 12vw;
+    }
   }
 }
 
