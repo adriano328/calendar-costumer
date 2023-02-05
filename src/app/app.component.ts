@@ -30,8 +30,12 @@ export class AppComponent {
     // }
 
     dayHeaderFormat: {
-      weekday: 'long'
+      weekday: 'short'
     },
+    buttonText: {
+      today: 'Hoje'
+    },
+
     locale: "pt-br",
     // views: {
     //   month: {
@@ -68,11 +72,6 @@ export class AppComponent {
     select: this.handleDateSelect.bind(this),
     eventClick: this.handleEventClick.bind(this),
     eventsSet: this.handleEvents.bind(this),
-    /* you can update a remote database when these fire:
-    eventAdd:
-    eventChange:
-    eventRemove:
-    */
   };
 
   constructor(private changeDetector: ChangeDetectorRef) {

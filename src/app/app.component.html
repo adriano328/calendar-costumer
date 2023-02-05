@@ -1,173 +1,24 @@
 <div class="calendar">
-  <div class="calendar-contianer">
+  <div class="calendar-container">
     <div class="grid">
       <div class="col-12 md:col-6 lg:col-6">
         <div class="first-calendar">
-
-          <!-- <h2 class="ano" id="ano"></h2> -->
-          <!-- <div class="header"> -->
-            <!-- <i class="pi pi-arrow-circle-left icons" id="btn_ant" (click)="mesAnterior()"></i> -->
-            <!-- <div class="mes" id="mes">
-            </div> -->
-            <!-- <i class="pi pi-arrow-circle-right icons" id="btn_prev" (click)="proximoMes()"></i> -->
-          <!-- </div> -->
-          <div class="table-container">
-
-
-            <!-- <table class="table">
-              <thead>
-                <tr>
-                  <td>DOM</td>
-                  <td>SEG</td>
-                  <td>TER</td>
-                  <td>QUA</td>
-                  <td>QUI</td>
-                  <td>SEX</td>
-                  <td>SÁB</td>
-                </tr>
-              </thead>
-              <tbody id="dias">
-                <tr>
-                  <td>1</td>
-                  <td>2</td>
-                  <td>3</td>
-                  <td>4</td>
-                  <td>5</td>
-                  <td>6</td>
-                  <td>7</td>
-                </tr>
-                <tr>
-                  <td>1</td>
-                  <td>2</td>
-                  <td>3</td>
-                  <td>4</td>
-                  <td>5</td>
-                  <td>6</td>
-                  <td>7</td>
-                </tr>
-                <tr>
-                  <td>1</td>
-                  <td>2</td>
-                  <td>3</td>
-                  <td>4</td>
-                  <td>5</td>
-                  <td>6</td>
-                  <td>7</td>
-                </tr>
-                <tr>
-                  <td>1</td>
-                  <td>2</td>
-                  <td>3</td>
-                  <td>4</td>
-                  <td>5</td>
-                  <td>6</td>
-                  <td>7</td>
-                </tr>
-                <tr>
-                  <td>1</td>
-                  <td>2</td>
-                  <td>3</td>
-                  <td>4</td>
-                  <td>5</td>
-                  <td>6</td>
-                  <td>7</td>
-                </tr>
-              </tbody>
-            </table> -->
-            <div class="painel-eventos">
-              <p-panel header="Eventos do mês">
-                <!-- <ul *ngFor="let item of listagemEventos">
-                  <li>Evento: {{item.nome}}</li>
-                  <li>Data Inicio: {{item.dataInicial}} - Data Final: {{item.dataFinal}}</li>
-                  <li>Descrição: {{item.descricao}}</li>
-                  <li>Local: {{item.local}}</li>
-                </ul> -->
-              </p-panel>
-            </div>
-          </div>
+          <full-calendar *ngIf='calendarVisible' [options]='calendarOptions'>
+            <ng-template #eventContent let-arg>
+              <b>{{ arg.timeText }}</b>
+              <i>{{ arg.event.title }}</i>
+            </ng-template>
+          </full-calendar>
         </div>
       </div>
       <div class="col-12 md:col-6 lg:col-6">
         <div class="second-calendar">
-          <!-- <h2 class="ano" id="anoSecond"></h2> -->
-          <!-- <div class="header">
-            <i class="pi pi-arrow-circle-left icons" (click)="mesAnteriorSecond()"></i>
-            <div class="mes" id="mesSecond">
-            </div>
-            <i class="pi pi-arrow-circle-right icons" (click)="proximoMesSecond()"></i>
-          </div> -->
-          <div class="table-container">
-            <!-- <table class="table">
-              <thead>
-                <tr>
-                  <td>DOM</td>
-                  <td>SEG</td>
-                  <td>TER</td>
-                  <td>QUA</td>
-                  <td>QUI</td>
-                  <td>SEX</td>
-                  <td>SÁB</td>
-                </tr>
-              </thead>
-              <tbody id="diasSecond">
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-                <tr>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                  <td></td>
-                </tr>
-              </tbody>
-            </table> -->
-            <div class="painel-eventos">
-              <p-panel header="Eventos do mês">
-                <!-- <ul *ngFor="let item of listagemEventos">
-                  <li>Evento: {{item.nome}}</li>
-                  <li>Data Inicio: {{item.dataInicial}} - Data Final: {{item.dataFinal}}</li>
-                  <li>Descrição: {{item.descricao}}</li>
-                  <li>Local: {{item.local}}</li>
-                </ul> -->
-              </p-panel>
-            </div>
-          </div>
+          <full-calendar *ngIf='calendarVisible' [options]='calendarOptions'>
+            <ng-template #eventContent let-arg>
+              <b>{{ arg.timeText }}</b>
+              <i>{{ arg.event.title }}</i>
+            </ng-template>
+          </full-calendar>
         </div>
       </div>
     </div>
@@ -177,16 +28,5 @@
   <div class="base-footer">
     <p class="footer" style="text-align: center;">ASSEMBLÉIA DE DEUS <img src="/assets/logo.png" style="width: 30px; height: 25px;"> EM CUIABÁ E REGIÃO</p>
   </div>
-  <div class="img">
-    <img src="/assets/font.png">
-  </div>
-</div>
-<div class='demo-app-main'>
-  <full-calendar *ngIf='calendarVisible' [options]='calendarOptions'>
-    <ng-template #eventContent let-arg>
-      <b>{{ arg.timeText }}</b>
-      <i>{{ arg.event.title }}</i>
-    </ng-template>
-  </full-calendar>
 </div>
 <router-outlet></router-outlet>
