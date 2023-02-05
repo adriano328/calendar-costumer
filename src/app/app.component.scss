@@ -8,6 +8,8 @@
   border: none !important;
 }
 
+
+
 .calendar {
   width: 100%;
   height: 100vh;
@@ -63,6 +65,12 @@
       ::ng-deep .fc {
         width: 33vw;
         height: 55vh;
+      }
+
+      ::ng-deep .fc.fc-theme-standard .fc-view-harness .fc-event.fc-daygrid-block-event {
+        color: #ffffff;
+        background: #eb1f42;
+        border-color: #53fd05;
       }
 
       ::ng-deep .fc .fc-daygrid-day-number {
@@ -121,6 +129,12 @@
       ::ng-deep .fc {
         width: 33vw;
         height: 55vh;
+      }
+
+      ::ng-deep .fc.fc-theme-standard .fc-view-harness .fc-event.fc-daygrid-block-event {
+        color: #ffffff;
+        background: #eb1f42;
+        border-color: #53fd05;
       }
 
       ::ng-deep .fc th {
