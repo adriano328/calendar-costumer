@@ -11,7 +11,7 @@ export const INITIAL_EVENTS: EventInput[] = [
   {
     id: createEventId(),
     title: 'Alefe',
-    start: TODAY_STR + 'T12:00:00',
+    start: TODAY_STR + 'T13:00:00',
     end: END_EVENT + 'T15:00:00'
   },
   {
