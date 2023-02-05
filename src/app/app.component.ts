@@ -18,6 +18,7 @@ import { DayHeader } from '@fullcalendar/core/internal';
 })
 export class AppComponent {
 
+  disableListEvents: boolean = true;
   listOfEvents: IEventos[] = [];
   calendarVisible = true;
   calendarOptions: CalendarOptions = {
@@ -73,7 +74,8 @@ export class AppComponent {
     data.dataFinal = moment(data.dataFinal).utc().format('DD/MM/YYYY');
   })
    this.listOfEvents = result?.content!;
-   console.log(this.listOfEvents);
-
+   if(this.listOfEvents.length === 0) {
+    this.disableListEvents = false;
+   }
   }
 }

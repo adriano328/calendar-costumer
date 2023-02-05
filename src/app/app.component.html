@@ -9,9 +9,9 @@
               <i>{{ arg.event.title }}</i>
             </ng-template>
           </full-calendar>
-          <div class="lista-eventos">
+          <div class="lista-eventos" *ngIf="disableListEvents">
             <p-panel header="Eventos">
-              <ul *ngFor="let item of listOfEvents">
+              <ul *ngFor="let item of listOfEvents" >
                 <li>Evento: {{item.nome}}</li>
                 <li>Data Inicial: {{item.dataInicial}} - Data Final: {{item.dataFinal}}</li>
                 <li>Descrição: {{item.descricao}}</li>
