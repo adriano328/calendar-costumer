@@ -7,7 +7,7 @@ const END_EVENT = new Date("2023-02-06").toISOString().replace(/T.*$/, '');
 console.log(END_EVENT);
 
 export const INITIAL_EVENTS: EventInput[] = [
-  
+
   {
     id: createEventId(),
     title: 'Alefe',
