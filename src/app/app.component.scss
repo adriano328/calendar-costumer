@@ -147,6 +147,14 @@
         height: 55vh;
       }
 
+
+      ::ng-deep .fc.fc-theme-standard .fc-view-harness .fc-popover .fc-popover-header {
+        padding: 0;
+        background-color: #888adc !important;
+        color: #f9f9f9 !important;
+      }
+
+
       ::ng-deep .fc.fc-theme-standard .fc-view-harness .fc-event.fc-daygrid-block-event {
         color: #ffffff;
         background: #888adc;
