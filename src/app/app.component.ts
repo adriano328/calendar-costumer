@@ -1,101 +1,139 @@
-import { Component, ChangeDetectorRef } from '@angular/core';
-import { CalendarOptions, DateSelectArg, EventClickArg, EventApi } from '@fullcalendar/core';
-import interactionPlugin from '@fullcalendar/interaction';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import timeGridPlugin from '@fullcalendar/timegrid';
-import listPlugin from '@fullcalendar/list';
-import { INITIAL_EVENTS, createEventId } from './event-utils';
-import momentPlugin from '@fullcalendar/moment';
+import { Component } from '@angular/core';
+import * as moment from 'moment';
+import { CalendarService } from './services/calendar.service';
+import { IEventos } from './shared/interfaces/IEventos';
 
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.css']
+  styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  calendarVisible = true;
-  calendarOptions: CalendarOptions = {
+  title = 'calendar-costumer';
+  listagemEventos: IEventos[] = [];
+  monthsBR: any;
+  now = new Date();
+  mes = this.now.getMonth();
+  ano = this.now.getFullYear();
 
-    locale: "pt-br",
+  getDaysCalendarFirst(mes: number, ano: number) {
+    document.getElementById('mes')!.innerHTML = this.monthsBR[mes];
+    document.getElementById('ano')!.innerHTML = String(ano);
+    const tableDays = document.getElementById('dias')!;
+    let firstDayOfWeek = new Date(ano, mes, 1).getDay() - 1;
+    let getLastDayThisMonth = new Date(ano, mes + 1, 0).getDate();
+    for (var i = -firstDayOfWeek, index = 0; i < (42 - firstDayOfWeek); i++, index++) {
+      let dt = new Date(ano, mes, i);
+      let dtNow = new Date();
+      var dayTable = tableDays!.getElementsByTagName('td')[index];
+      if (dayTable) {
+        dayTable.innerHTML = dt.getDate()!.toString()!;
+        dayTable.classList.remove('mes-anterior');
+        dayTable.classList.remove('proximo-mes');
+        dayTable.classList.remove('dia-atual');
+        if (dt.getFullYear() == dtNow.getFullYear() && dt.getMonth() == dtNow.getMonth() && dt.getDate() == dtNow.getDate()) {
+          dayTable!.classList.add('dia-atual')
+        }
+        if (i < 1) {
+          dayTable!.classList.add('mes-anterior')
+        }
 
-    views : {
-      agendaWeek : {
-         month: 'dddd',    // Sun, Mon,Tue etc
-       week: 'dddd, MMM dS', // Fri 10/20
-       day: 'dddd, MMM dS'  // Friday 10/20
+        if (i > getLastDayThisMonth) {
+          dayTable!.classList.add('proximo-mes')
+        }
       }
-   },
-   dayHeaderFormat: {
-    day: 'numeric'
-   },
-    plugins: [
-      interactionPlugin,
-      dayGridPlugin,
-      timeGridPlugin,
-      listPlugin,
-      momentPlugin
-    ],
-    // titleFormat: 'dddd, MMMM D, YYYY',
-    // headerToolbar: {
-    //   left: 'prev,next today',
-    //   center: 'title',
-    //   right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
-    // },
-    initialView: 'dayGridMonth',
-    initialEvents: INITIAL_EVENTS, // alternatively, use the `events` setting to fetch from a feed
-    weekends: true,
-    editable: true,
-    selectable: true,
-    selectMirror: true,
-    dayMaxEvents: true,
-    select: this.handleDateSelect.bind(this),
-    eventClick: this.handleEventClick.bind(this),
-    eventsSet: this.handleEvents.bind(this),
-    /* you can update a remote database when these fire:
-    eventAdd:
-    eventChange:
-    eventRemove:
-    */
-  };
-  currentEvents: EventApi[] = [];
-
-  constructor(private changeDetector: ChangeDetectorRef) {
-  }
-
-  handleCalendarToggle() {
-    this.calendarVisible = !this.calendarVisible;
-  }
-
-  handleWeekendsToggle() {
-    const { calendarOptions } = this;
-    calendarOptions.weekends = !calendarOptions.weekends;
-  }
-
-  handleDateSelect(selectInfo: DateSelectArg) {
-    const title = prompt('Please enter a new title for your event');
-    const calendarApi = selectInfo.view.calendar;
-
-    calendarApi.unselect(); // clear date selection
-
-    if (title) {
-      calendarApi.addEvent({
-        id: createEventId(),
-        title,
-        start: selectInfo.startStr,
-        end: selectInfo.endStr,
-        allDay: selectInfo.allDay
-      });
     }
   }
 
-  handleEventClick(clickInfo: EventClickArg) {
-    if (confirm(`Are you sure you want to delete the event '${clickInfo.event.title}'`)) {
-      clickInfo.event.remove();
+  getDaysCalendarSecond(mes: number, ano: number) {
+    document.getElementById('mesSecond')!.innerHTML = this.monthsBR[mes];
+    document.getElementById('anoSecond')!.innerHTML = String(ano);
+    const tableDays = document.getElementById('diasSecond')!;
+    let firstDayOfWeek = new Date(ano, mes, 1).getDay() - 1;
+    let getLastDayThisMonth = new Date(ano, mes + 1, 0).getDate();
+    for (var i = -firstDayOfWeek, index = 0; i < (42 - firstDayOfWeek); i++, index++) {
+      let dt = new Date(ano, mes, i);
+      let dtNow = new Date();
+      var dayTable = tableDays!.getElementsByTagName('td')[index];
+      if (dayTable) {
+        dayTable.innerHTML = dt.getDate()!.toString()!;
+        dayTable.classList.remove('mes-anterior');
+        dayTable.classList.remove('proximo-mes');
+        dayTable.classList.remove('dia-atual');
+        if (dt.getFullYear() == dtNow.getFullYear() && dt.getMonth() == dtNow.getMonth() && dt.getDate() == dtNow.getDate()) {
+          dayTable!.classList.add('dia-atual')
+        }
+        if (i < 1) {
+          dayTable!.classList.add('mes-anterior')
+        }
+
+        if (i > getLastDayThisMonth) {
+          dayTable!.classList.add('proximo-mes')
+        }
+      }
     }
   }
 
-  handleEvents(events: EventApi[]) {
-    this.currentEvents = events;
-    this.changeDetector.detectChanges();
+  constructor(private calendarService: CalendarService) {
+    this.monthsBR = ['JANEIRO', 'FEVEREIRO', 'MARÇO', 'ABRIL', 'MAIO', 'JUNHO', 'JULHO',
+      'AGOSTO', 'SETEMBRO', 'OUTUBRO', 'NOVEMBRO', 'DEZEMBRO'];
+  }
+
+  ngOnInit(): void {
+    let now = new Date();
+    let mes = now.getMonth();
+    let ano = now.getFullYear();
+    this.getDaysCalendarFirst(mes, ano);
+    this.getDaysCalendarSecond(mes + 1, ano)
+    this.calendarService.listarEventos(1);
+    this.listarEventos();
+  }
+
+  proximoMes() {
+    this.mes++;
+    if (this.mes > 11) {
+      this.mes = 0;
+      this.ano++;
+    }
+    this.getDaysCalendarFirst(this.mes, this.ano)
+  }
+
+  mesAnterior() {
+    this.mes--;
+    if (this.mes < 0) {
+      this.mes = 11;
+      this.ano--;
+    }
+    this.getDaysCalendarFirst(this.mes, this.ano)
+  }
+
+  proximoMesSecond() {
+    this.mes++;
+    if (this.mes > 11) {
+      this.mes = 0;
+      this.ano++;
+    }
+    this.getDaysCalendarSecond(this.mes, this.ano)
+  }
+
+  mesAnteriorSecond() {
+    this.mes--;
+    if (this.mes < 0) {
+      this.mes = 11;
+      this.ano--;
+    }
+    this.getDaysCalendarSecond(this.mes, this.ano)
+  }
+
+  async listarEventos() {
+    const idCampoEclesiastico = JSON.parse(localStorage.getItem('idCampoEclesiastico')!);
+    const result = await this.calendarService.listarEventos(idCampoEclesiastico);
+    result?.content.forEach(data => {
+      data.dataInicial = moment(data.dataInicial).utc().format('DD/MM/YYYY');
+      data.dataFinal = moment(data.dataFinal).utc().format('DD/MM/YYYY');
+    })
+    this.listagemEventos = result!.content
+    console.log(this.listagemEventos);
+
   }
 }

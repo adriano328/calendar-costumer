@@ -1,39 +1,27 @@
+# CalendarCostumer
 
-# FullCalendar Angular 15 Example Project
+This project was generated with [Angular CLI](https://github.com/angular/angular-cli) version 14.0.2.
 
-This is a fully-buildable example project for FullCalendar and Angular. It was initially created with the `ng new` command of the [Angular CLI](https://angular.io/cli). For a complete walkthrough, read the [FullCalendar Angular Docs &raquo;](https://fullcalendar.io/docs/angular)
+## Development server
 
-## Installation
+Run `ng serve` for a dev server. Navigate to `http://localhost:4200/`. The application will automatically reload if you change any of the source files.
 
-```bash
-git clone https://github.com/fullcalendar/fullcalendar-examples.git
-cd fullcalendar-examples/angular15
-npm install
-```
+## Code scaffolding
 
-## Build commands
+Run `ng generate component component-name` to generate a new component. You can also use `ng generate directive|pipe|service|class|guard|interface|enum|module`.
 
-```bash
-npm run build # build to a directory
-npm run start # continously build, as a server
-```
+## Build
 
-After running the `npm run start` command, you will be given a localhost URL that can be visited in a browser.
+Run `ng build` to build the project. The build artifacts will be stored in the `dist/` directory.
 
-## Monorepo Quirk
+## Running unit tests
 
-To get this example working within a monorepo, [this hack](https://stackoverflow.com/a/61801741/96342) was added to `tsconfig.app.json`. It can be safely removed if you're not using a monorepo.
+Run `ng test` to execute the unit tests via [Karma](https://karma-runner.github.io).
 
-```json
-"paths": {
-  "@angular/*": ["./node_modules/@angular/*"]
-},
-```
+## Running end-to-end tests
 
-## StackBlitz Quirk
+Run `ng e2e` to execute the end-to-end tests via a platform of your choice. To use this command, you need to first add a package that implements end-to-end testing capabilities.
 
-To get this example working within [StackBlitz](https://stackblitz.com/), the following hack was added to `src/main.ts`. It can be safely removed in other environments.
+## Further help
 
-```ts
-import 'zone.js' // hack for StackBlitz
-```
+To get more help on the Angular CLI use `ng help` or go check out the [Angular CLI Overview and Command Reference](https://angular.io/cli) page.
