@@ -20,16 +20,7 @@ export class AppComponent {
   calendarVisible = true;
 
   calendarOptions: CalendarOptions = {
-    // titleFormat: {
-    //   weekday: 'long'
-    // },
-    // dayGridMonth: {
-    //   dayHeaderFormat: {
-    //     weekday: 'long'
-    //   }
-    // }
-
-    dayHeaderFormat: {
+       dayHeaderFormat: {
       weekday: 'short'
     },
     buttonText: {
@@ -37,18 +28,6 @@ export class AppComponent {
     },
 
     locale: "pt-br",
-    // views: {
-    //   month: {
-    //     columnFormat: 'dddd' // set format for month here
-    //   },
-
-    //   week: {
-    //     columnFormat: 'ddd d/M' // set format for week here
-    //   },
-    //   day: {
-    //     columnFormat: 'ddd Do' // set format for day here
-    //   }
-    // },
     plugins: [
       interactionPlugin,
       dayGridPlugin,
@@ -56,12 +35,7 @@ export class AppComponent {
       listPlugin,
       momentPlugin
     ],
-    // titleFormat: 'dddd, MMMM D, YYYY',
-    // headerToolbar: {
-    //   left: 'prev,next today',
-    //   center: 'title',
-    //   right: 'dayGridMonth,timeGridWeek,timeGridDay,listWeek'
-    // },
+
     initialView: 'dayGridMonth',
     initialEvents: INITIAL_EVENTS, // alternatively, use the `events` setting to fetch from a feed
     weekends: true,
