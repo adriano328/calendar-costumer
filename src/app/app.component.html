@@ -11,6 +11,15 @@
             <!-- <i class="pi pi-arrow-circle-right icons" id="btn_prev" (click)="proximoMes()"></i> -->
           <!-- </div> -->
           <div class="table-container">
+            <div class='demo-app-main'>
+              <full-calendar *ngIf='calendarVisible' [options]='calendarOptions'>
+                <ng-template #eventContent let-arg>
+                  <b>{{ arg.timeText }}</b>
+                  <i>{{ arg.event.title }}</i>
+                </ng-template>
+              </full-calendar>
+            </div>
+
             <!-- <table class="table">
               <thead>
                 <tr>
