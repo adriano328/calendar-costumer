@@ -3,6 +3,7 @@
     <div class="grid">
       <div class="col-12 md:col-6 lg:col-6">
         <div class="first-calendar">
+
           <!-- <h2 class="ano" id="ano"></h2> -->
           <!-- <div class="header"> -->
             <!-- <i class="pi pi-arrow-circle-left icons" id="btn_ant" (click)="mesAnterior()"></i> -->
@@ -11,14 +12,7 @@
             <!-- <i class="pi pi-arrow-circle-right icons" id="btn_prev" (click)="proximoMes()"></i> -->
           <!-- </div> -->
           <div class="table-container">
-            <div class='demo-app-main'>
-              <full-calendar *ngIf='calendarVisible' [options]='calendarOptions'>
-                <ng-template #eventContent let-arg>
-                  <b>{{ arg.timeText }}</b>
-                  <i>{{ arg.event.title }}</i>
-                </ng-template>
-              </full-calendar>
-            </div>
+
 
             <!-- <table class="table">
               <thead>
@@ -186,5 +180,13 @@
   <div class="img">
     <img src="/assets/font.png">
   </div>
+</div>
+<div class='demo-app-main'>
+  <full-calendar *ngIf='calendarVisible' [options]='calendarOptions'>
+    <ng-template #eventContent let-arg>
+      <b>{{ arg.timeText }}</b>
+      <i>{{ arg.event.title }}</i>
+    </ng-template>
+  </full-calendar>
 </div>
 <router-outlet></router-outlet>
