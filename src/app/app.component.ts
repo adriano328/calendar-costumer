@@ -21,7 +21,35 @@ export class AppComponent {
   disableListEvents: boolean = true;
   listOfEvents: IEventos[] = [];
   calendarVisible = true;
-  calendarOptions: CalendarOptions = {
+  calendarOptionsOne: CalendarOptions = {
+    dayHeaderFormat: {
+      weekday: 'short'
+    },
+    buttonText: {
+      today: 'Hoje'
+    },
+    moreLinkText: 'Todos',
+    locale: "pt-br",
+    plugins: [
+      interactionPlugin,
+      dayGridPlugin,
+      timeGridPlugin,
+      listPlugin,
+      momentPlugin
+    ],
+
+    initialView: 'dayGridMonth',
+    initialEvents: INITIAL_EVENTS,
+    weekends: true,
+    editable: true,
+    selectable: true,
+    selectMirror: true,
+    dayMaxEvents: true,
+    eventsSet: this.handleEvents.bind(this),
+  };
+
+  calendarOptionsTwo: CalendarOptions = {
+    initialDate: new Date().getFullYear() + '-' + moment(new Date()).add('month', 1).format('MM'),
     dayHeaderFormat: {
       weekday: 'short'
     },
