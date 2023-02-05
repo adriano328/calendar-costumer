@@ -65,10 +65,24 @@
         background: #888adc;
       }
 
+      li {
+        list-style: none;
+      }
+
+      ul {
+        border-bottom: 1px solid #cecece;
+        margin-bottom: 0.3em;
+      }
 
       ::ng-deep .fc-day-today {
         background-color: #888adc !important;
         border: none !important;
+      }
+
+      ::ng-deep .fc.fc-theme-standard .fc-view-harness .fc-popover .fc-popover-header {
+        padding: 0;
+        background-color: #888adc !important;
+        color: #f9f9f9 !important;
       }
 
       ::ng-deep .fc .fc-daygrid-day-number {

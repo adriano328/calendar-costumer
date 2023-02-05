@@ -11,7 +11,12 @@
           </full-calendar>
           <div class="lista-eventos">
             <p-panel header="Eventos">
-              Content
+              <ul *ngFor="let item of listOfEvents">
+                <li>Evento: {{item.nome}}</li>
+                <li>Data Inicial: {{item.dataInicial}} - Data Final: {{item.dataFinal}}</li>
+                <li>Descrição: {{item.descricao}}</li>
+                <li>Local: {{item.local}}</li>
+              </ul>
           </p-panel>
           </div>
         </div>
@@ -26,7 +31,6 @@
           </full-calendar>
           <div class="lista-eventos">
             <p-panel header="Eventos">
-              Content
           </p-panel>
           </div>
         </div>

@@ -18,6 +18,7 @@ import { DayHeader } from '@fullcalendar/core/internal';
 })
 export class AppComponent {
 
+  listOfEvents: IEventos[] = [];
   calendarVisible = true;
   calendarOptions: CalendarOptions = {
        dayHeaderFormat: {
@@ -67,7 +68,12 @@ export class AppComponent {
  async listAllEventsByMonths() {
     const idCampoEclesiastico = JSON.parse(localStorage.getItem('idCampoEclesiastico')!);
    const result = await this.calendarSrv.listarEventos(idCampoEclesiastico);
-   console.log(result?.content);
+   result?.content.forEach(data => {
+    data.dataInicial = moment(data.dataInicial).utc().format('DD/MM/YYYY');
+    data.dataFinal = moment(data.dataFinal).utc().format('DD/MM/YYYY');
+  })
+   this.listOfEvents = result?.content!;
+   console.log(this.listOfEvents);
 
   }
 }
