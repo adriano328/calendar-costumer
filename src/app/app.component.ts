@@ -22,13 +22,12 @@ export class AppComponent {
   listOfEvents: IEventos[] = [];
   calendarVisible = true;
   calendarOptions: CalendarOptions = {
-       dayHeaderFormat: {
+    dayHeaderFormat: {
       weekday: 'short'
     },
     buttonText: {
       today: 'Hoje'
     },
-
     moreLinkText: 'Todos',
     locale: "pt-br",
     plugins: [
@@ -40,7 +39,7 @@ export class AppComponent {
     ],
 
     initialView: 'dayGridMonth',
-    initialEvents: INITIAL_EVENTS, 
+    initialEvents: INITIAL_EVENTS,
     weekends: true,
     editable: true,
     selectable: true,
@@ -52,7 +51,7 @@ export class AppComponent {
   constructor(
     private changeDetector: ChangeDetectorRef,
     private calendarSrv: CalendarService
-    ) {
+  ) {
   }
 
   handleEvents(events: EventApi[]) {
@@ -66,16 +65,9 @@ export class AppComponent {
     this.listAllEventsByMonths();
   }
 
- async listAllEventsByMonths() {
-    const idCampoEclesiastico = JSON.parse(localStorage.getItem('idCampoEclesiastico')!);
-   const result = await this.calendarSrv.listarEventos(idCampoEclesiastico);
-   result?.content.forEach(data => {
-    data.dataInicial = moment(data.dataInicial).utc().format('DD/MM/YYYY');
-    data.dataFinal = moment(data.dataFinal).utc().format('DD/MM/YYYY');
-  })
-   this.listOfEvents = result?.content!;
-   if(this.listOfEvents.length === 0) {
-    this.disableListEvents = false;
-   }
+  async listAllEventsByMonths() {
   }
+
+
+
 }
