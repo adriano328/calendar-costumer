@@ -17,8 +17,8 @@ import { DayHeader } from '@fullcalendar/core/internal';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent {
-  calendarVisible = true;
 
+  calendarVisible = true;
   calendarOptions: CalendarOptions = {
        dayHeaderFormat: {
       weekday: 'short'
@@ -27,6 +27,7 @@ export class AppComponent {
       today: 'Hoje'
     },
 
+    moreLinkText: 'Todos',
     locale: "pt-br",
     plugins: [
       interactionPlugin,
@@ -46,7 +47,10 @@ export class AppComponent {
     eventsSet: this.handleEvents.bind(this),
   };
 
-  constructor(private changeDetector: ChangeDetectorRef) {
+  constructor(
+    private changeDetector: ChangeDetectorRef,
+    private calendarSrv: CalendarService
+    ) {
   }
 
   handleEvents(events: EventApi[]) {
@@ -57,5 +61,13 @@ export class AppComponent {
   currentEvents: EventApi[] = [];
 
   ngOnInit(): void {
+    this.listAllEventsByMonths();
+  }
+
+ async listAllEventsByMonths() {
+    const idCampoEclesiastico = JSON.parse(localStorage.getItem('idCampoEclesiastico')!);
+   const result = await this.calendarSrv.listarEventos(idCampoEclesiastico);
+   console.log(result?.content);
+
   }
 }

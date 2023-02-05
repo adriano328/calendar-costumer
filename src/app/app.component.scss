@@ -119,6 +119,10 @@
       ::ng-deep .fc .fc-button-primary:disabled {
         display: none;
       }
+
+      .lista-eventos {
+        margin-top: 0.5em;
+      }
     }
 
     .second-calendar {
@@ -189,7 +193,9 @@
         display: none;
       }
     }
-
+    .lista-eventos {
+      margin-top: 0.5em;
+    }
   }
 
 }
