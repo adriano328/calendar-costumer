@@ -101,11 +101,14 @@ export class AppComponent implements OnInit {
  async listAllEventsByMonths(){
   const idCampoEclesiastico = JSON.parse(localStorage.getItem('idCampoEclesiastico')!);
     let month;
-    if(document.getElementsByClassName('fc-toolbar-title')){
-      month = document!.getElementsByClassName('fc-toolbar-title')[0].textContent;
+    if(document.getElementsByClassName('calendar-one')){
+      month = document!.getElementsByClassName('calendar-one')[0].textContent;
+      console.log(month);
+
     }
     if(month){
       month = this.convertMonthNameToNumberOfMonth(month);
+      console.log(month);
     }
     const date = new Date(`${new Date().getFullYear()}-${month}-01T06:00:00Z`);
     let firstDay = new Date( date.getFullYear() ,date.getMonth(), 1).getDate()
@@ -180,8 +183,8 @@ export class AppComponent implements OnInit {
   async listAllEventsByMonthsSecond(){
     const idCampoEclesiastico = JSON.parse(localStorage.getItem('idCampoEclesiastico')!);
       let month;
-      if(document.getElementsByClassName('fc-toolbar-title')){
-        month = document!.getElementsByClassName('fc-toolbar-title')[0].textContent;
+      if(document.getElementsByClassName('calendar-two')){
+        month = document!.getElementsByClassName('calendar-two')[0].textContent;
       }
       if(month){
         month = this.convertMonthNameToNumberOfMonth(month);
