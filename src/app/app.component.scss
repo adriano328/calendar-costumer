@@ -14,6 +14,12 @@
     #8b8cd1 20%,
     #292a5a 90%);
 
+    .imagem {
+      margin-top: -4em;
+      display: flex;
+      align-items: center;
+    }
+
     .borda {
       background-color: #8fc8e5;
       position: fixed;
