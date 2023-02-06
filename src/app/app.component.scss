@@ -18,6 +18,7 @@
       margin-top: -4em;
       display: flex;
       align-items: center;
+      margin-right: -5em;
     }
 
     .borda {
@@ -52,7 +53,6 @@
         font-weight: 700;
         font-size: 14px;
       }
-
     }
 
   .calendar-container {
@@ -97,7 +97,6 @@
 
       ::ng-deep .fc .fc-daygrid-day-number {
         color: black !important;
-
       }
 
       ::ng-deep .fc .fc-daygrid-day-frame {
@@ -173,12 +172,10 @@
         color: #f9f9f9 !important;
       }
 
-
       ::ng-deep .fc.fc-theme-standard .fc-view-harness .fc-event.fc-daygrid-block-event {
         color: #ffffff;
         background: #888adc;
       }
-
 
       ::ng-deep .fc-day-today {
         background-color: #888adc !important;

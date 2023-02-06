@@ -192,12 +192,14 @@ export class AppComponent implements OnInit {
       this.initiateDateSecond = (`${new Date().getFullYear()}-${month}-${firstDay}`);
       this.finalDateSecond = (`${new Date().getFullYear()}-${month}-${lastDay}`);
 
-     const result = await this.calendarSrv.listAllEvents(idCampoEclesiastico, this.initialDate, this.finalDate);
+     const result = await this.calendarSrv.listAllEvents(idCampoEclesiastico, this.initiateDateSecond, this.finalDateSecond);
      result?.content.map(data => {
       data.dataInicial = moment(data.dataInicial).utc().format('DD/MM/YYYY');
       data.dataFinal = moment(data.dataFinal).utc().format('DD/MM/YYYY');
      })
      this.listOfEventsSecond = result?.content!;
+     console.log(this.listOfEventsSecond);
+
      if(this.listOfEventsSecond.length > 0) {
       this.disableListEventsSecond = true;
      } else {
@@ -212,8 +214,6 @@ export class AppComponent implements OnInit {
        let lastDay = new Date( date.getFullYear() ,date.getMonth() + 1, 0).getDate();
       this.initialDate = (`${new Date().getFullYear()}-${new Date().getMonth()+2}-${firstDay}`);
       this.finalDate = (`${new Date().getFullYear()}-${new Date().getMonth()+2}-${lastDay}`);
-      console.log(this.initialDate);
-      console.log(this.finalDate);
       const result = await this.calendarSrv.listAllEvents(idCampoEclesiastico, this.initialDate, this.finalDate);
       result?.content.map(data => {
         data.dataInicial = moment(data.dataInicial).utc().format('DD/MM/YYYY');
