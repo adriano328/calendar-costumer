@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import * as moment from 'moment';
 import { CalendarService } from './services/calendar.service';
 import { IEventos } from './shared/interfaces/IEventos';
@@ -10,6 +10,7 @@ import listPlugin from '@fullcalendar/list';
 import { INITIAL_EVENTS, createEventId } from './event-utils';
 import momentPlugin from '@fullcalendar/moment';
 import { DayHeader } from '@fullcalendar/core/internal';
+import { Paginator } from 'primeng/paginator';
 
 @Component({
   selector: 'app-root',
@@ -17,8 +18,9 @@ import { DayHeader } from '@fullcalendar/core/internal';
   styleUrls: ['./app.component.scss']
 })
 export class AppComponent implements OnInit {
-
+  @ViewChild('pp') paginator?: Paginator;
   initiateDateSecond!: string;
+  eventDetailsFirstCalendar: boolean = false;
   finalDateSecond!: string;
   initialDate!: string;
   finalDate!: string;
@@ -26,7 +28,15 @@ export class AppComponent implements OnInit {
   disableListEventsSecond: boolean = false;
   listOfEvents: IEventos[] = [];
   listOfEventsSecond: IEventos[] = [];
+  paginationFirstValue = 0;
+  totalElements = 0;
+  disablePaginatorOne: boolean = true;
+  currentPage = 0;
   calendarVisible = true;
+  titleEvent = 'Convenção Geral das Assembleias de Deus'
+  dataEvent = '14/06/2023'
+  descricaoEvent = 'A Convenção Geral das Assembleias de Deus no Brasil (CGADB) é a maior convenção nacional das Assembleia de Deus do Brasil,uma sociedade civil de natureza religiosa, sem fins lucrativos com a finalidade de agregar e coordenar as igrejas Assembleias de Deus no território brasileiro.';
+  localeEvent: string = 'Várzea Grande';
   calendarOptionsOne: CalendarOptions = {
     dayHeaderFormat: {
       weekday: 'short'
@@ -98,135 +108,162 @@ export class AppComponent implements OnInit {
 
   currentEvents: EventApi[] = [];
 
- async listAllEventsByMonths(){
-  const idCampoEclesiastico = JSON.parse(localStorage.getItem('idCampoEclesiastico')!);
+  async listAllEventsByMonths($event?: any) {
+    const idCampoEclesiastico = JSON.parse(localStorage.getItem('idCampoEclesiastico')!);
     let month;
-    if(document.getElementsByClassName('calendar-one')){
+    if (document.getElementsByClassName('calendar-one')) {
       month = document!.getElementsByClassName('calendar-one')[0].textContent;
-      console.log(month);
-
     }
-    if(month){
+    if (month) {
       month = this.convertMonthNameToNumberOfMonth(month);
-      console.log(month);
     }
     const date = new Date(`${new Date().getFullYear()}-${month}-01T06:00:00Z`);
-    let firstDay = new Date( date.getFullYear() ,date.getMonth(), 1).getDate()
-    let lastDay = new Date( date.getFullYear() ,date.getMonth() + 1, 0).getDate()
+    let firstDay = new Date(date.getFullYear(), date.getMonth(), 1).getDate()
+    let lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate()
     this.initialDate = (`${new Date().getFullYear()}-${month}-${firstDay}`);
     this.finalDate = (`${new Date().getFullYear()}-${month}-${lastDay}`);
 
-   const result = await this.calendarSrv.listAllEvents(idCampoEclesiastico, this.initialDate, this.finalDate);
-   result?.content.map(data => {
-    data.dataInicial = moment(data.dataInicial).utc().format('DD/MM/YYYY');
-    data.dataFinal = moment(data.dataFinal).utc().format('DD/MM/YYYY');
-   })
-   this.listOfEvents = result?.content!;
-   if(this.listOfEvents.length > 0) {
-    this.disableListEvents = true;
-   } else {
-    this.disableListEvents = false;
-   }
+    let result = null;
+    if (!$event) {
+      result = await this.calendarSrv.listAllEvents(idCampoEclesiastico, this.initialDate, this.finalDate, 0);
+      this.paginator?.changePage(0);
+    } else {
+      result = await this.calendarSrv.listAllEvents(idCampoEclesiastico, this.initialDate, this.finalDate, $event.page);
+    }
+
+    if(result) {
+      result?.content.map(data => {
+        data.dataInicial = moment(data.dataInicial).utc().format('DD/MM/YYYY');
+        data.dataFinal = moment(data.dataFinal).utc().format('DD/MM/YYYY');
+      });
+      this.listOfEvents = result?.content!;
+      if (this.listOfEvents.length > 0) {
+        this.disableListEvents = true;
+        this.disablePaginatorOne = true;
+      } else {
+        this.disableListEvents = false;
+        this.disablePaginatorOne = false;
+      }
+      this.totalElements = result?.totalElements;
+    }
   }
 
-  async initiateCalendar() {
+  async initiateCalendar($event?: any) {
     const idCampoEclesiastico = JSON.parse(localStorage.getItem('idCampoEclesiastico')!);
     const date = new Date();
-    let firstDay = new Date( date.getFullYear() ,date.getMonth(), 1).getDate();
-     let lastDay = new Date( date.getFullYear() ,date.getMonth() + 1, 0).getDate();
-    this.initialDate = (`${new Date().getFullYear()}-${new Date().getMonth()+1}-${firstDay}`);
-    this.finalDate = (`${new Date().getFullYear()}-${new Date().getMonth()+1}-${lastDay}`);
-    const result = await this.calendarSrv.listAllEvents(idCampoEclesiastico, this.initialDate, this.finalDate);
-    result?.content.map(data => {
-      data.dataInicial = moment(data.dataInicial).utc().format('DD/MM/YYYY');
-      data.dataFinal = moment(data.dataFinal).utc().format('DD/MM/YYYY');
-     })
-   this.listOfEvents = result?.content!;
-   if(this.listOfEvents.length > 0) {
-    this.disableListEvents = true;
-   } else {
-    this.disableListEvents = false;
-   }
+    let firstDay = new Date(date.getFullYear(), date.getMonth(), 1).getDate();
+    let lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+    this.initialDate = (`${new Date().getFullYear()}-${new Date().getMonth() + 1}-${firstDay}`);
+    this.finalDate = (`${new Date().getFullYear()}-${new Date().getMonth() + 1}-${lastDay}`);
+    let result = null;
+    if (!$event) {
+      result = await this.calendarSrv.listAllEvents(idCampoEclesiastico, this.initialDate, this.finalDate, 0);
+      this.paginator?.changePage(0);
+    } else {
+      result = await this.calendarSrv.listAllEvents(idCampoEclesiastico, this.initialDate, this.finalDate, $event.page);
+    }
+
+    if(result) {
+      result?.content.map(data => {
+        data.dataInicial = moment(data.dataInicial).utc().format('DD/MM/YYYY');
+        data.dataFinal = moment(data.dataFinal).utc().format('DD/MM/YYYY');
+      });
+      this.listOfEvents = result?.content!;
+      if (this.listOfEvents.length > 0) {
+        this.disableListEvents = true;
+        this.disablePaginatorOne = true;
+      } else {
+        this.disableListEvents = false;
+        this.disablePaginatorOne = false;
+      }
+      this.totalElements = result?.totalElements;
+    }
   }
 
 
   convertMonthNameToNumberOfMonth(month: string): string {
-    if(month.includes('janeiro')){
+    if (month.includes('janeiro')) {
       return '01';
-    } else if(month.includes('fevereiro')){
+    } else if (month.includes('fevereiro')) {
       return '02';
-    } else if(month.includes('março')){
+    } else if (month.includes('março')) {
       return '03';
-    } else if(month.includes('abril')){
+    } else if (month.includes('abril')) {
       return '04';
-    } else if(month.includes('maio')){
+    } else if (month.includes('maio')) {
       return '05';
-    } else if(month.includes('junho')){
+    } else if (month.includes('junho')) {
       return '06';
-    } else if(month.includes('julho')){
+    } else if (month.includes('julho')) {
       return '07';
-    } else if(month.includes('agosto')){
+    } else if (month.includes('agosto')) {
       return '08';
-    } else if(month.includes('setembro')){
+    } else if (month.includes('setembro')) {
       return '09';
-    } else if(month.includes('outubro')){
+    } else if (month.includes('outubro')) {
       return '10';
-    } else if(month.includes('novembro')){
+    } else if (month.includes('novembro')) {
       return '11';
-    } else if(month.includes('dezembro')){
+    } else if (month.includes('dezembro')) {
       return '12';
     }
 
     return '00';
   }
 
-  async listAllEventsByMonthsSecond(){
+  async listAllEventsByMonthsSecond() {
     const idCampoEclesiastico = JSON.parse(localStorage.getItem('idCampoEclesiastico')!);
-      let month;
-      if(document.getElementsByClassName('calendar-two')){
-        month = document!.getElementsByClassName('calendar-two')[0].textContent;
-      }
-      if(month){
-        month = this.convertMonthNameToNumberOfMonth(month);
-      }
-      const date = new Date(`${new Date().getFullYear()}-${month}-01T06:00:00Z`);
-      let firstDay = new Date( date.getFullYear() ,date.getMonth(), 1).getDate()
-      let lastDay = new Date( date.getFullYear() ,date.getMonth() + 1, 0).getDate()
-      this.initiateDateSecond = (`${new Date().getFullYear()}-${month}-${firstDay}`);
-      this.finalDateSecond = (`${new Date().getFullYear()}-${month}-${lastDay}`);
+    let month;
+    if (document.getElementsByClassName('calendar-two')) {
+      month = document!.getElementsByClassName('calendar-two')[0].textContent;
+    }
+    if (month) {
+      month = this.convertMonthNameToNumberOfMonth(month);
+    }
+    const date = new Date(`${new Date().getFullYear()}-${month}-01T06:00:00Z`);
+    let firstDay = new Date(date.getFullYear(), date.getMonth(), 1).getDate()
+    let lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate()
+    this.initiateDateSecond = (`${new Date().getFullYear()}-${month}-${firstDay}`);
+    this.finalDateSecond = (`${new Date().getFullYear()}-${month}-${lastDay}`);
 
-     const result = await this.calendarSrv.listAllEvents(idCampoEclesiastico, this.initiateDateSecond, this.finalDateSecond);
-     result?.content.map(data => {
+    const result = await this.calendarSrv.listAllEvents(idCampoEclesiastico, this.initiateDateSecond, this.finalDateSecond);
+    result?.content.map(data => {
       data.dataInicial = moment(data.dataInicial).utc().format('DD/MM/YYYY');
       data.dataFinal = moment(data.dataFinal).utc().format('DD/MM/YYYY');
-     })
-     this.listOfEventsSecond = result?.content!;
-     console.log(this.listOfEventsSecond);
-
-     if(this.listOfEventsSecond.length > 0) {
+    })
+    this.listOfEventsSecond = result?.content!;
+    if (this.listOfEventsSecond.length > 0) {
       this.disableListEventsSecond = true;
-     } else {
+    } else {
       this.disableListEventsSecond = false;
-     }
     }
+  }
 
-    async initiateCalendarSecond() {
-      const idCampoEclesiastico = JSON.parse(localStorage.getItem('idCampoEclesiastico')!);
-      const date = new Date();
-      let firstDay = new Date( date.getFullYear() ,date.getMonth(), 1).getDate();
-       let lastDay = new Date( date.getFullYear() ,date.getMonth() + 1, 0).getDate();
-      this.initialDate = (`${new Date().getFullYear()}-${new Date().getMonth()+2}-${firstDay}`);
-      this.finalDate = (`${new Date().getFullYear()}-${new Date().getMonth()+2}-${lastDay}`);
-      const result = await this.calendarSrv.listAllEvents(idCampoEclesiastico, this.initialDate, this.finalDate);
-      result?.content.map(data => {
-        data.dataInicial = moment(data.dataInicial).utc().format('DD/MM/YYYY');
-        data.dataFinal = moment(data.dataFinal).utc().format('DD/MM/YYYY');
-       })
-     this.listOfEventsSecond = result?.content!;
-     if(this.listOfEventsSecond.length > 0) {
-      this.disableListEventsSecond = true;
-     } else {
-      this.disableListEventsSecond = false;
-     }
+  opentEventModalCalendarFirst() {
+    if(this.eventDetailsFirstCalendar === true) {
+      this.eventDetailsFirstCalendar = false;
+    } else {
+      this.eventDetailsFirstCalendar = true;
     }
+  }
+
+  async initiateCalendarSecond() {
+    const idCampoEclesiastico = JSON.parse(localStorage.getItem('idCampoEclesiastico')!);
+    const date = new Date();
+    let firstDay = new Date(date.getFullYear(), date.getMonth(), 1).getDate();
+    let lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+    this.initialDate = (`${new Date().getFullYear()}-${new Date().getMonth() + 2}-${firstDay}`);
+    this.finalDate = (`${new Date().getFullYear()}-${new Date().getMonth() + 2}-${lastDay}`);
+    const result = await this.calendarSrv.listAllEvents(idCampoEclesiastico, this.initialDate, this.finalDate);
+    result?.content.map(data => {
+      data.dataInicial = moment(data.dataInicial).utc().format('DD/MM/YYYY');
+      data.dataFinal = moment(data.dataFinal).utc().format('DD/MM/YYYY');
+    })
+    this.listOfEventsSecond = result?.content!;
+    if (this.listOfEventsSecond.length > 0) {
+      this.disableListEventsSecond = true;
+    } else {
+      this.disableListEventsSecond = false;
+    }
+  }
 }

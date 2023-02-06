@@ -6,27 +6,33 @@
     <div class="grid">
       <div class="col-12 md:col-6 lg:col-6">
         <div class="first-calendar">
-          <full-calendar (click)="listAllEventsByMonths()" class="calendar-one" *ngIf='calendarVisible' [options]='calendarOptionsOne'>
+          <full-calendar (click)="listAllEventsByMonths()" class="calendar-one" *ngIf='calendarVisible'
+            [options]='calendarOptionsOne'>
             <ng-template #eventContent let-arg>
               <b>{{ arg.timeText }}</b>
-              <i>{{ arg.event.title }}</i>
+              <i (click)="opentEventModalCalendarFirst()">{{ arg.event.title }} </i>
             </ng-template>
           </full-calendar>
           <div class="lista-eventos" *ngIf="disableListEvents">
             <p-panel header="Eventos">
-              <ul *ngFor="let item of listOfEvents" >
+              <ul *ngFor="let item of listOfEvents">
                 <li>Evento: {{item.nome}}</li>
                 <li>Data Inicial: {{item.dataInicial}} - Data Final: {{item.dataFinal}}</li>
                 <li>Descrição: {{item.descricao}}</li>
                 <li>Local: {{item.local}}</li>
               </ul>
-          </p-panel>
+              <div class="pages" *ngIf="disablePaginatorOne">
+                <p-paginator [first]="paginationFirstValue" *ngIf="listOfEvents.length > 0 " [rows]="2"
+                  [totalRecords]="totalElements" (onPageChange)="listAllEventsByMonths($event)" #pp></p-paginator>
+              </div>
+            </p-panel>
           </div>
         </div>
       </div>
       <div class="col-12 md:col-6 lg:col-6 second">
         <div class="second-calendar">
-          <full-calendar *ngIf='calendarVisible' class="calendar-two" (click)="listAllEventsByMonthsSecond()" [options]='calendarOptionsTwo'>
+          <full-calendar *ngIf='calendarVisible' class="calendar-two" (click)="listAllEventsByMonthsSecond()"
+            [options]='calendarOptionsTwo'>
             <ng-template #eventContent let-arg>
               <b>{{ arg.timeText }}</b>
               <i>{{ arg.event.title }}</i>
@@ -34,13 +40,17 @@
           </full-calendar>
           <div class="lista-eventos" *ngIf="disableListEventsSecond">
             <p-panel header="Eventos">
-              <ul *ngFor="let item of listOfEventsSecond" >
+              <ul *ngFor="let item of listOfEventsSecond">
                 <li>Evento: {{item.nome}}</li>
                 <li>Data Inicial: {{item.dataInicial}} - Data Final: {{item.dataFinal}}</li>
                 <li>Descrição: {{item.descricao}}</li>
                 <li>Local: {{item.local}}</li>
               </ul>
-          </p-panel>
+              <div class="pages" *ngIf="disablePaginatorOne">
+                <p-paginator [first]="paginationFirstValue" *ngIf="listOfEvents.length > 0 " [rows]="2"
+                  [totalRecords]="totalElements" (onPageChange)="listAllEventsByMonths($event)" #pp></p-paginator>
+              </div>
+            </p-panel>
           </div>
         </div>
       </div>
@@ -49,7 +59,30 @@
   <div class="borda">
   </div>
   <div class="base-footer">
-    <p class="footer" style="text-align: center;">ASSEMBLÉIA DE DEUS <img src="/assets/logo.png" style="width: 30px; height: 25px;"> EM CUIABÁ E REGIÃO</p>
+    <p class="footer" style="text-align: center;">ASSEMBLÉIA DE DEUS <img src="/assets/logo.png"
+        style="width: 30px; height: 25px;"> EM CUIABÁ E REGIÃO</p>
   </div>
 </div>
+<p-dialog [(visible)]="eventDetailsFirstCalendar" [style]="{width: '30vw'}">
+  <ng-template pTemplate="header">
+    <p>Evento: {{titleEvent}}</p>
+  </ng-template>
+  <div class="grid">
+    <div class="col-12 md:col-6 lg:col-4">
+      <span class="text-event">Data Inicio: {{dataEvent}}</span>
+    </div>
+    <div class="col-12 md:col-6 lg:col-4">
+      <span class="text-event">Data Final: {{dataEvent}}</span>
+    </div>
+    <div class="col-12 md:col-6 lg:col-12">
+      <div class="descricao">
+       <span class="text-event">Descrição</span>
+        <span class="text-event" style="width: 150px;">{{descricaoEvent}}</span>
+      </div>
+    </div>
+    <div class="col-12 md:col-6 lg:col-12">
+      <span class="text-event">Local do Evento: {{localeEvent}}</span>
+    </div>
+  </div>
+</p-dialog>
 <router-outlet></router-outlet>
