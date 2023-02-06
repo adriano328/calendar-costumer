@@ -73,6 +73,7 @@
       ::ng-deep .fc.fc-theme-standard .fc-view-harness .fc-event.fc-daygrid-block-event {
         color: #ffffff;
         background: #888adc;
+        border: 1px solid #888adc;
       }
 
       li {
@@ -83,6 +84,10 @@
       ul {
         border-bottom: 1px solid #cecece;
         margin-bottom: 0.3em;
+      }
+
+      ::ng-deep .fc .fc-daygrid-event {
+        color: black !important;
       }
 
       ::ng-deep .fc-day-today {
