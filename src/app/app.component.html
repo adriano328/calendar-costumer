@@ -26,14 +26,20 @@
       </div>
       <div class="col-12 md:col-6 lg:col-6">
         <div class="second-calendar">
-          <full-calendar *ngIf='calendarVisible' [options]='calendarOptionsTwo'>
+          <full-calendar *ngIf='calendarVisible' (click)="listAllEventsByMonthsSecond()" [options]='calendarOptionsTwo'>
             <ng-template #eventContent let-arg>
               <b>{{ arg.timeText }}</b>
               <i>{{ arg.event.title }}</i>
             </ng-template>
           </full-calendar>
-          <div class="lista-eventos">
+          <div class="lista-eventos" *ngIf="disableListEventsSecond">
             <p-panel header="Eventos">
+              <ul *ngFor="let item of listOfEventsSecond" >
+                <li>Evento: {{item.nome}}</li>
+                <li>Data Inicial: {{item.dataInicial}} - Data Final: {{item.dataFinal}}</li>
+                <li>Descrição: {{item.descricao}}</li>
+                <li>Local: {{item.local}}</li>
+              </ul>
           </p-panel>
           </div>
         </div>

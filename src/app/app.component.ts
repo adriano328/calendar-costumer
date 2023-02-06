@@ -18,10 +18,14 @@ import { DayHeader } from '@fullcalendar/core/internal';
 })
 export class AppComponent implements OnInit {
 
+  initiateDateSecond!: string;
+  finalDateSecond!: string;
   initialDate!: string;
   finalDate!: string;
   disableListEvents: boolean = false;
+  disableListEventsSecond: boolean = false;
   listOfEvents: IEventos[] = [];
+  listOfEventsSecond: IEventos[] = [];
   calendarVisible = true;
   calendarOptionsOne: CalendarOptions = {
     dayHeaderFormat: {
@@ -141,6 +145,7 @@ export class AppComponent implements OnInit {
    }
   }
 
+
   convertMonthNameToNumberOfMonth(month: string): string {
     if(month.includes('janeiro')){
       return '01';
@@ -170,4 +175,32 @@ export class AppComponent implements OnInit {
 
     return '00';
   }
+
+  async listAllEventsByMonthsSecond(){
+    const idCampoEclesiastico = JSON.parse(localStorage.getItem('idCampoEclesiastico')!);
+      let month;
+      if(document.getElementsByClassName('fc-toolbar-title')){
+        month = document!.getElementsByClassName('fc-toolbar-title')[0].textContent;
+      }
+      if(month){
+        month = this.convertMonthNameToNumberOfMonth(month);
+      }
+      const date = new Date(`${new Date().getFullYear()}-${month}-01T06:00:00Z`);
+      let firstDay = new Date( date.getFullYear() ,date.getMonth(), 1).getDate()
+      let lastDay = new Date( date.getFullYear() ,date.getMonth() + 1, 0).getDate()
+      this.initiateDateSecond = (`${new Date().getFullYear()}-${month}-${firstDay}`);
+      this.finalDateSecond = (`${new Date().getFullYear()}-${month}-${lastDay}`);
+
+     const result = await this.calendarSrv.listAllEvents(idCampoEclesiastico, this.initialDate, this.finalDate);
+     result?.content.map(data => {
+      data.dataInicial = moment(data.dataInicial).utc().format('DD/MM/YYYY');
+      data.dataFinal = moment(data.dataFinal).utc().format('DD/MM/YYYY');
+     })
+     this.listOfEventsSecond = result?.content!;
+     if(this.listOfEventsSecond.length > 0) {
+      this.disableListEventsSecond = true;
+     } else {
+      this.disableListEventsSecond = false;
+     }
+    }
 }

@@ -151,6 +151,15 @@
         height: 55vh;
       }
 
+      li {
+        list-style: none;
+        font-size: 12px;
+      }
+
+      ul {
+        border-bottom: 1px solid #cecece;
+        margin-bottom: 0.3em;
+      }
 
       ::ng-deep .fc.fc-theme-standard .fc-view-harness .fc-popover .fc-popover-header {
         padding: 0;
