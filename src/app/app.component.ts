@@ -89,6 +89,7 @@ export class AppComponent implements OnInit {
   }
   ngOnInit(): void {
     this.initiateCalendar();
+    this.initiateCalendarSecond();
   }
   handleEvents(events: EventApi[]) {
     this.currentEvents = events;
@@ -196,6 +197,28 @@ export class AppComponent implements OnInit {
       data.dataInicial = moment(data.dataInicial).utc().format('DD/MM/YYYY');
       data.dataFinal = moment(data.dataFinal).utc().format('DD/MM/YYYY');
      })
+     this.listOfEventsSecond = result?.content!;
+     if(this.listOfEventsSecond.length > 0) {
+      this.disableListEventsSecond = true;
+     } else {
+      this.disableListEventsSecond = false;
+     }
+    }
+
+    async initiateCalendarSecond() {
+      const idCampoEclesiastico = JSON.parse(localStorage.getItem('idCampoEclesiastico')!);
+      const date = new Date();
+      let firstDay = new Date( date.getFullYear() ,date.getMonth(), 1).getDate();
+       let lastDay = new Date( date.getFullYear() ,date.getMonth() + 1, 0).getDate();
+      this.initialDate = (`${new Date().getFullYear()}-${new Date().getMonth()+2}-${firstDay}`);
+      this.finalDate = (`${new Date().getFullYear()}-${new Date().getMonth()+2}-${lastDay}`);
+      console.log(this.initialDate);
+      console.log(this.finalDate);
+      const result = await this.calendarSrv.listAllEvents(idCampoEclesiastico, this.initialDate, this.finalDate);
+      result?.content.map(data => {
+        data.dataInicial = moment(data.dataInicial).utc().format('DD/MM/YYYY');
+        data.dataFinal = moment(data.dataFinal).utc().format('DD/MM/YYYY');
+       })
      this.listOfEventsSecond = result?.content!;
      if(this.listOfEventsSecond.length > 0) {
       this.disableListEventsSecond = true;
