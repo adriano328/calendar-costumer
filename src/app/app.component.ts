@@ -1,4 +1,4 @@
-import { ChangeDetectorRef, Component } from '@angular/core';
+import { ChangeDetectorRef, Component, OnInit } from '@angular/core';
 import * as moment from 'moment';
 import { CalendarService } from './services/calendar.service';
 import { IEventos } from './shared/interfaces/IEventos';
@@ -16,9 +16,11 @@ import { DayHeader } from '@fullcalendar/core/internal';
   templateUrl: './app.component.html',
   styleUrls: ['./app.component.scss']
 })
-export class AppComponent {
+export class AppComponent implements OnInit {
 
-  disableListEvents: boolean = true;
+  initialDate!: string;
+  finalDate!: string;
+  disableListEvents: boolean = false;
   listOfEvents: IEventos[] = [];
   calendarVisible = true;
   calendarOptionsOne: CalendarOptions = {
@@ -81,7 +83,9 @@ export class AppComponent {
     private calendarSrv: CalendarService
   ) {
   }
-
+  ngOnInit(): void {
+    this.initiateCalendar();
+  }
   handleEvents(events: EventApi[]) {
     this.currentEvents = events;
     this.changeDetector.detectChanges();
@@ -89,35 +93,52 @@ export class AppComponent {
 
   currentEvents: EventApi[] = [];
 
-  ngOnInit(): void {
-    this.listAllEventsByMonths();
-  }
-
-  async listAllEventsByMonths() {
-  }
-
-  test(){
+ async listAllEventsByMonths(){
+  const idCampoEclesiastico = JSON.parse(localStorage.getItem('idCampoEclesiastico')!);
     let month;
-
     if(document.getElementsByClassName('fc-toolbar-title')){
-      month = document.getElementsByClassName('fc-toolbar-title')[0].textContent;
+      month = document!.getElementsByClassName('fc-toolbar-title')[0].textContent;
     }
-
     if(month){
       month = this.convertMonthNameToNumberOfMonth(month);
     }
-
-
     const date = new Date(`${new Date().getFullYear()}-${month}-01T06:00:00Z`);
     let firstDay = new Date( date.getFullYear() ,date.getMonth(), 1).getDate()
     let lastDay = new Date( date.getFullYear() ,date.getMonth() + 1, 0).getDate()
-    console.log(firstDay, lastDay);
+    this.initialDate = (`${new Date().getFullYear()}-${month}-${firstDay}`);
+    this.finalDate = (`${new Date().getFullYear()}-${month}-${lastDay}`);
 
+   const result = await this.calendarSrv.listAllEvents(idCampoEclesiastico, this.initialDate, this.finalDate);
+   result?.content.map(data => {
+    data.dataInicial = moment(data.dataInicial).utc().format('DD/MM/YYYY');
+    data.dataFinal = moment(data.dataFinal).utc().format('DD/MM/YYYY');
+   })
+   this.listOfEvents = result?.content!;
+   if(this.listOfEvents.length > 0) {
+    this.disableListEvents = true;
+   } else {
+    this.disableListEvents = false;
+   }
+  }
 
-
-// const lastDay = new Date(now.getFullYear(), now.getMonth() + 1, 0);
-// console.log(lastDay);
-
+  async initiateCalendar() {
+    const idCampoEclesiastico = JSON.parse(localStorage.getItem('idCampoEclesiastico')!);
+    const date = new Date();
+    let firstDay = new Date( date.getFullYear() ,date.getMonth(), 1).getDate();
+     let lastDay = new Date( date.getFullYear() ,date.getMonth() + 1, 0).getDate();
+    this.initialDate = (`${new Date().getFullYear()}-${new Date().getMonth()+1}-${firstDay}`);
+    this.finalDate = (`${new Date().getFullYear()}-${new Date().getMonth()+1}-${lastDay}`);
+    const result = await this.calendarSrv.listAllEvents(idCampoEclesiastico, this.initialDate, this.finalDate);
+    result?.content.map(data => {
+      data.dataInicial = moment(data.dataInicial).utc().format('DD/MM/YYYY');
+      data.dataFinal = moment(data.dataFinal).utc().format('DD/MM/YYYY');
+     })
+   this.listOfEvents = result?.content!;
+   if(this.listOfEvents.length > 0) {
+    this.disableListEvents = true;
+   } else {
+    this.disableListEvents = false;
+   }
   }
 
   convertMonthNameToNumberOfMonth(month: string): string {
@@ -149,5 +170,4 @@ export class AppComponent {
 
     return '00';
   }
-
 }
