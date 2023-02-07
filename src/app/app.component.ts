@@ -1,16 +1,16 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
+import { CalendarOptions, EventApi, EventInput } from '@fullcalendar/core';
+import dayGridPlugin from '@fullcalendar/daygrid';
+import interactionPlugin from '@fullcalendar/interaction';
+import listPlugin from '@fullcalendar/list';
+import momentPlugin from '@fullcalendar/moment';
+import timeGridPlugin from '@fullcalendar/timegrid';
 import * as moment from 'moment';
+import { Paginator } from 'primeng/paginator';
+
+import { INITIAL_EVENTS, createEventId } from './event-utils';
 import { CalendarService } from './services/calendar.service';
 import { IEventos } from './shared/interfaces/IEventos';
-import { CalendarOptions, DateSelectArg, EventClickArg, EventApi } from '@fullcalendar/core';
-import interactionPlugin from '@fullcalendar/interaction';
-import dayGridPlugin from '@fullcalendar/daygrid';
-import timeGridPlugin from '@fullcalendar/timegrid';
-import listPlugin from '@fullcalendar/list';
-import { INITIAL_EVENTS, createEventId } from './event-utils';
-import momentPlugin from '@fullcalendar/moment';
-import { DayHeader } from '@fullcalendar/core/internal';
-import { Paginator } from 'primeng/paginator';
 
 @Component({
   selector: 'app-root',
@@ -37,7 +37,35 @@ export class AppComponent implements OnInit {
   dataEvent = '14/06/2023'
   descricaoEvent = 'A Convenção Geral das Assembleias de Deus no Brasil (CGADB) é a maior convenção nacional das Assembleia de Deus do Brasil,uma sociedade civil de natureza religiosa, sem fins lucrativos com a finalidade de agregar e coordenar as igrejas Assembleias de Deus no território brasileiro.';
   localeEvent: string = 'Várzea Grande';
+
+  initialEvents: any[] = [];
+
+  allEventList: IEventos[] = [];
+
+  constructor(
+    private changeDetector: ChangeDetectorRef,
+    private calendarSrv: CalendarService
+  ) {
+  }
+  async ngOnInit() {
+    let events: any[] = []
+
+    this.initiateCalendar();
+    this.initiateCalendarSecond();
+    this.listAllEvents();
+    const result = await this.getInitialEvents();
+
+    const mapedresult = result.map(item => this.convertObjectToEvent(item))
+
+    this.initialEvents = mapedresult;
+
+
+
+
+  }
+
   calendarOptionsOne: CalendarOptions = {
+
     dayHeaderFormat: {
       weekday: 'short'
     },
@@ -53,9 +81,9 @@ export class AppComponent implements OnInit {
       listPlugin,
       momentPlugin
     ],
-
+// events: this.initialEvents,
     initialView: 'dayGridMonth',
-    initialEvents: INITIAL_EVENTS,
+    // initialEvents: this.initialEvents,
     weekends: true,
     editable: true,
     selectable: true,
@@ -92,15 +120,6 @@ export class AppComponent implements OnInit {
     eventsSet: this.handleEvents.bind(this),
   };
 
-  constructor(
-    private changeDetector: ChangeDetectorRef,
-    private calendarSrv: CalendarService
-  ) {
-  }
-  ngOnInit(): void {
-    this.initiateCalendar();
-    this.initiateCalendarSecond();
-  }
   handleEvents(events: EventApi[]) {
     this.currentEvents = events;
     this.changeDetector.detectChanges();
@@ -180,6 +199,11 @@ export class AppComponent implements OnInit {
     }
   }
 
+ async listAllEvents(): Promise<void> {
+
+
+
+  }
 
   convertMonthNameToNumberOfMonth(month: string): string {
     if (month.includes('janeiro')) {
@@ -265,5 +289,30 @@ export class AppComponent implements OnInit {
     } else {
       this.disableListEventsSecond = false;
     }
+  }
+
+  async getInitialEvents(): Promise<IEventos[]> {
+    const TODAY_STR = new Date("2023-02-01").toISOString().replace(/T.*$/, ''); // YYYY-MM-DD of today
+    const END_EVENT = new Date("2023-02-06").toISOString().replace(/T.*$/, '');
+
+    const idCampoeclesiastico = localStorage.getItem('idCampoEclesiastico');
+
+    if(idCampoeclesiastico){
+      const result = await this.calendarSrv.listAllEventsByCampoEclesiastico(parseInt(idCampoeclesiastico));
+
+      if(result){
+        this.allEventList = result.content;
+      }
+
+    }
+
+    return this.allEventList;
+  }
+
+  convertObjectToEvent(eventObject: IEventos): EventInput {
+    const colors = ["#39a78e", "#0099cc", "#FFFF00", "#FF6347", "#00FA9A"];
+    const random = Math.floor(Math.random() * colors.length);
+
+    return {id: eventObject.id.toString(), title: eventObject.nome, start: moment(eventObject.dataInicial).utc().format('YYYY-MM-DD'), end: moment(eventObject.dataFinal).utc().format('YYYY-MM-DD'), color: colors[random]}
   }
 }
