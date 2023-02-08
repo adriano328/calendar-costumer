@@ -48,20 +48,11 @@ export class AppComponent implements OnInit {
   ) {
   }
   async ngOnInit() {
-    let events: any[] = []
-
     this.initiateCalendar();
     this.initiateCalendarSecond();
-    this.listAllEvents();
     const result = await this.getInitialEvents();
-
     const mapedresult = result.map(item => this.convertObjectToEvent(item))
-
     this.initialEvents = mapedresult;
-
-
-
-
   }
 
   calendarOptionsOne: CalendarOptions = {
@@ -81,9 +72,7 @@ export class AppComponent implements OnInit {
       listPlugin,
       momentPlugin
     ],
-// events: this.initialEvents,
     initialView: 'dayGridMonth',
-    // initialEvents: this.initialEvents,
     weekends: true,
     editable: true,
     selectable: true,
@@ -199,12 +188,6 @@ export class AppComponent implements OnInit {
     }
   }
 
- async listAllEvents(): Promise<void> {
-
-
-
-  }
-
   convertMonthNameToNumberOfMonth(month: string): string {
     if (month.includes('janeiro')) {
       return '01';
@@ -292,7 +275,7 @@ export class AppComponent implements OnInit {
   }
 
   async getInitialEvents(): Promise<IEventos[]> {
-    const TODAY_STR = new Date("2023-02-01").toISOString().replace(/T.*$/, ''); // YYYY-MM-DD of today
+    const TODAY_STR = new Date("2023-02-01").toISOString().replace(/T.*$/, '');
     const END_EVENT = new Date("2023-02-06").toISOString().replace(/T.*$/, '');
 
     const idCampoeclesiastico = localStorage.getItem('idCampoEclesiastico');
@@ -310,9 +293,8 @@ export class AppComponent implements OnInit {
   }
 
   convertObjectToEvent(eventObject: IEventos): EventInput {
-    const colors = ["#39a78e", "#0099cc", "#FFFF00", "#FF6347", "#00FA9A"];
+    const colors = ["#4169E1", "#228B22", "##DAA520", "#F08080", "#FFD700"];
     const random = Math.floor(Math.random() * colors.length);
-
     return {id: eventObject.id.toString(), title: eventObject.nome, start: moment(eventObject.dataInicial).utc().format('YYYY-MM-DD'), end: moment(eventObject.dataFinal).utc().format('YYYY-MM-DD'), color: colors[random]}
   }
 }

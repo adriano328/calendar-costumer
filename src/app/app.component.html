@@ -27,6 +27,7 @@
               </div>
             </p-panel>
           </div>
+          <i class="pi pi-power-off"></i>
         </div>
       </div>
       <div class="col-12 md:col-6 lg:col-6 second">
@@ -65,19 +66,18 @@
 </div>
 <p-dialog [(visible)]="eventDetailsFirstCalendar" [style]="{width: '30vw'}">
   <ng-template pTemplate="header">
-    <p>Evento: {{titleEvent}}</p>
+    <p>{{titleEvent}}</p>
   </ng-template>
   <div class="grid">
     <div class="col-12 md:col-6 lg:col-4">
-      <span class="text-event">Data Inicio: {{dataEvent}}</span>
+      <!-- <span class="text-event">Data Inicio: {{dataEvent}}</span> -->
     </div>
     <div class="col-12 md:col-6 lg:col-4">
       <span class="text-event">Data Final: {{dataEvent}}</span>
     </div>
     <div class="col-12 md:col-6 lg:col-12">
       <div class="descricao">
-       <span class="text-event">Descrição</span>
-        <span class="text-event" style="width: 150px;">{{descricaoEvent}}</span>
+        <span class="text-event" style="width: 150px;">Sobre o Evento: {{descricaoEvent}}</span>
       </div>
     </div>
     <div class="col-12 md:col-6 lg:col-12">

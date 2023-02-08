@@ -3,6 +3,8 @@
   font-size: 16px;
 }
 
+
+
 .calendar {
   overflow: hidden;
   width: 100%;
@@ -95,6 +97,14 @@
         border: none !important;
       }
 
+      ::ng-deep .fc.fc-theme-standard .fc-view-harness .fc-event.fc-daygrid-block-event .fc-event-main {
+        color: black !important;
+      }
+
+      ::ng-deep .fc-direction-ltr .fc-daygrid-more-link {
+        color: #333333;
+      }
+
       ::ng-deep .fc.fc-theme-standard .fc-view-harness .fc-popover .fc-popover-header {
         padding: 0;
         background-color: #888adc !important;
@@ -121,11 +131,7 @@
         background-color: #5e5f9b;
       }
 
-      ::ng-deep .fc.fc-theme-standard a {
-        color: #f9f9f9;
-        font-weight: 100;
-        text-transform: capitalize;
-      }
+
 
       ::ng-deep .fc .fc-toolbar-title {
         display: flex;
@@ -217,12 +223,6 @@
         background-color: #5e5f9b;
       }
 
-      ::ng-deep .fc.fc-theme-standard a {
-        color: #f9f9f9;
-        font-weight: 100;
-        text-transform: capitalize;
-      }
-
       ::ng-deep .fc .fc-toolbar-title {
         display: flex;
         justify-content: center;
@@ -261,13 +261,16 @@
 }
 
 ::ng-deep .p-dialog .p-dialog-header {
-  background-color: #bdbef6 !important;
+  background-color: #f9f9f9f9 !important;
   font-size: 14px;
+  height: 5px !important;
+
 }
 
 ::ng-deep .p-dialog .p-dialog-content {
-  background-color: #bdbef6 !important;
+  background-color: #0c4d70 !important;
   font-size: 14px;
+  color: #f9f9f9;
 }
 
 .text-event {
