@@ -1,6 +1,10 @@
 @import '~primeicons/primeicons.css';
-
+@import url('https://fonts.googleapis.com/css2?family=Montserrat:ital,wght@0,100;0,200;0,300;1,100&display=swap');
 * {
   padding: 0;
   margin: 0;
+}
+
+.pi {
+  font-family: "primeicons" !important;
 }

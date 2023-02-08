@@ -22,4 +22,8 @@ export class CalendarService {
     return this.http.get<IPage<IEventos>>(`${environment.url}/agendaEvento/findAllBycampoEclesiastico/${idCampoEclesiastico}`).toPromise();
   }
 
+  async showEvent(id: number) {
+    return await this.http.get<IEventos>(`${environment.url}/agendaEvento/findById/${id}`).toPromise();
+  }
+
 }

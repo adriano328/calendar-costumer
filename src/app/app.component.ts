@@ -1,5 +1,6 @@
 import { ChangeDetectorRef, Component, OnInit, ViewChild } from '@angular/core';
 import { CalendarOptions, EventApi, EventInput } from '@fullcalendar/core';
+import { LOCALE_ID } from '@angular/core';
 import dayGridPlugin from '@fullcalendar/daygrid';
 import interactionPlugin from '@fullcalendar/interaction';
 import listPlugin from '@fullcalendar/list';
@@ -7,19 +8,26 @@ import momentPlugin from '@fullcalendar/moment';
 import timeGridPlugin from '@fullcalendar/timegrid';
 import * as moment from 'moment';
 import { Paginator } from 'primeng/paginator';
+import { registerLocaleData } from '@angular/common';
+import localePT from '@angular/common/locales/pt';
 
 import { INITIAL_EVENTS, createEventId } from './event-utils';
 import { CalendarService } from './services/calendar.service';
 import { IEventos } from './shared/interfaces/IEventos';
-
+registerLocaleData(localePT);
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
-  styleUrls: ['./app.component.scss']
+  styleUrls: ['./app.component.scss'],
+  providers: [
+    { provide: LOCALE_ID, useValue: 'pt-br' },
+   ]
 })
+
 export class AppComponent implements OnInit {
   @ViewChild('pp') paginator?: Paginator;
   initiateDateSecond!: string;
+  detailEvent: IEventos = {} as IEventos;
   eventDetailsFirstCalendar: boolean = false;
   finalDateSecond!: string;
   initialDate!: string;
@@ -33,14 +41,9 @@ export class AppComponent implements OnInit {
   disablePaginatorOne: boolean = true;
   currentPage = 0;
   calendarVisible = true;
-  titleEvent = 'Convenção Geral das Assembleias de Deus'
-  dataEvent = '14/06/2023'
-  descricaoEvent = 'A Convenção Geral das Assembleias de Deus no Brasil (CGADB) é a maior convenção nacional das Assembleia de Deus do Brasil,uma sociedade civil de natureza religiosa, sem fins lucrativos com a finalidade de agregar e coordenar as igrejas Assembleias de Deus no território brasileiro.';
-  localeEvent: string = 'Várzea Grande';
-
   initialEvents: any[] = [];
-
   allEventList: IEventos[] = [];
+  locale: string = 'pt';
 
   constructor(
     private changeDetector: ChangeDetectorRef,
@@ -54,7 +57,6 @@ export class AppComponent implements OnInit {
     const mapedresult = result.map(item => this.convertObjectToEvent(item))
     this.initialEvents = mapedresult;
   }
-
   calendarOptionsOne: CalendarOptions = {
 
     dayHeaderFormat: {
@@ -246,7 +248,14 @@ export class AppComponent implements OnInit {
     }
   }
 
-  opentEventModalCalendarFirst() {
+ async opentEventModalCalendarFirst(id: number) {
+   const result = await this.calendarSrv.showEvent(id);
+   result
+   this.detailEvent = result!;
+   console.log(this.detailEvent);
+
+
+
     if(this.eventDetailsFirstCalendar === true) {
       this.eventDetailsFirstCalendar = false;
     } else {
