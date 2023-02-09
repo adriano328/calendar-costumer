@@ -80,6 +80,7 @@ export class AppComponent implements OnInit {
     selectable: true,
     selectMirror: true,
     dayMaxEvents: true,
+    eventDisplay: 'background',
     eventsSet: this.handleEvents.bind(this),
   };
 
@@ -304,6 +305,8 @@ export class AppComponent implements OnInit {
   convertObjectToEvent(eventObject: IEventos): EventInput {
     const colors = ["#4169E1", "#228B22", "##DAA520", "#F08080", "#FFD700"];
     const random = Math.floor(Math.random() * colors.length);
-    return {id: eventObject.id.toString(), title: eventObject.nome, start: moment(eventObject.dataInicial).utc().format('YYYY-MM-DD'), end: moment(eventObject.dataFinal).utc().format('YYYY-MM-DD'), color: colors[random]}
+    console.log({id: eventObject.id.toString(), title: eventObject.nome, start: moment(eventObject.dataInicial).utc().format('YYYY-MM-DD'), end: moment(eventObject.dataFinal).utc().format('YYYY-MM-DD'), color: colors[random]});
+
+    return {id: eventObject.id.toString(), title: eventObject.nome, start: moment(eventObject.dataInicial).utc().format('YYYY-MM-DD'), end: moment(eventObject.dataFinal).utc().format('YYYY-MM-DD') + 'T13:00:00', color: colors[random]}
   }
 }
