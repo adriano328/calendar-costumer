@@ -39,10 +39,8 @@
           <div class="lista-eventos" *ngIf="disableListEventsSecond">
             <p-panel header="Eventos">
               <ul *ngFor="let item of listOfEventsSecond">
-                <li>Evento: {{item.nome}}</li>
-                <li>Data Inicial: {{item.dataInicial}} - Data Final: {{item.dataFinal}}</li>
-                <li>Descrição: {{item.descricao}}</li>
-                <li>Local: {{item.local}}</li>
+                <li  (click)="opentEventModalCalendarFirst(item.id)"><i class="pi pi-calendar"><span class="text-event date">{{item.dataInicial}}</span><span class="text-event"> a {{item.dataFinal}}</span> - </i>
+                  {{item.nome}}</li>
               </ul>
               <div class="pages" *ngIf="disablePaginatorOne">
                 <p-paginator [first]="paginationFirstValue" *ngIf="listOfEvents.length > 0 " [rows]="2"
