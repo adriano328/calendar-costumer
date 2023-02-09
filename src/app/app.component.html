@@ -39,12 +39,12 @@
           <div class="lista-eventos" *ngIf="disableListEventsSecond">
             <p-panel header="Eventos">
               <ul *ngFor="let item of listOfEventsSecond">
-                <li  (click)="opentEventModalCalendarFirst(item.id)"><i class="pi pi-calendar"><span class="text-event date">{{item.dataInicial}}</span><span class="text-event"> a {{item.dataFinal}}</span> - </i>
+                <li  (click)="opentEventModalCalendarSecond(item.id)"><i class="pi pi-calendar"><span class="text-event date">{{item.dataInicial}}</span><span class="text-event"> a {{item.dataFinal}}</span> - </i>
                   {{item.nome}}</li>
               </ul>
-              <div class="pages" *ngIf="disablePaginatorOne">
-                <p-paginator [first]="paginationFirstValue" *ngIf="listOfEvents.length > 0 " [rows]="2"
-                  [totalRecords]="totalElements" (onPageChange)="listAllEventsByMonths($event)" #pp></p-paginator>
+              <div class="pages" *ngIf="disablePaginatoTwo">
+                <p-paginator [first]="paginationSecondValue" *ngIf="listOfEventsSecond.length > 0 " [rows]="2"
+                  [totalRecords]="totalElements" (onPageChange)="listAllEventsByMonthsSecond($event)" #bb></p-paginator>
               </div>
             </p-panel>
           </div>
@@ -79,6 +79,30 @@
       <div class="col-12 md:col-6 lg:col-12">
         <div class="descricao">
           <span class="text-event" style="width: 150px;"><b>Sobre o Evento:</b> {{detailEvent.descricao}}</span>
+        </div>
+      </div>
+    </div>
+</p-dialog>
+<p-dialog [(visible)]="eventDetailsSecondCalendar" [style]="{width: '30vw'}">
+  <ng-template pTemplate="header">
+    <p>{{detailEventSecond.nome}}</p>
+  </ng-template>
+    <div class="grid">
+      <div class="col-12 md:col-6 lg:col-6">
+        <div class="day-event">
+          <i class="pi pi-calendar"><span class="text-event date">{{detailEventSecond.dataInicial| date: 'dd'}}</span><span class="text-event"> a {{detailEventSecond.dataFinal | date: 'dd MMM yyyy' : 'pt'}}</span></i>
+        </div>
+      </div>
+      <div class="col-12 md:col-6 lg:col-6">
+        <div class="locale">
+          <i class="pi pi-map-marker"><span class="text-event local">Local do Evento: {{detailEventSecond.local}}</span></i>
+        </div>
+      </div>
+      <div class="linha">
+      </div>
+      <div class="col-12 md:col-6 lg:col-12">
+        <div class="descricao">
+          <span class="text-event" style="width: 150px;"><b>Sobre o Evento:</b> {{detailEventSecond.descricao}}</span>
         </div>
       </div>
     </div>

@@ -26,9 +26,12 @@ registerLocaleData(localePT);
 
 export class AppComponent implements OnInit {
   @ViewChild('pp') paginator?: Paginator;
+  @ViewChild('bb') paginatorb?: Paginator;
   initiateDateSecond!: string;
   detailEvent: IEventos = {} as IEventos;
+  detailEventSecond: IEventos = {} as IEventos;
   eventDetailsFirstCalendar: boolean = false;
+  eventDetailsSecondCalendar: boolean = false;
   finalDateSecond!: string;
   initialDate!: string;
   finalDate!: string;
@@ -37,9 +40,12 @@ export class AppComponent implements OnInit {
   listOfEvents: IEventos[] = [];
   listOfEventsSecond: IEventos[] = [];
   paginationFirstValue = 0;
+  paginationSecondValue = 0;
   totalElements = 0;
-  disablePaginatorOne: boolean = true;
+  totalElementsSecond = 0;
   currentPage = 0;
+  disablePaginatorOne: boolean = true;
+  disablePaginatoTwo: boolean = true;
   calendarVisible = true;
   initialEvents: any[] = [];
   allEventList: IEventos[] = [];
@@ -222,7 +228,7 @@ export class AppComponent implements OnInit {
     return '00';
   }
 
-  async listAllEventsByMonthsSecond() {
+  async listAllEventsByMonthsSecond($event?: any) {
     const idCampoEclesiastico = JSON.parse(localStorage.getItem('idCampoEclesiastico')!);
     let month;
     if (document.getElementsByClassName('calendar-two')) {
@@ -236,19 +242,30 @@ export class AppComponent implements OnInit {
     let lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate()
     this.initiateDateSecond = (`${new Date().getFullYear()}-${month}-${firstDay}`);
     this.finalDateSecond = (`${new Date().getFullYear()}-${month}-${lastDay}`);
+    let result = null;
+    if(!$event) {
+      result = await this.calendarSrv.listAllEvents(idCampoEclesiastico, this.initiateDateSecond, this.finalDateSecond, 0);
+      this.paginatorb?.changePage(0);
+    } else {
+      result = await this.calendarSrv.listAllEvents(idCampoEclesiastico, this.initiateDateSecond, this.finalDateSecond, $event.page);
+    }
+    if(result) {
+      result?.content.map(data => {
+        data.dataInicial = moment(data.dataInicial).utc().format('DD/MM/YYYY');
+        data.dataFinal = moment(data.dataFinal).utc().format('DD/MM/YYYY');
+      });
 
-    const result = await this.calendarSrv.listAllEvents(idCampoEclesiastico, this.initiateDateSecond, this.finalDateSecond);
-    result?.content.map(data => {
-      data.dataInicial = moment(data.dataInicial).utc().format('DD/MM/YYYY');
-      data.dataFinal = moment(data.dataFinal).utc().format('DD/MM/YYYY');
-    })
     this.listOfEventsSecond = result?.content!;
     if (this.listOfEventsSecond.length > 0) {
       this.disableListEventsSecond = true;
+      this.disablePaginatoTwo = true;
     } else {
       this.disableListEventsSecond = false;
+      this.disablePaginatoTwo = false;
     }
+    this.totalElementsSecond = result?.totalElements!;
   }
+}
 
  async opentEventModalCalendarFirst(id: number) {
    const result = await this.calendarSrv.showEvent(id);
@@ -260,25 +277,47 @@ export class AppComponent implements OnInit {
     }
   }
 
-  async initiateCalendarSecond() {
+  async opentEventModalCalendarSecond(id: number) {
+    const result = await this.calendarSrv.showEvent(id);
+    this.detailEventSecond = result!;
+     if(this.eventDetailsSecondCalendar === true) {
+       this.eventDetailsSecondCalendar = false;
+     } else {
+       this.eventDetailsSecondCalendar = true;
+     }
+   }
+
+  async initiateCalendarSecond($event?: any) {
     const idCampoEclesiastico = JSON.parse(localStorage.getItem('idCampoEclesiastico')!);
     const date = new Date();
     let firstDay = new Date(date.getFullYear(), date.getMonth(), 1).getDate();
     let lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
     this.initialDate = (`${new Date().getFullYear()}-${new Date().getMonth() + 2}-${firstDay}`);
     this.finalDate = (`${new Date().getFullYear()}-${new Date().getMonth() + 2}-${lastDay}`);
-    const result = await this.calendarSrv.listAllEvents(idCampoEclesiastico, this.initialDate, this.finalDate);
-    result?.content.map(data => {
-      data.dataInicial = moment(data.dataInicial).utc().format('DD/MM/YYYY');
-      data.dataFinal = moment(data.dataFinal).utc().format('DD/MM/YYYY');
-    })
+    let result = null;
+    if(!$event) {
+      result = await this.calendarSrv.listAllEvents(idCampoEclesiastico, this.initiateDateSecond, this.finalDateSecond, 0);
+      this.paginatorb?.changePage(0);
+    } else {
+      result = await this.calendarSrv.listAllEvents(idCampoEclesiastico, this.initiateDateSecond, this.finalDateSecond, $event.page);
+    }
+    if(result) {
+      result?.content.map(data => {
+        data.dataInicial = moment(data.dataInicial).utc().format('DD/MM/YYYY');
+        data.dataFinal = moment(data.dataFinal).utc().format('DD/MM/YYYY');
+      });
+
     this.listOfEventsSecond = result?.content!;
     if (this.listOfEventsSecond.length > 0) {
       this.disableListEventsSecond = true;
+      this.disablePaginatoTwo = true;
     } else {
       this.disableListEventsSecond = false;
+      this.disablePaginatoTwo = false;
     }
+    this.totalElementsSecond = result?.totalElements!;
   }
+}
 
   async getInitialEvents(): Promise<IEventos[]> {
     const TODAY_STR = new Date("2023-02-01").toISOString().replace(/T.*$/, '');
