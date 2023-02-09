@@ -109,6 +109,7 @@ export class AppComponent implements OnInit {
     selectable: true,
     selectMirror: true,
     dayMaxEvents: true,
+    eventDisplay: 'background',
     eventsSet: this.handleEvents.bind(this),
   };
 
