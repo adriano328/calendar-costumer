@@ -3,8 +3,6 @@
   font-size: 16px;
 }
 
-
-
 .calendar {
   overflow: hidden;
   width: 100%;
@@ -70,6 +68,11 @@
       ::ng-deep .fc {
         width: 33vw;
         height: 55vh;
+      }
+
+      ::ng-deep .fc .fc-col-header-cell-cushion {
+        color: #f9f9f9;
+        text-transform: capitalize;
       }
 
       ::ng-deep .fc.fc-theme-standard .fc-view-harness .fc-event.fc-daygrid-block-event {
@@ -176,9 +179,20 @@
       margin-left: 1em;
       margin-top: 2em;
 
-      ::ng-deep .fc {
+    ::ng-deep .fc {
         width: 33vw;
         height: 55vh;
+      }
+
+      ::ng-deep .fc .fc-col-header-cell-cushion {
+        color: #f9f9f9;
+        text-transform: capitalize;
+      }
+
+      ::ng-deep .fc.fc-theme-standard .fc-view-harness .fc-event.fc-daygrid-block-event {
+        color: #ffffff;
+        background: #888adc;
+        border: 1px solid #888adc;
       }
 
       li {
@@ -191,15 +205,8 @@
         margin-bottom: 0.3em;
       }
 
-      ::ng-deep .fc.fc-theme-standard .fc-view-harness .fc-popover .fc-popover-header {
-        padding: 0;
-        background-color: #888adc !important;
-        color: #f9f9f9 !important;
-      }
-
-      ::ng-deep .fc.fc-theme-standard .fc-view-harness .fc-event.fc-daygrid-block-event {
-        color: #ffffff;
-        background: #888adc;
+      ::ng-deep .fc .fc-daygrid-event {
+        color: black !important;
       }
 
       ::ng-deep .fc-day-today {
@@ -207,9 +214,22 @@
         border: none !important;
       }
 
+      ::ng-deep .fc.fc-theme-standard .fc-view-harness .fc-event.fc-daygrid-block-event .fc-event-main {
+        color: black !important;
+      }
+
+      ::ng-deep .fc-direction-ltr .fc-daygrid-more-link {
+        color: #333333;
+      }
+
+      ::ng-deep .fc.fc-theme-standard .fc-view-harness .fc-popover .fc-popover-header {
+        padding: 0;
+        background-color: #888adc !important;
+        color: #f9f9f9 !important;
+      }
+
       ::ng-deep .fc .fc-daygrid-day-number {
         color: black !important;
-
       }
 
       ::ng-deep .fc .fc-daygrid-day-frame {
@@ -227,6 +247,8 @@
       ::ng-deep .fc th {
         background-color: #5e5f9b;
       }
+
+
 
       ::ng-deep .fc .fc-toolbar-title {
         display: flex;
@@ -248,6 +270,22 @@
 
       ::ng-deep .fc .fc-button-primary:disabled {
         display: none;
+      }
+
+      .lista-eventos {
+        margin-top: 0.5em;
+
+        .descricao {
+          width: 580px !important;
+          text-align: justify;
+        }
+      }
+
+      ::ng-deep .p-panel .p-panel-header {
+        padding-top: 5px;
+        padding-bottom: 5px;
+        background-color: #5e5f9b;
+        color: #f9f9f9;
       }
     }
 
