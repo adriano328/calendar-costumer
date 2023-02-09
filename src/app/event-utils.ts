@@ -13,18 +13,7 @@ export const INITIAL_EVENTS: EventInput[] = [
     end: END_EVENT + 'T15:00:00',
     rendering: 'background'
   },
-  // {
-  //   id: createEventId(),
-  //   title: 'Alefe',
-  //   start: TODAY_STR + 'T12:00:00',
-  //   end: END_EVENT + 'T15:00:00'
-  // },
-  // {
-  //   id: createEventId(),
-  //   title: 'Alefe',
-  //   start: TODAY_STR + 'T12:00:00',
-  //   end: END_EVENT + 'T15:00:00'
-  // }
+
 ];
 
 export function createEventId() {

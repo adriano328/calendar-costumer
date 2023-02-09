@@ -21,7 +21,7 @@ registerLocaleData(localePT);
   styleUrls: ['./app.component.scss'],
   providers: [
     { provide: LOCALE_ID, useValue: 'pt-br' },
-   ]
+  ]
 })
 
 export class AppComponent implements OnInit {
@@ -149,7 +149,7 @@ export class AppComponent implements OnInit {
       result = await this.calendarSrv.listAllEvents(idCampoEclesiastico, this.initialDate, this.finalDate, $event.page);
     }
 
-    if(result) {
+    if (result) {
       result?.content.map(data => {
         data.dataInicial = moment(data.dataInicial).utc().format('DD/MM/YYYY');
         data.dataFinal = moment(data.dataFinal).utc().format('DD/MM/YYYY');
@@ -181,7 +181,7 @@ export class AppComponent implements OnInit {
       result = await this.calendarSrv.listAllEvents(idCampoEclesiastico, this.initialDate, this.finalDate, $event.page);
     }
 
-    if(result) {
+    if (result) {
       result?.content.map(data => {
         data.dataInicial = moment(data.dataInicial).utc().format('DD/MM/YYYY');
         data.dataFinal = moment(data.dataFinal).utc().format('DD/MM/YYYY');
@@ -243,34 +243,34 @@ export class AppComponent implements OnInit {
     this.initiateDateSecond = (`${new Date().getFullYear()}-${month}-${firstDay}`);
     this.finalDateSecond = (`${new Date().getFullYear()}-${month}-${lastDay}`);
     let result = null;
-    if(!$event) {
+    if (!$event) {
       result = await this.calendarSrv.listAllEvents(idCampoEclesiastico, this.initiateDateSecond, this.finalDateSecond, 0);
       this.paginatorb?.changePage(0);
     } else {
       result = await this.calendarSrv.listAllEvents(idCampoEclesiastico, this.initiateDateSecond, this.finalDateSecond, $event.page);
     }
-    if(result) {
+    if (result) {
       result?.content.map(data => {
         data.dataInicial = moment(data.dataInicial).utc().format('DD/MM/YYYY');
         data.dataFinal = moment(data.dataFinal).utc().format('DD/MM/YYYY');
       });
 
-    this.listOfEventsSecond = result?.content!;
-    if (this.listOfEventsSecond.length > 0) {
-      this.disableListEventsSecond = true;
-      this.disablePaginatoTwo = true;
-    } else {
-      this.disableListEventsSecond = false;
-      this.disablePaginatoTwo = false;
+      this.listOfEventsSecond = result?.content!;
+      if (this.listOfEventsSecond.length > 0) {
+        this.disableListEventsSecond = true;
+        this.disablePaginatoTwo = true;
+      } else {
+        this.disableListEventsSecond = false;
+        this.disablePaginatoTwo = false;
+      }
+      this.totalElementsSecond = result?.totalElements!;
     }
-    this.totalElementsSecond = result?.totalElements!;
   }
-}
 
- async opentEventModalCalendarFirst(id: number) {
-   const result = await this.calendarSrv.showEvent(id);
-   this.detailEvent = result!;
-    if(this.eventDetailsFirstCalendar === true) {
+  async opentEventModalCalendarFirst(id: number) {
+    const result = await this.calendarSrv.showEvent(id);
+    this.detailEvent = result!;
+    if (this.eventDetailsFirstCalendar === true) {
       this.eventDetailsFirstCalendar = false;
     } else {
       this.eventDetailsFirstCalendar = true;
@@ -280,12 +280,12 @@ export class AppComponent implements OnInit {
   async opentEventModalCalendarSecond(id: number) {
     const result = await this.calendarSrv.showEvent(id);
     this.detailEventSecond = result!;
-     if(this.eventDetailsSecondCalendar === true) {
-       this.eventDetailsSecondCalendar = false;
-     } else {
-       this.eventDetailsSecondCalendar = true;
-     }
-   }
+    if (this.eventDetailsSecondCalendar === true) {
+      this.eventDetailsSecondCalendar = false;
+    } else {
+      this.eventDetailsSecondCalendar = true;
+    }
+  }
 
   async initiateCalendarSecond($event?: any) {
     const idCampoEclesiastico = JSON.parse(localStorage.getItem('idCampoEclesiastico')!);
@@ -295,29 +295,29 @@ export class AppComponent implements OnInit {
     this.initialDate = (`${new Date().getFullYear()}-${new Date().getMonth() + 2}-${firstDay}`);
     this.finalDate = (`${new Date().getFullYear()}-${new Date().getMonth() + 2}-${lastDay}`);
     let result = null;
-    if(!$event) {
+    if (!$event) {
       result = await this.calendarSrv.listAllEvents(idCampoEclesiastico, this.initiateDateSecond, this.finalDateSecond, 0);
       this.paginatorb?.changePage(0);
     } else {
       result = await this.calendarSrv.listAllEvents(idCampoEclesiastico, this.initiateDateSecond, this.finalDateSecond, $event.page);
     }
-    if(result) {
+    if (result) {
       result?.content.map(data => {
         data.dataInicial = moment(data.dataInicial).utc().format('DD/MM/YYYY');
         data.dataFinal = moment(data.dataFinal).utc().format('DD/MM/YYYY');
       });
 
-    this.listOfEventsSecond = result?.content!;
-    if (this.listOfEventsSecond.length > 0) {
-      this.disableListEventsSecond = true;
-      this.disablePaginatoTwo = true;
-    } else {
-      this.disableListEventsSecond = false;
-      this.disablePaginatoTwo = false;
+      this.listOfEventsSecond = result?.content!;
+      if (this.listOfEventsSecond.length > 0) {
+        this.disableListEventsSecond = true;
+        this.disablePaginatoTwo = true;
+      } else {
+        this.disableListEventsSecond = false;
+        this.disablePaginatoTwo = false;
+      }
+      this.totalElementsSecond = result?.totalElements!;
     }
-    this.totalElementsSecond = result?.totalElements!;
   }
-}
 
   async getInitialEvents(): Promise<IEventos[]> {
     const TODAY_STR = new Date("2023-02-01").toISOString().replace(/T.*$/, '');
@@ -325,10 +325,10 @@ export class AppComponent implements OnInit {
 
     const idCampoeclesiastico = localStorage.getItem('idCampoEclesiastico');
 
-    if(idCampoeclesiastico){
+    if (idCampoeclesiastico) {
       const result = await this.calendarSrv.listAllEventsByCampoEclesiastico(parseInt(idCampoeclesiastico));
 
-      if(result){
+      if (result) {
         this.allEventList = result.content;
       }
 
@@ -340,6 +340,6 @@ export class AppComponent implements OnInit {
   convertObjectToEvent(eventObject: IEventos): EventInput {
     const colors = ["#4169E1", "#228B22", "##DAA520", "#F08080", "#FFD700"];
     const random = Math.floor(Math.random() * colors.length);
-    return {id: eventObject.id.toString(), title: eventObject.nome, start: moment(eventObject.dataInicial).utc().format('YYYY-MM-DD'), end: moment(eventObject.dataFinal).utc().format('YYYY-MM-DD'), color: colors[random]}
+    return { id: eventObject.id.toString(), title: eventObject.nome, start: moment(eventObject.dataInicial).utc().format('YYYY-MM-DD'), end: moment(eventObject.dataFinal).utc().format('YYYY-MM-DD'), color: colors[random] }
   }
 }
