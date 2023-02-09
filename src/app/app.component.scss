@@ -87,8 +87,11 @@
       }
 
       ul {
-        border-bottom: 1px solid #cecece;
         margin-bottom: 0.3em;
+      }
+
+      :ng-deep .fc-bg-event {
+        background-color: red !important;
       }
 
       ::ng-deep .fc .fc-daygrid-event {
@@ -134,7 +137,9 @@
         background-color: #5e5f9b;
       }
 
-
+      ::ng-deep .fc .fc-bg-event {
+        color: transparent;
+      }
 
       ::ng-deep .fc .fc-toolbar-title {
         display: flex;
@@ -162,7 +167,7 @@
         margin-top: 0.5em;
 
         .descricao {
-          width: 580px !important;
+          width: 30vw;
           text-align: justify;
         }
       }
@@ -179,7 +184,7 @@
       margin-left: 1em;
       margin-top: 2em;
 
-    ::ng-deep .fc {
+      ::ng-deep .fc {
         width: 33vw;
         height: 55vh;
       }
@@ -201,7 +206,6 @@
       }
 
       ul {
-        border-bottom: 1px solid #cecece;
         margin-bottom: 0.3em;
       }
 
@@ -248,8 +252,6 @@
         background-color: #5e5f9b;
       }
 
-
-
       ::ng-deep .fc .fc-toolbar-title {
         display: flex;
         justify-content: center;
@@ -276,7 +278,7 @@
         margin-top: 0.5em;
 
         .descricao {
-          width: 580px !important;
+          width: 30vw !important;
           text-align: justify;
         }
       }
@@ -357,6 +359,7 @@
 }
 
 @media (max-width: 770px) {
+
   .second {
     display: none;
   }
@@ -366,8 +369,48 @@
   }
 
   ::ng-deep .fc {
-    width: 60vw !important;
+    width: 70vw !important;
     height: 55vh !important;
+  }
+
+  ::ng-deep .p-panel .p-panel-header {
+    width: 70vw !important;
+  }
+
+  ::ng-deep .p-panel .p-panel-content {
+    width: 70vw !important;
+  }
+
+  .lista-eventos {
+    width: 100% !important;
+
+    ::ng-deep .descricao {
+      width: 100% !important;
+    }
+  }
+}
+
+@media (max-width: 665px) {
+
+  ::ng-deep .fc {
+    width: 85vw !important;
+    height: 55vh !important;
+  }
+
+  ::ng-deep .p-panel .p-panel-header {
+    width: 85vw !important;
+  }
+
+  ::ng-deep .p-panel .p-panel-content {
+    width: 85vw !important;
+  }
+
+  .lista-eventos {
+    width: 100% !important;
+
+    ::ng-deep .descricao {
+      width: 100% !important;
+    }
   }
 }
 
@@ -375,5 +418,21 @@
   ::ng-deep .fc {
     width: 85vw !important;
     height: 55vh !important;
+  }
+
+  ::ng-deep .p-panel .p-panel-header {
+    width: 85vw !important;
+  }
+
+  ::ng-deep .p-panel .p-panel-content {
+    width: 85vw !important;
+  }
+
+  .lista-eventos {
+    width: 100% !important;
+
+    ::ng-deep .descricao {
+      width: 100% !important;
+    }
   }
 }

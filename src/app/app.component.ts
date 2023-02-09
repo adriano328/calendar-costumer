@@ -77,6 +77,7 @@ export class AppComponent implements OnInit {
     initialView: 'dayGridMonth',
     weekends: true,
     editable: true,
+    eventTextColor: '#000000',
     selectable: true,
     selectMirror: true,
     dayMaxEvents: true,
@@ -101,7 +102,6 @@ export class AppComponent implements OnInit {
       listPlugin,
       momentPlugin
     ],
-
     initialView: 'dayGridMonth',
     initialEvents: INITIAL_EVENTS,
     weekends: true,
@@ -251,12 +251,7 @@ export class AppComponent implements OnInit {
 
  async opentEventModalCalendarFirst(id: number) {
    const result = await this.calendarSrv.showEvent(id);
-   result
    this.detailEvent = result!;
-   console.log(this.detailEvent);
-
-
-
     if(this.eventDetailsFirstCalendar === true) {
       this.eventDetailsFirstCalendar = false;
     } else {

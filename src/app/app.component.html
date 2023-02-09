@@ -10,17 +10,15 @@
             [options]='calendarOptionsOne' [events]="initialEvents">
             <ng-template #eventContent let-arg>
               <b>{{ arg.timeText }}</b>
-              <i (click)="opentEventModalCalendarFirst(arg.event.id)">{{ arg.event.title }} </i>
+              <i>{{ arg.event.title }} </i>
             </ng-template>
           </full-calendar>
           <div class="lista-eventos" *ngIf="disableListEvents">
             <p-panel header="Eventos">
-              <ul *ngFor="let item of listOfEvents">
-                <li>Evento: {{item.nome}}</li>
-                <li>Data Inicial: {{item.dataInicial}} - Data Final: {{item.dataFinal}}</li>
-                <li class="descricao">Descrição: {{item.descricao}}</li>
-                <li>Local: {{item.local}}</li>
-              </ul>
+                <ul *ngFor="let item of listOfEvents">
+                  <li  (click)="opentEventModalCalendarFirst(item.id)"><i class="pi pi-calendar"><span class="text-event date">{{item.dataInicial}}</span><span class="text-event"> a {{item.dataFinal}}</span> - </i>
+                    {{item.nome}}</li>
+                </ul>
               <div class="pages" *ngIf="disablePaginatorOne">
                 <p-paginator [first]="paginationFirstValue" *ngIf="listOfEvents.length > 0 " [rows]="2"
                   [totalRecords]="totalElements" (onPageChange)="listAllEventsByMonths($event)" #pp></p-paginator>
