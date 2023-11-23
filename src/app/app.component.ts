@@ -15,6 +15,12 @@ import { INITIAL_EVENTS, createEventId } from './event-utils';
 import { CalendarService } from './services/calendar.service';
 import { IEventos } from './shared/interfaces/IEventos';
 registerLocaleData(localePT);
+
+interface City {
+  name: string,
+  code: string
+}
+
 @Component({
   selector: 'app-root',
   templateUrl: './app.component.html',
@@ -50,6 +56,7 @@ export class AppComponent implements OnInit {
   initialEvents: any[] = [];
   allEventList: IEventos[] = [];
   locale: string = 'pt';
+  cities!: City[];
 
   constructor(
     private changeDetector: ChangeDetectorRef,
@@ -57,12 +64,25 @@ export class AppComponent implements OnInit {
   ) {
   }
   async ngOnInit() {
+    this.prepareDates()
     this.initiateCalendar();
     this.initiateCalendarSecond();
     const result = await this.getInitialEvents();
     const mapedresult = result.map(item => this.convertObjectToEvent(item))
     this.initialEvents = mapedresult;
+    
   }
+
+  prepareDates() {
+    this.cities = [
+      { name: 'New York', code: 'NY' },
+      { name: 'Rome', code: 'RM' },
+      { name: 'London', code: 'LDN' },
+      { name: 'Istanbul', code: 'IST' },
+      { name: 'Paris', code: 'PRS' }
+    ];
+  }
+
   calendarOptionsOne: CalendarOptions = {
 
     dayHeaderFormat: {

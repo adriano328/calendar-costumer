@@ -10,6 +10,7 @@ import { FullCalendarModule } from '@fullcalendar/angular';
 import {PaginatorModule} from 'primeng/paginator';
 import {DialogModule} from 'primeng/dialog';
 import {InputTextareaModule} from 'primeng/inputtextarea';
+import { MultiSelectModule } from 'primeng/multiselect';
 
 @NgModule({
   declarations: [
@@ -24,7 +25,8 @@ import {InputTextareaModule} from 'primeng/inputtextarea';
     FullCalendarModule,
     PaginatorModule,
     DialogModule,
-    InputTextareaModule
+    InputTextareaModule,
+    MultiSelectModule
   ],
   providers: [],
   bootstrap: [AppComponent]

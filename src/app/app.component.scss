@@ -1,24 +1,205 @@
-* {
-  font-family: sans-serif;
-  font-size: 16px;
-}
-
-.calendar {
-  overflow: hidden;
+.wrapper {
   width: 100%;
   height: 100vh;
-  display: flex;
-  justify-content: center;
+  position: fixed;
+  padding: 0;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
   background-image:
     linear-gradient(45deg,
       #8b8cd1 20%,
       #292a5a 90%);
 
-  .imagem {
-    margin-top: -4em;
+      .container-agenda {
+        margin-top: 2em;
+
+        .title {
+          color: white;
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+          font-size: 16px;
+        }
+      }
+
+  .container-calendar {
+    width: 100%;
     display: flex;
-    align-items: center;
-    margin-right: -10em;
+    justify-content: center;
+    flex-direction: row;
+
+    .first-calendar {
+      margin-right: 1em;
+      margin-top: 2em;
+
+      ::ng-deep .fc {
+        width: 40vw;
+        height: 60vh;
+      }
+
+      ::ng-deep .fc .fc-col-header-cell-cushion {
+        color: #f9f9f9;
+        text-transform: capitalize;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-weight: 300;
+      }
+
+      ::ng-deep .fc.fc-theme-standard .fc-view-harness .fc-event.fc-daygrid-block-event {
+        color: #ffffff;
+        background: #888adc;
+        border: 1px solid #888adc;
+      }
+
+      li {
+        list-style: none;
+        font-size: 12px;
+      }
+
+      ul {
+        margin-bottom: 0.3em;
+      }
+
+      :ng-deep .fc-bg-event {
+        background-color: red !important;
+      }
+
+      ::ng-deep .fc .fc-daygrid-event {
+        color: black !important;
+      }
+
+      ::ng-deep .fc-day-today {
+        background-color: #888adc !important;
+        border: none !important;
+      }
+
+      ::ng-deep .fc.fc-theme-standard .fc-view-harness .fc-event.fc-daygrid-block-event .fc-event-main {
+        color: black !important;
+      }
+
+      ::ng-deep .fc-direction-ltr .fc-daygrid-more-link {
+        color: #333333;
+      }
+
+      ::ng-deep .fc.fc-theme-standard .fc-view-harness .fc-popover .fc-popover-header {
+        padding: 0;
+        background-color: #888adc !important;
+        color: #f9f9f9 !important;
+      }
+
+      ::ng-deep .fc .fc-daygrid-day-number {
+        color: black !important;
+      }
+
+      ::ng-deep .fc .fc-daygrid-day-frame {
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
+      }
+
+      ::ng-deep .fc .fc-daygrid-day-top {
+        display: flex;
+        justify-content: center;
+        align-items: center;
+      }
+
+      ::ng-deep .fc th {
+        background-color: #5e5f9b;
+      }
+
+      ::ng-deep .fc .fc-bg-event {
+        color: transparent;
+      }
+
+      ::ng-deep .fc .fc-toolbar-title {
+        display: flex;
+        justify-content: center;
+        font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+        font-size: 15px;
+      }
+
+      ::ng-deep h2 {
+        text-transform: uppercase;
+        font-weight: 100;
+        font-size: 16px;
+        text-align: center !important;
+        color: #f9f9f9;
+      }
+
+      ::ng-deep .fc.fc-theme-standard .fc-toolbar .fc-button {
+        background-color: #5e5f9b;
+        border: 1px solid #f9f9f9;
+      }
+
+      ::ng-deep .fc .fc-button-primary:disabled {
+        display: none;
+      }
+
+      .lista-eventos {
+        margin-top: 0.5em;
+
+        .descricao {
+          width: 30vw;
+          text-align: justify;
+        }
+
+        .text-event {
+          margin-top: 0.5em !important;
+        }
+      }
+    }
+
+    ::ng-deep .p-multiselect-label-container {
+      height: 2em;
+      border-radius: 10px;
+      width: 20vw;
+    }
+
+    ::ng-deep .p-multiselect .p-multiselect-label {
+      padding: 0.35em 0.5em 0.35em;
+      font-size: 13px;
+    }
+
+    ::ng-deep .p-multiselect-panel .p-multiselect-header {
+      padding: 0.5em;
+    }
+
+    ::ng-deep .p-multiselect-panel .p-multiselect-items .p-multiselect-item {
+      font-size: 13px;
+    }
+
+    ::ng-deep .p-multiselect-panel .p-multiselect-header .p-multiselect-filter-container .p-inputtext {
+      height: 1.5em;
+      border-radius: 3px;
+    }
+
+    ::ng-deep .fc.fc-theme-standard .fc-toolbar .fc-button {
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    ::ng-deep .p-panel {
+      width: 40vw;
+      margin-top: 1.8em;
+    }
+
+    ::ng-deep .p-panel .p-panel-header {
+      padding-top: 8px;
+      padding-bottom: 8px;
+      background-color: #5e5f9b;
+      color: #f9f9f9;
+    }
+    
+    ::ng-deep .p-panel .p-panel-header .p-panel-title {
+      font-weight: 300;
+    }
+
+    ::ng-deep .p-panel .p-panel-content {
+      font-size: 14px;
+      font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+    }
+
+    ::ng-deep .p-multiselect .p-multiselect-label.p-placeholder {
+      text-align: center
+    }
   }
 
   .borda {
@@ -56,492 +237,425 @@
       font-size: 14px;
     }
   }
-
-  .calendar-container {
-    width: 100%;
-    display: flex;
-    justify-content: center;
-    flex-direction: row;
-
-
-    ///////////////////// First-Calendar
-
-    .first-calendar {
-      margin-right: 1em;
-      margin-top: 2em;
-
-      ::ng-deep .fc {
-        width: 33vw;
-        height: 55vh;
-      }
-
-      ::ng-deep .fc .fc-col-header-cell-cushion {
-        color: #f9f9f9;
-        text-transform: capitalize;
-      }
-
-      ::ng-deep .fc.fc-theme-standard .fc-view-harness .fc-event.fc-daygrid-block-event {
-        color: #ffffff;
-        background: #888adc;
-        border: 1px solid #888adc;
-      }
-
-      li {
-        list-style: none;
-        font-size: 12px;
-      }
-
-      ul {
-        margin-bottom: 0.3em;
-      }
-
-      :ng-deep .fc-bg-event {
-        background-color: red !important;
-      }
-
-      ::ng-deep .fc .fc-daygrid-event {
-        color: black !important;
-      }
-
-      ::ng-deep .fc-day-today {
-        background-color: #888adc !important;
-        border: none !important;
-      }
-
-      ::ng-deep .fc.fc-theme-standard .fc-view-harness .fc-event.fc-daygrid-block-event .fc-event-main {
-        color: black !important;
-      }
-
-      ::ng-deep .fc-direction-ltr .fc-daygrid-more-link {
-        color: #333333;
-      }
-
-      ::ng-deep .fc.fc-theme-standard .fc-view-harness .fc-popover .fc-popover-header {
-        padding: 0;
-        background-color: #888adc !important;
-        color: #f9f9f9 !important;
-      }
-
-      ::ng-deep .fc .fc-daygrid-day-number {
-        color: black !important;
-      }
-
-      ::ng-deep .fc .fc-daygrid-day-frame {
-        display: flex !important;
-        justify-content: center !important;
-        align-items: center !important;
-      }
-
-      ::ng-deep .fc .fc-daygrid-day-top {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-
-      ::ng-deep .fc th {
-        background-color: #5e5f9b;
-      }
-
-      ::ng-deep .fc .fc-bg-event {
-        color: transparent;
-      }
-
-      ::ng-deep .fc .fc-toolbar-title {
-        display: flex;
-        justify-content: center;
-      }
-
-      ::ng-deep h2 {
-        text-transform: uppercase;
-        font-weight: 100;
-        font-size: 16px;
-        text-align: center !important;
-        color: #f9f9f9;
-      }
-
-      ::ng-deep .fc.fc-theme-standard .fc-toolbar .fc-button {
-        background-color: #5e5f9b;
-        border: 1px solid #f9f9f9;
-      }
-
-      ::ng-deep .fc .fc-button-primary:disabled {
-        display: none;
-      }
-
-      .lista-eventos {
-        margin-top: 0.5em;
-
-        .descricao {
-          width: 30vw;
-          text-align: justify;
-        }
-
-        .text-event {
-          margin-top: 0.5em !important;
-        }
-      }
-
-      ::ng-deep .p-panel .p-panel-header {
-        padding-top: 5px;
-        padding-bottom: 5px;
-        background-color: #5e5f9b;
-        color: #f9f9f9;
-      }
-    }
-
-
-    ///////////////////// Second-Calendar
-    .second-calendar {
-      margin-left: 1em;
-      margin-top: 2em;
-
-
-
-      ::ng-deep .fc {
-        width: 33vw;
-        height: 55vh;
-      }
-
-      ::ng-deep .fc .fc-col-header-cell-cushion {
-        color: #f9f9f9;
-        text-transform: capitalize;
-      }
-
-      ::ng-deep .fc.fc-theme-standard .fc-view-harness .fc-event.fc-daygrid-block-event {
-        color: #ffffff;
-        background: #888adc;
-        border: 1px solid #888adc;
-      }
-
-      li {
-        list-style: none;
-        font-size: 12px;
-      }
-
-      ul {
-        margin-bottom: 0.3em;
-      }
-
-      :ng-deep .fc-bg-event {
-        background-color: red !important;
-      }
-
-      ::ng-deep .fc .fc-daygrid-event {
-        color: black !important;
-      }
-
-      ::ng-deep .fc-day-today {
-        background-color: #888adc !important;
-        border: none !important;
-      }
-
-      ::ng-deep .fc.fc-theme-standard .fc-view-harness .fc-event.fc-daygrid-block-event .fc-event-main {
-        color: black !important;
-      }
-
-      ::ng-deep .fc-direction-ltr .fc-daygrid-more-link {
-        color: #333333;
-      }
-
-      ::ng-deep .fc.fc-theme-standard .fc-view-harness .fc-popover .fc-popover-header {
-        padding: 0;
-        background-color: #888adc !important;
-        color: #f9f9f9 !important;
-      }
-
-      ::ng-deep .fc .fc-daygrid-day-number {
-        color: black !important;
-      }
-
-      ::ng-deep .fc .fc-daygrid-day-frame {
-        display: flex !important;
-        justify-content: center !important;
-        align-items: center !important;
-      }
-
-      ::ng-deep .fc .fc-daygrid-day-top {
-        display: flex;
-        justify-content: center;
-        align-items: center;
-      }
-
-      ::ng-deep .fc th {
-        background-color: #5e5f9b;
-      }
-
-      ::ng-deep .fc .fc-bg-event {
-        color: transparent;
-      }
-
-      ::ng-deep .fc .fc-toolbar-title {
-        display: flex;
-        justify-content: center;
-      }
-
-      ::ng-deep h2 {
-        text-transform: uppercase;
-        font-weight: 100;
-        font-size: 16px;
-        text-align: center !important;
-        color: #f9f9f9;
-      }
-
-      ::ng-deep .fc.fc-theme-standard .fc-toolbar .fc-button {
-        background-color: #5e5f9b;
-        border: 1px solid #f9f9f9;
-      }
-
-      ::ng-deep .fc .fc-button-primary:disabled {
-        display: none;
-      }
-
-      .lista-eventos {
-        margin-top: 0.5em;
-
-        .descricao {
-          width: 30vw;
-          text-align: justify;
-        }
-      }
-
-      ::ng-deep .p-panel .p-panel-header {
-        width: 33vw;
-        padding-top: 5px;
-        padding-bottom: 5px;
-        background-color: #5e5f9b;
-        color: #f9f9f9;
-      }
-
-      ::ng-deep .p-panel .p-panel-content {
-        width: 33vw;
-      }
-    }
-  }
-
-  /////////////////////////////////////////////External
-
-  @media (max-width: 1366px) {
-
-    ::ng-deep .fc {
-      width: 35vw !important;
-      height: 50vh !important;
-    }
-
-    ::ng-deep .p-panel .p-panel-header {
-      width: 35vw !important;
-    }
-
-    ::ng-deep .p-panel .p-panel-content {
-      width: 35vw !important;
-    }
-
-    ::ng-deep .fc .fc-daygrid-day-number {
-      font-size: 12px !important;
-    }
-
-    .imagem {
-      margin-right: -3em !important;
-
-      img {
-        width: 25vw;
-        height: 70vh;
-      }
-
-    }
-
-    .lista-eventos {
-      width: 100% !important;
-
-      ::ng-deep .descricao {
-        width: 100% !important;
-      }
-    }
-
-    .text-event {
-      font-size: 12px !important;
-    }
-
-    .base-footer {
-      .footer {
-        font-size: 12px !important;
-      }
-
-      .img-footer {
-        width: 25px !important;
-        height: 22px !important;
-      }
-    }
-  }
-
-  @media (max-width: 1200px) {
-
-    .first-calendar,
-    .second-calendar {
-      margin-top: 0.2em !important;
-    }
-
-
-    .imagem {
-      margin-right: -2em !important;
-
-      img {
-        width: 22vw;
-        height: 45vh;
-      }
-    }
-
-    ::ng-deep .fc {
-      width: 35vw !important;
-      height: 55vh !important;
-    }
-
-    ::ng-deep .p-panel .p-panel-header {
-      width: 35vw !important;
-    }
-
-    ::ng-deep .p-panel .p-panel-content {
-      width: 35vw !important;
-    }
-
-    .lista-eventos {
-      width: 100% !important;
-
-      ::ng-deep .descricao {
-        width: 100% !important;
-      }
-    }
-  }
-
-  @media (max-width: 1100px) {
-
-    .imagem {
-      display: none !important;
-    }
-
-  }
-
-  @media (max-width: 810px) {
-
-    .imagem {
-      display: none !important;
-    }
-
-    .second {
-      display: none !important;
-    }
-
-    .first-calendar {
-      margin-right: 0em !important;
-    }
-
-    ::ng-deep .fc {
-      width: 70vw !important;
-      height: 55vh !important;
-    }
-
-    ::ng-deep .p-panel .p-panel-header {
-      width: 70vw !important;
-    }
-
-    ::ng-deep .p-panel .p-panel-content {
-      width: 70vw !important;
-    }
-
-    .lista-eventos {
-      width: 100% !important;
-
-      ::ng-deep .descricao {
-        width: 100% !important;
-      }
-    }
-  }
-
-  @media (max-width: 665px) {
-
-    ::ng-deep .fc {
-      width: 85vw !important;
-      height: 55vh !important;
-    }
-
-    ::ng-deep .p-panel .p-panel-header {
-      width: 85vw !important;
-    }
-
-    ::ng-deep .p-panel .p-panel-content {
-      width: 85vw !important;
-    }
-
-    .lista-eventos {
-      width: 100% !important;
-
-      ::ng-deep .descricao {
-        width: 100% !important;
-      }
-    }
-  }
-
-  @media (max-width: 500px) {
-    ::ng-deep .fc {
-      width: 85vw !important;
-      height: 55vh !important;
-    }
-
-    ::ng-deep .p-panel .p-panel-header {
-      width: 85vw !important;
-    }
-
-    ::ng-deep .p-panel .p-panel-content {
-      width: 85vw !important;
-    }
-
-    .lista-eventos {
-      width: 100% !important;
-
-      ::ng-deep .descricao {
-        width: 100% !important;
-      }
-    }
-  }
 }
 
-::ng-deep .p-dialog .p-dialog-header {
-  background-color: #f9f9f9f9 !important;
-  font-size: 14px;
-  height: 4px !important;
-  border-top: 2px solid #0c4d70 !important;
-  border-left: 2px solid #0c4d70 !important;
-  border-right: 2px solid #0c4d70 !important;
-  padding-top: 20px;
-  padding-bottom: 20px;
-  color: #0c4d70;
-  font-weight: bold;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
+// .calendar {
+//   overflow: hidden;
+//   width: 100%;
+//   height: 100vh;
+//   display: flex;
+//   justify-content: center;
+//   background-image:
+//     linear-gradient(45deg,
+//       #8b8cd1 20%,
+//       #292a5a 90%);
 
-::ng-deep .p-dialog .p-dialog-content {
-  border-top-left-radius: 4px !important;
-  background-color: #0c4d70 !important;
-  font-size: 14px;
-  color: #f9f9f9;
-}
+//   .borda {
+//     background-color: #8fc8e5;
+//     position: fixed;
+//     bottom: 1%;
+//     width: 100%;
+//     height: 2.2em;
+//     z-index: 1;
+//   }
 
-.text-event {
-  margin-left: 0.5em !important;
-  font-size: 14px !important;
-  font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
-}
+//   .base-footer {
+//     position: fixed;
+//     bottom: 0%;
+//     width: 100%;
+//     height: 2.5em;
+//     z-index: 1;
+//     background-color: #333333;
 
-.day-event,
-.locale {
-  margin-top: 0.5em;
-}
+//     img {
+//       margin-left: 0.4em;
+//       margin-right: 0.4em;
+//       width: 28px;
+//       height: 25px;
+//     }
 
-.linha {
-  border-top: 1px solid #f9f9f9;
-  width: 90%;
-}
+//     .footer {
+//       margin-top: 0.6em;
+//       display: flex;
+//       justify-content: center;
+//       align-items: center;
+//       color: #daa520;
+//       font-family: sans-serif;
+//       font-weight: 700;
+//       font-size: 14px;
+//     }
+//   }
 
-.pi-map-marker,
-.pi-calendar {
-  margin-right: 0.5em;
-}
+//   .calendar-container {
+//     width: 100%;
+//     display: flex;
+//     justify-content: center;
+//     flex-direction: row;
+
+//     .first-calendar {
+//       margin-right: 1em;
+//       margin-top: 2em;
+
+//       ::ng-deep .fc {
+//         width: 40vw;
+//         height: 60vh;
+//       }
+
+//       ::ng-deep .fc .fc-col-header-cell-cushion {
+//         color: #f9f9f9;
+//         text-transform: capitalize;
+//       }
+
+//       ::ng-deep .fc.fc-theme-standard .fc-view-harness .fc-event.fc-daygrid-block-event {
+//         color: #ffffff;
+//         background: #888adc;
+//         border: 1px solid #888adc;
+//       }
+
+//       li {
+//         list-style: none;
+//         font-size: 12px;
+//       }
+
+//       ul {
+//         margin-bottom: 0.3em;
+//       }
+
+//       :ng-deep .fc-bg-event {
+//         background-color: red !important;
+//       }
+
+//       ::ng-deep .fc .fc-daygrid-event {
+//         color: black !important;
+//       }
+
+//       ::ng-deep .fc-day-today {
+//         background-color: #888adc !important;
+//         border: none !important;
+//       }
+
+//       ::ng-deep .fc.fc-theme-standard .fc-view-harness .fc-event.fc-daygrid-block-event .fc-event-main {
+//         color: black !important;
+//       }
+
+//       ::ng-deep .fc-direction-ltr .fc-daygrid-more-link {
+//         color: #333333;
+//       }
+
+//       ::ng-deep .fc.fc-theme-standard .fc-view-harness .fc-popover .fc-popover-header {
+//         padding: 0;
+//         background-color: #888adc !important;
+//         color: #f9f9f9 !important;
+//       }
+
+//       ::ng-deep .fc .fc-daygrid-day-number {
+//         color: black !important;
+//       }
+
+//       ::ng-deep .fc .fc-daygrid-day-frame {
+//         display: flex !important;
+//         justify-content: center !important;
+//         align-items: center !important;
+//       }
+
+//       ::ng-deep .fc .fc-daygrid-day-top {
+//         display: flex;
+//         justify-content: center;
+//         align-items: center;
+//       }
+
+//       ::ng-deep .fc th {
+//         background-color: #5e5f9b;
+//       }
+
+//       ::ng-deep .fc .fc-bg-event {
+//         color: transparent;
+//       }
+
+//       ::ng-deep .fc .fc-toolbar-title {
+//         display: flex;
+//         justify-content: center;
+//       }
+
+//       ::ng-deep h2 {
+//         text-transform: uppercase;
+//         font-weight: 100;
+//         font-size: 16px;
+//         text-align: center !important;
+//         color: #f9f9f9;
+//       }
+
+//       ::ng-deep .fc.fc-theme-standard .fc-toolbar .fc-button {
+//         background-color: #5e5f9b;
+//         border: 1px solid #f9f9f9;
+//       }
+
+//       ::ng-deep .fc .fc-button-primary:disabled {
+//         display: none;
+//       }
+
+//       .lista-eventos {
+//         margin-top: 0.5em;
+
+//         .descricao {
+//           width: 30vw;
+//           text-align: justify;
+//         }
+
+//         .text-event {
+//           margin-top: 0.5em !important;
+//         }
+//       }
+
+//       ::ng-deep .p-panel .p-panel-header {
+//         padding-top: 5px;
+//         padding-bottom: 5px;
+//         background-color: #5e5f9b;
+//         color: #f9f9f9;
+//       }
+//     }
+//   }
+
+//   ::ng-deep .event-list {
+//     // margin-top: 6em;
+
+//     .p-panel .p-panel-header {
+//       background-color: #5e5f9b;
+//       color: #f9f9f9;
+//       width: 40vw;
+//       height: 3vh;
+//     }
+
+//     .p-panel .p-panel-content {
+//       width: 80.7vh;
+//     }
+
+//   }
+
+//   /////////////////////////////////////////////External
+
+//   @media (max-width: 1366px) {
+
+//     ::ng-deep .fc {
+//       width: 35vw !important;
+//       height: 50vh !important;
+//     }
+
+//     ::ng-deep .p-panel .p-panel-header {
+//       width: 35vw !important;
+//     }
+
+//     ::ng-deep .p-panel .p-panel-content {
+//       width: 35vw !important;
+//     }
+
+//     ::ng-deep .fc .fc-daygrid-day-number {
+//       font-size: 12px !important;
+//     }
+
+//     .imagem {
+//       margin-right: -3em !important;
+
+//       img {
+//         width: 25vw;
+//         height: 70vh;
+//       }
+
+//     }
+
+//     .lista-eventos {
+//       width: 100% !important;
+
+//       ::ng-deep .descricao {
+//         width: 100% !important;
+//       }
+//     }
+
+//     .text-event {
+//       font-size: 12px !important;
+//     }
+
+//     .base-footer {
+//       .footer {
+//         font-size: 12px !important;
+//       }
+
+//       .img-footer {
+//         width: 25px !important;
+//         height: 22px !important;
+//       }
+//     }
+//   }
+
+//   @media (max-width: 1200px) {
+
+//     .first-calendar,
+//     .second-calendar {
+//       margin-top: 0.2em !important;
+//     }
+
+
+//     .imagem {
+//       margin-right: -2em !important;
+
+//       img {
+//         width: 22vw;
+//         height: 45vh;
+//       }
+//     }
+
+//     ::ng-deep .fc {
+//       width: 35vw !important;
+//       height: 55vh !important;
+//     }
+
+//     ::ng-deep .p-panel .p-panel-header {
+//       width: 35vw !important;
+//     }
+
+//     ::ng-deep .p-panel .p-panel-content {
+//       width: 35vw !important;
+//     }
+
+//     .lista-eventos {
+//       width: 100% !important;
+
+//       ::ng-deep .descricao {
+//         width: 100% !important;
+//       }
+//     }
+//   }
+
+//   @media (max-width: 1100px) {
+
+//     .imagem {
+//       display: none !important;
+//     }
+
+//   }
+
+//   @media (max-width: 810px) {
+
+//     .imagem {
+//       display: none !important;
+//     }
+
+//     .second {
+//       display: none !important;
+//     }
+
+//     .first-calendar {
+//       margin-right: 0em !important;
+//     }
+
+//     ::ng-deep .fc {
+//       width: 70vw !important;
+//       height: 55vh !important;
+//     }
+
+//     ::ng-deep .p-panel .p-panel-header {
+//       width: 70vw !important;
+//     }
+
+//     ::ng-deep .p-panel .p-panel-content {
+//       width: 70vw !important;
+//     }
+
+//     .lista-eventos {
+//       width: 100% !important;
+
+//       ::ng-deep .descricao {
+//         width: 100% !important;
+//       }
+//     }
+//   }
+
+//   @media (max-width: 665px) {
+
+//     ::ng-deep .fc {
+//       width: 85vw !important;
+//       height: 55vh !important;
+//     }
+
+//     ::ng-deep .p-panel .p-panel-header {
+//       width: 85vw !important;
+//     }
+
+//     ::ng-deep .p-panel .p-panel-content {
+//       width: 85vw !important;
+//     }
+
+//     .lista-eventos {
+//       width: 100% !important;
+
+//       ::ng-deep .descricao {
+//         width: 100% !important;
+//       }
+//     }
+//   }
+
+//   @media (max-width: 500px) {
+//     ::ng-deep .fc {
+//       width: 85vw !important;
+//       height: 55vh !important;
+//     }
+
+//     ::ng-deep .p-panel .p-panel-header {
+//       width: 85vw !important;
+//     }
+
+//     ::ng-deep .p-panel .p-panel-content {
+//       width: 85vw !important;
+//     }
+
+//     .lista-eventos {
+//       width: 100% !important;
+
+//       ::ng-deep .descricao {
+//         width: 100% !important;
+//       }
+//     }
+//   }
+// }
+
+// ::ng-deep .p-dialog .p-dialog-header {
+//   background-color: #f9f9f9f9 !important;
+//   font-size: 14px;
+//   height: 4px !important;
+//   border-top: 2px solid #0c4d70 !important;
+//   border-left: 2px solid #0c4d70 !important;
+//   border-right: 2px solid #0c4d70 !important;
+//   padding-top: 20px;
+//   padding-bottom: 20px;
+//   color: #0c4d70;
+//   font-weight: bold;
+//   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+// }
+
+// ::ng-deep .p-dialog .p-dialog-content {
+//   border-top-left-radius: 4px !important;
+//   background-color: #0c4d70 !important;
+//   font-size: 14px;
+//   color: #f9f9f9;
+// }
+
+// .text-event {
+//   margin-left: 0.5em !important;
+//   font-size: 14px !important;
+//   font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
+// }
+
+// .day-event,
+// .locale {
+//   margin-top: 0.5em;
+// }
+
+// .linha {
+//   border-top: 1px solid #f9f9f9;
+//   width: 90%;
+// }
+
+// .pi-map-marker,
+// .pi-calendar {
+//   margin-right: 0.5em;
+// }
