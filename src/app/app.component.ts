@@ -14,6 +14,7 @@ import localePT from '@angular/common/locales/pt';
 import { INITIAL_EVENTS, createEventId } from './event-utils';
 import { CalendarService } from './shared/services/calendar.service';
 import { IEventos } from './shared/interfaces/IEventos';
+import { LoginService } from './shared/services/login.service';
 registerLocaleData(localePT);
 
 interface City {
@@ -60,10 +61,29 @@ export class AppComponent implements OnInit {
 
   constructor(
     private changeDetector: ChangeDetectorRef,
-    private calendarSrv: CalendarService, 
+    private calendarSrv: CalendarService,
+    private loginService: LoginService
   ) {
   }
   async ngOnInit() {
+    const token = localStorage.getItem('token');
+
+    if (token) {
+      this.loginService.tokenIsValid(token).then(tokenIsValid => {
+        if(tokenIsValid){
+          localStorage.setItem('token', token);
+        } else {
+          this.loginService.authenticate({login: 'orlando.junior', senha: '020484', campoEclesiastico: {id: 1}}).then(objectToken =>{
+            localStorage.setItem('token', objectToken.token);
+          })
+        }
+      })
+    } else {
+      this.loginService.authenticate({login: 'orlando.junior', senha: '020484', campoEclesiastico: {id: 1}}).then(objectToken =>{
+        localStorage.setItem('token', objectToken.token);
+      })
+    }
+
     this.prepareDates()
     // this.initiateCalendar();
     // this.initiateCalendarSecond();
@@ -71,7 +91,7 @@ export class AppComponent implements OnInit {
     // const mapedresult = result.map(item => this.convertObjectToEvent(item))
     // this.initialEvents = mapedresult;
     this.getAgendaEvento();
-    this.getAllLocalSetor()
+    this.getAllLocalSetor();
   }
 
   prepareDates() {
@@ -88,15 +108,15 @@ export class AppComponent implements OnInit {
     this.calendarSrv.getAllLocalSetor().subscribe({
       next: (data => {
         console.log(data);
-        
+
       })
     })
-  }  
+  }
 
   getAgendaEvento() {
-    const ano = new Date().getFullYear()    
+    const ano = new Date().getFullYear()
     this.calendarSrv.getAgendaEvento(ano).subscribe({
-      next: (data => {        
+      next: (data => {
       })
     })
   }
@@ -173,12 +193,12 @@ export class AppComponent implements OnInit {
     if (month) {
       month = this.convertMonthNameToNumberOfMonth(month);
     }
-    
+
     const date = new Date(`${new Date().getFullYear()}-${month}-01T06:00:00Z`);
     let firstDay = new Date(date.getFullYear(), date.getMonth(), 1).getDate()
     let lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate()
     this.initialDate = (`${new Date().getFullYear()}-${month}-${firstDay}`);
-    this.finalDate = (`${new Date().getFullYear()}-${month}-${lastDay}`);  
+    this.finalDate = (`${new Date().getFullYear()}-${month}-${lastDay}`);
 
     let result = null;
     if (!$event) {
@@ -277,7 +297,7 @@ export class AppComponent implements OnInit {
       month = this.convertMonthNameToNumberOfMonth(month);
     }
     const date = new Date(`${new Date().getFullYear()}-${month}-01T06:00:00Z`);
-    
+
     let firstDay = new Date(date.getFullYear(), date.getMonth(), 1).getDate()
     let lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate()
     this.initiateDateSecond = (`${new Date().getFullYear()}-${month}-${firstDay}`);
