@@ -12,7 +12,7 @@ import { registerLocaleData } from '@angular/common';
 import localePT from '@angular/common/locales/pt';
 
 import { INITIAL_EVENTS, createEventId } from './event-utils';
-import { CalendarService } from './services/calendar.service';
+import { CalendarService } from './shared/services/calendar.service';
 import { IEventos } from './shared/interfaces/IEventos';
 registerLocaleData(localePT);
 
@@ -60,17 +60,18 @@ export class AppComponent implements OnInit {
 
   constructor(
     private changeDetector: ChangeDetectorRef,
-    private calendarSrv: CalendarService
+    private calendarSrv: CalendarService, 
   ) {
   }
   async ngOnInit() {
     this.prepareDates()
-    this.initiateCalendar();
-    this.initiateCalendarSecond();
-    const result = await this.getInitialEvents();
-    const mapedresult = result.map(item => this.convertObjectToEvent(item))
-    this.initialEvents = mapedresult;
-    
+    // this.initiateCalendar();
+    // this.initiateCalendarSecond();
+    // const result = await this.getInitialEvents();
+    // const mapedresult = result.map(item => this.convertObjectToEvent(item))
+    // this.initialEvents = mapedresult;
+    this.getAgendaEvento();
+    this.getAllLocalSetor()
   }
 
   prepareDates() {
@@ -81,6 +82,23 @@ export class AppComponent implements OnInit {
       { name: 'Istanbul', code: 'IST' },
       { name: 'Paris', code: 'PRS' }
     ];
+  }
+
+  getAllLocalSetor() {
+    this.calendarSrv.getAllLocalSetor().subscribe({
+      next: (data => {
+        console.log(data);
+        
+      })
+    })
+  }  
+
+  getAgendaEvento() {
+    const ano = new Date().getFullYear()    
+    this.calendarSrv.getAgendaEvento(ano).subscribe({
+      next: (data => {        
+      })
+    })
   }
 
   calendarOptionsOne: CalendarOptions = {
@@ -155,11 +173,12 @@ export class AppComponent implements OnInit {
     if (month) {
       month = this.convertMonthNameToNumberOfMonth(month);
     }
+    
     const date = new Date(`${new Date().getFullYear()}-${month}-01T06:00:00Z`);
     let firstDay = new Date(date.getFullYear(), date.getMonth(), 1).getDate()
     let lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate()
     this.initialDate = (`${new Date().getFullYear()}-${month}-${firstDay}`);
-    this.finalDate = (`${new Date().getFullYear()}-${month}-${lastDay}`);
+    this.finalDate = (`${new Date().getFullYear()}-${month}-${lastDay}`);  
 
     let result = null;
     if (!$event) {
@@ -258,6 +277,7 @@ export class AppComponent implements OnInit {
       month = this.convertMonthNameToNumberOfMonth(month);
     }
     const date = new Date(`${new Date().getFullYear()}-${month}-01T06:00:00Z`);
+    
     let firstDay = new Date(date.getFullYear(), date.getMonth(), 1).getDate()
     let lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate()
     this.initiateDateSecond = (`${new Date().getFullYear()}-${month}-${firstDay}`);
