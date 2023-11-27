@@ -6,7 +6,7 @@ import { ILogin } from '../interfaces/ILogin';
 import { IPage } from '../interfaces/Ipage';
 import { Observable } from 'rxjs';
 import { ISetor } from '../interfaces/ISetor';
-import { IChangePass } from './IChangePass';
+import { IChangePass } from '../interfaces/IChangePass';
 
 @Injectable({
   providedIn: 'root'

@@ -1,6 +1,6 @@
 export interface IAgenda {
     id: number,
     campoEclesiastico: number,
-    ano: string,
+    ano: number,
     situacaoAgenda: string
 }

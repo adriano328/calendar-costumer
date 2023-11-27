@@ -32,6 +32,22 @@
       margin-right: 1em;
       margin-top: 2em;
 
+      .events {
+        display: flex;
+        flex-direction: column;
+        background-color: #c8dbfa;
+        padding: 0.3em;
+        border-radius: 8px;
+
+        .nome {
+          margin-bottom: 0.1em;
+        }
+
+        .nome, .periodo {
+          margin-left: 0.5em;
+        }
+      }
+
       ::ng-deep .fc {
         width: 40vw;
         height: 60vh;

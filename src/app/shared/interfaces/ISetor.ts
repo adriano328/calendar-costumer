@@ -1,6 +1,4 @@
 export interface ISetor {
-  id: number;
+  id: number | string;
   nome: string;
-  nomeCompleto: string;
-  requerAtualizacao?: boolean;
 }

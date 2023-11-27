@@ -15,6 +15,9 @@ import { INITIAL_EVENTS, createEventId } from './event-utils';
 import { CalendarService } from './shared/services/calendar.service';
 import { IEventos } from './shared/interfaces/IEventos';
 import { LoginService } from './shared/services/login.service';
+import { ISetor } from './shared/interfaces/ISetor';
+import { EventService } from './shared/services/event.service';
+import { IEventoDetalhe } from './shared/interfaces/IEventoDetalhe';
 registerLocaleData(localePT);
 
 interface City {
@@ -58,10 +61,15 @@ export class AppComponent implements OnInit {
   allEventList: IEventos[] = [];
   locale: string = 'pt';
   cities!: City[];
+  setor: ISetor[] = [];
+  ano!: number;
+  agendaNumber!: number;
+  events: IEventoDetalhe[] = [];
 
   constructor(
     private changeDetector: ChangeDetectorRef,
     private calendarSrv: CalendarService,
+    private eventSrv: EventService,
     private loginService: LoginService
   ) {
   }
@@ -107,8 +115,8 @@ export class AppComponent implements OnInit {
   getAllLocalSetor() {
     this.calendarSrv.getAllLocalSetor().subscribe({
       next: (data => {
-        console.log(data);
-
+        this.setor = data;
+        this.setor.unshift({id: '',nome: 'TODOS'})
       })
     })
   }
@@ -117,6 +125,18 @@ export class AppComponent implements OnInit {
     const ano = new Date().getFullYear()
     this.calendarSrv.getAgendaEvento(ano).subscribe({
       next: (data => {
+        this.agendaNumber = data.id;
+        this.agendaEventoDetalhe(this.agendaNumber)
+        this.ano = data.ano;        
+      })
+    })
+  }
+
+  agendaEventoDetalhe(agenda: number) {    
+    this.eventSrv.agendaEventoDetalhe(agenda!).subscribe({
+      next: (data => {
+        this.events = data.content;      
+        console.log(this.events);
       })
     })
   }
