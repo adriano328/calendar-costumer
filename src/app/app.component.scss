@@ -32,18 +32,28 @@
       margin-right: 1em;
       margin-top: 2em;
 
+      ::ng-deep .pi-angle-double-right:before, .pi-angle-double-left:before, .pi-angle-left:before, .pi-angle-right:before {
+        font-size: 14px;
+      }
+
+      ::ng-deep .p-paginator-page, .p-paginator-next, .p-paginator-last, .p-paginator-first, .p-paginator-prev, .p-paginator-current {
+        font-size: 12px;
+      }
+
       .events {
         display: flex;
         flex-direction: column;
         background-color: #c8dbfa;
-        padding: 0.3em;
         border-radius: 8px;
+        margin-bottom: 0.5em;
 
-        .nome {
+        .nome, .periodo, .descricao {
           margin-bottom: 0.1em;
+          font-size: 13px;
+          font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
-        .nome, .periodo {
+        .nome, .periodo, .descricao {
           margin-left: 0.5em;
         }
       }

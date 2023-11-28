@@ -12,6 +12,7 @@ import {DialogModule} from 'primeng/dialog';
 import {InputTextareaModule} from 'primeng/inputtextarea';
 import { MultiSelectModule } from 'primeng/multiselect';
 import { AuthInterceptor } from './shared/interceptors/auth-interceptor';
+import { TableModule } from 'primeng/table';
 
 @NgModule({
   declarations: [
@@ -27,7 +28,8 @@ import { AuthInterceptor } from './shared/interceptors/auth-interceptor';
     PaginatorModule,
     DialogModule,
     InputTextareaModule,
-    MultiSelectModule
+    MultiSelectModule,
+    TableModule
   ],
   providers: [
     {

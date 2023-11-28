@@ -15,14 +15,6 @@ export class CalendarService {
     private http: HttpClient
   ) { }
 
-  async listAllEvents(dataInicio: string, dataFim: string, page?: number) {
-    return await this.http.get<IPage<IEventos>>(`${environment.url}/agendaEventoDetalhe/findAllEntryDates`, {params: new HttpParams().set('dataInicio', dataInicio!).set('dataFim', dataFim!).set('page', page!)}).toPromise();
-  }
-
-  async showEvent(id: number) {
-    return await this.http.get<IEventos>(`${environment.url}/agendaEvento/findById/${id}`).toPromise();
-  }
-
   getAgendaEvento(year: number) {
     return this.http.get<IAgenda>(`${environment.url}/agendaEvento/getByAno/${year}`)
   }

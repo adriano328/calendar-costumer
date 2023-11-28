@@ -1,4 +1,4 @@
 export interface ISetor {
-  id: number | string;
+  id: number;
   nome: string;
 }

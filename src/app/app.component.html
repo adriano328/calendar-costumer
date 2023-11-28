@@ -19,16 +19,30 @@
         <div class="first-calendar">
           <div class="flex justify-content-start flex-column align-items-start container-dropdown">
             <span class="mb-1" style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 13px; color: white">Eventos por Local/Setor:</span>
-            <p-multiSelect [options]="setor" placeholder="Selecione" optionLabel="nome"></p-multiSelect>
+            <p-multiSelect [options]="setor" placeholder="Selecione" [(ngModel)]="localSetor" (onChange)="getAllEventByLocalSetor($event)" optionLabel="nome"></p-multiSelect>
           </div>
           <p-panel header="Eventos">
-            <div class="events" *ngFor="let item of events">
-              <span class="nome">Evento: {{item.nomeEvento}}</span>
-              <div class="periodo">
-                <span>Inicio: {{item.dataInicial | date: 'dd/MM/YYYY'}}</span>   <span style="margin-left: 2em;">Fim: {{item.dataFinal | date: 'dd/MM/YYYY'}}</span>
-              </div>
-
-            </div>
+            <p-table [value]="listOfEvents">
+              <ng-template pTemplate="header">
+              </ng-template>
+              <ng-template pTemplate="body" let-event>
+                  <tr class="events">
+                      <td>
+                        <span class="nome"><b style="margin-right: 0.2em;">Evento:</b> {{ event.nomeEvento }}</span>
+                        <div class="periodo">
+                          <span><b style="margin-right: 0.2em;">Inicio:</b> {{event.dataInicial}}</span>   <span style="margin-left: 2em;"><b style="margin-right: 0.2em;">Fim:</b> {{event.dataFinal}}</span>
+                        </div>
+                        <div class="descricao">
+                          <span><b style="margin-right: 0.2em;">Descrição:</b> {{event.descricaoEvento}}</span>
+                        </div>
+                      </td>
+                  </tr>
+              </ng-template>
+          </p-table>
+          <div class="paginator">
+            <p-paginator [first]="paginationFirstValue" *ngIf="events.length > 0 " [rows]="3"
+              [totalRecords]="totalElements" (onPageChange)="listAllEventsByMonths($event)" #pp></p-paginator>
+          </div>
           </p-panel>
         </div>
       </div>

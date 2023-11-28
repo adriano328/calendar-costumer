@@ -48,7 +48,7 @@ export class AppComponent implements OnInit {
   finalDate!: string;
   disableListEvents: boolean = false;
   disableListEventsSecond: boolean = false;
-  listOfEvents: IEventos[] = [];
+  listOfEvents: any[] = [];
   listOfEventsSecond: IEventos[] = [];
   paginationFirstValue = 0;
   paginationSecondValue = 0;
@@ -66,6 +66,7 @@ export class AppComponent implements OnInit {
   ano!: number;
   agendaNumber!: number;
   events: IEventoDetalhe[] = [];
+  localSetor: ISetor[] = [];
 
   constructor(
     private changeDetector: ChangeDetectorRef,
@@ -76,28 +77,28 @@ export class AppComponent implements OnInit {
   }
   async ngOnInit() {
     const token = localStorage.getItem('token');
-    
+
     if (token) {
       this.loginService.tokenIsValid(token).then(tokenIsValid => {
-        if(tokenIsValid){
+        if (tokenIsValid) {
           localStorage.setItem('token', token);
         } else {
-          this.loginService.authenticate({login: 'orlando.junior', senha: '020484', campoEclesiastico: {id: 1}}).then(objectToken =>{
+          this.loginService.authenticate({ login: 'orlando.junior', senha: '020484', campoEclesiastico: { id: 1 } }).then(objectToken => {
             localStorage.setItem('token', objectToken.token);
           })
         }
       })
     } else {
-      this.loginService.authenticate({login: 'orlando.junior', senha: '020484', campoEclesiastico: {id: 1}}).then(objectToken =>{
+      this.loginService.authenticate({ login: 'orlando.junior', senha: '020484', campoEclesiastico: { id: 1 } }).then(objectToken => {
         localStorage.setItem('token', objectToken.token);
       })
     }
     await this.getInitialEvents();
-    
+
     this.initiateCalendar();
 
-    
-    const result = this.allEventList;    
+
+    const result = this.allEventList;
     this.getAgendaEvento();
     this.getAllLocalSetor();
   }
@@ -106,7 +107,6 @@ export class AppComponent implements OnInit {
     this.calendarSrv.getAllLocalSetor().subscribe({
       next: (data => {
         this.setor = data;
-        this.setor.unshift({id: '',nome: 'TODOS'})
       })
     })
   }
@@ -118,15 +118,15 @@ export class AppComponent implements OnInit {
         this.agendaNumber = data.id;
         this.agendaEventoDetalhe(this.agendaNumber)
         this.getInitialEvents(this.agendaNumber)
-        this.ano = data.ano;        
+        this.ano = data.ano;
       })
     })
   }
 
-  agendaEventoDetalhe(agenda: number) {    
+  agendaEventoDetalhe(agenda: number) {
     this.eventSrv.agendaEventoDetalhe(agenda!).subscribe({
       next: (data => {
-        this.events = data.content;      
+        this.events = data.content;
       })
     })
   }
@@ -195,7 +195,7 @@ export class AppComponent implements OnInit {
   currentEvents: EventApi[] = [];
 
   async listAllEventsByMonths($event?: any) {
-    
+
     let month;
     if (document.getElementsByClassName('calendar-one')) {
       month = document!.getElementsByClassName('calendar-one')[0].textContent;
@@ -203,7 +203,6 @@ export class AppComponent implements OnInit {
     if (month) {
       month = this.convertMonthNameToNumberOfMonth(month);
     }
-
     const date = new Date(`${new Date().getFullYear()}-${month}-01T06:00:00Z`);
     let firstDay = new Date(date.getFullYear(), date.getMonth(), 1).getDate()
     let lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate()
@@ -211,13 +210,81 @@ export class AppComponent implements OnInit {
     this.finalDate = (`${new Date().getFullYear()}-${month}-${lastDay}`);
 
     let result = null;
-    if (!$event) {  
-      result = await this.calendarSrv.listAllEvents(this.initialDate, this.finalDate, 0);
+    if (!$event) {
+      result = await this.eventSrv.listAllEvents(this.initialDate, this.finalDate, 0);
       this.paginator?.changePage(0);
     } else {
-      result = await this.calendarSrv.listAllEvents(this.initialDate, this.finalDate, $event.page);
+      result = await this.eventSrv.listAllEvents(this.initialDate, this.finalDate, $event.page);
     }
 
+    if (result) {
+      result?.content.map(data => {
+        data.dataInicial = moment(data.dataInicial).utc().format('DD/MM/YYYY');
+        data.dataFinal = moment(data.dataFinal).utc().format('DD/MM/YYYY');
+      });
+      this.listOfEvents = result?.content!;      
+      if (this.listOfEvents.length > 0) {
+        this.disableListEvents = true;
+        this.disablePaginatorOne = true;
+      } else {
+        this.disableListEvents = false;
+        this.disablePaginatorOne = false;
+      }
+      this.totalElements = result?.totalElements;
+    }
+  }
+
+  getAllEventByLocalSetor($event: any) {
+    let month;
+    if (document.getElementsByClassName('calendar-one')) {
+      month = document!.getElementsByClassName('calendar-one')[0].textContent;
+    }
+    if (month) {
+      month = this.convertMonthNameToNumberOfMonth(month);
+    }
+    const date = new Date(`${new Date().getFullYear()}-${month}-01T06:00:00Z`);
+    let firstDay = new Date(date.getFullYear(), date.getMonth(), 1).getDate()
+    let lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate()
+    this.initialDate = (`${new Date().getFullYear()}-${month}-${firstDay}`);
+    this.finalDate = (`${new Date().getFullYear()}-${month}-${lastDay}`);
+    const local = this.localSetor.map(e => e.id)[0]
+    if(local == undefined) {      
+      const result = this.eventSrv.listAllEvents(this.initialDate, this.finalDate, 0);
+      
+    } else {
+      this.eventSrv.getAllEventByLocalSetor(this.initialDate, this.finalDate, local).subscribe({
+        next: (data => {
+          if (data) {
+            this.listOfEvents = data.content;
+            const mapedresult = this.listOfEvents.map((item: IEventoDetalhe) => this.convertObjectToEvent(item))
+            this.initialEvents = mapedresult;
+            if (this.listOfEvents.length > 0) {
+              this.disableListEvents = true;
+              this.disablePaginatorOne = true;
+            } else {
+              this.disableListEvents = false;
+              this.disablePaginatorOne = false;
+            }
+            this.totalElements = data?.totalElements;
+          }
+        })
+      })
+    }
+  }
+
+  async initiateCalendar($event?: any) {
+    const date = new Date();
+    let firstDay = new Date(date.getFullYear(), date.getMonth(), 1).getDate();
+    let lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+    this.initialDate = (`${new Date().getFullYear()}-${new Date().getMonth() + 1}-${firstDay}`);
+    this.finalDate = (`${new Date().getFullYear()}-${new Date().getMonth() + 1}-${lastDay}`);
+    let result = null;
+    if (!$event) {
+      result = await this.eventSrv.listAllEvents(this.initialDate, this.finalDate, 0);
+      this.paginator?.changePage(0);
+    } else {
+      result = await this.eventSrv.listAllEvents(this.initialDate, this.finalDate, $event.page);
+    }
     if (result) {
       result?.content.map(data => {
         data.dataInicial = moment(data.dataInicial).utc().format('DD/MM/YYYY');
@@ -232,38 +299,6 @@ export class AppComponent implements OnInit {
         this.disablePaginatorOne = false;
       }
       this.totalElements = result?.totalElements;
-    }
-  }
-
-  async initiateCalendar($event?: any) {
-    const date = new Date();
-    let firstDay = new Date(date.getFullYear(), date.getMonth(), 1).getDate();
-    let lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
-    this.initialDate = (`${new Date().getFullYear()}-${new Date().getMonth() + 1}-${firstDay}`);   
-    
-    this.finalDate = (`${new Date().getFullYear()}-${new Date().getMonth() + 1}-${lastDay}`);
-    let result = null;
-    if (!$event) {
-      result = await this.calendarSrv.listAllEvents(this.initialDate, this.finalDate, 0);    
-      this.paginator?.changePage(0);
-    } else {
-      result = await this.calendarSrv.listAllEvents(this.initialDate, this.finalDate, $event.page);
-    }
-
-    if (result) {
-      result?.content.map(data => {
-        data.dataInicial = moment(data.dataInicial).utc().format('DD/MM/YYYY');
-        data.dataFinal = moment(data.dataFinal).utc().format('DD/MM/YYYY');
-      });
-      this.listOfEvents = result?.content!;
-      if (this.listOfEvents.length > 0) {
-        this.disableListEvents = true;
-        this.disablePaginatorOne = true;
-      } else {
-        this.disableListEvents = false;
-        this.disablePaginatorOne = false;
-      }
-      this.totalElements = result?.totalElements;     
     }
   }
 
@@ -298,7 +333,7 @@ export class AppComponent implements OnInit {
   }
 
   async opentEventModalCalendarFirst(id: number) {
-    const result = await this.calendarSrv.showEvent(id);
+    const result = await this.eventSrv.showEvent(id);
     this.detailEvent = result!;
     if (this.eventDetailsFirstCalendar === true) {
       this.eventDetailsFirstCalendar = false;
@@ -307,22 +342,20 @@ export class AppComponent implements OnInit {
     }
   }
 
-  getInitialEvents(agenda?: number){
+  getInitialEvents(agenda?: number) {
     if (agenda) {
       this.eventSrv.agendaEventoDetalhe(this.agendaNumber).subscribe({
         next: (data => {
-          this.allEventList = data.content;     
+          this.allEventList = data.content;         
           const mapedresult = this.allEventList.map((item: IEventoDetalhe) => this.convertObjectToEvent(item))
-          this.initialEvents = mapedresult;                         
+          this.initialEvents = mapedresult;
         })
       });
-    }        
+    }
     return this.allEventList
   }
 
-  convertObjectToEvent(eventObject: IEventoDetalhe): EventInput {  
-    console.log('Color', eventObject);
-      
+  convertObjectToEvent(eventObject: IEventoDetalhe): EventInput {
     const colors = ["#4169E1", "#228B22", "##DAA520", "#F08080", "#FFD700"];
     const random = Math.floor(Math.random() * colors.length);
     return { id: eventObject.id.toString(), title: eventObject.nomeEvento, start: moment(eventObject.dataInicial).utc().format('YYYY-MM-DD'), end: moment(eventObject.dataFinal).utc().format('YYYY-MM-DD'), color: colors[random] }
