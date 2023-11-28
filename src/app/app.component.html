@@ -22,18 +22,24 @@
             <p-multiSelect [options]="setor" placeholder="Selecione" [(ngModel)]="localSetor" (onChange)="getAllEventByLocalSetor($event)" optionLabel="nome"></p-multiSelect>
           </div>
           <p-panel header="Eventos">
-            <p-table [value]="listOfEvents" [paginator]="true" [rows]="3">
+            <div class="flex justify-content-center align-items-center spinner">
+              <p-progressSpinner styleClass="w-4rem h-4rem" strokeWidth="8" fill="var(--surface-ground)" animationDuration=".5s" *ngIf="spinnerView"></p-progressSpinner>
+            </div>
+            <div class="flex justify-content-center align-items-center message-return" *ngIf="messageReturn">
+              <span style="font-size: 14px;">Não existem eventos programados para este mês!</span>
+            </div>
+            <p-table [value]="listOfEvents" [paginator]="true" [rows]="3" *ngIf="disableListEvents">
               <ng-template pTemplate="header">
               </ng-template>
               <ng-template pTemplate="body" let-event>
-                  <tr class="events">
+                  <tr class="events" (click)="opentEventModalCalendarFirst(event.id)">
                       <td>
                         <span class="nome"><b style="margin-right: 0.2em;">Evento:</b> {{ event.nomeEvento }}</span>
                         <div class="periodo">
                           <span><b style="margin-right: 0.2em;">Inicio:</b> {{event.dataInicial}}</span>   <span style="margin-left: 2em;"><b style="margin-right: 0.2em;">Fim:</b> {{event.dataFinal}}</span>
                         </div>
-                        <div class="descricao">
-                          <span><b style="margin-right: 0.2em;">Descrição:</b> {{event.descricaoEvento}}</span>
+                        <div class="local-evento">
+                          <span><b style="margin-right: 0.2em;">Local do Evento:</b> <span class="local">{{convertLocalEvento(event.localSetorId)}}</span></span>
                         </div>
                       </td>
                   </tr>
@@ -49,47 +55,9 @@
       CUIABÁ E REGIÃO</p>
   </div>
 </div>
-<!-- <div class="calendar">
-  <div class="calendar-container">
-    <div class="grid">
-      <div class="flex justify-content-center col-12 md:col-6 lg:col-6">
-        <div class="first-calendar">
-          <div class="lista-eventos" *ngIf="disableListEvents">
-            <p-panel header="Eventos">
-              <ul *ngFor="let item of listOfEvents">
-                <li (click)="opentEventModalCalendarFirst(item.id)"><i class="pi pi-calendar"><span
-                      class="text-event date">{{item.dataInicial}}</span><span class="text-event"> a
-                      {{item.dataFinal}}</span> - </i>
-                  {{item.nome}}</li>
-              </ul>
-              <div class="pages" *ngIf="disablePaginatorOne">
-                <p-paginator [first]="paginationFirstValue" *ngIf="listOfEvents.length > 0 " [rows]="2"
-                  [totalRecords]="totalElements" (onPageChange)="listAllEventsByMonths($event)" #pp></p-paginator>
-              </div>
-            </p-panel>
-          </div>
-        </div>
-      </div>
-      <div class="col-12 md:col-6 lg:col-6 event-list">
-        <p-panel header="Eventos">
-          <p>
-              Lorem ipsum dolor sit amet, consectetur adipiscing elit, sed do eiusmod tempor incididunt ut labore et dolore magna aliqua. Ut enim ad minim veniam, quis nostrud exercitation ullamco laboris nisi ut aliquip ex ea commodo
-              consequat. Duis aute irure dolor in reprehenderit in voluptate velit esse cillum dolore eu fugiat nulla pariatur. Excepteur sint occaecat cupidatat non proident, sunt in culpa qui officia deserunt mollit anim id est laborum.
-          </p>
-      </p-panel>
-      </div>
-    </div>
-  </div>
-  <div class="borda">
-  </div>
-  <div class="base-footer">
-    <p class="footer" style="text-align: center;">ASSEMBLÉIA DE DEUS <img src="/assets/logo.png" class="img-footer"> EM
-      CUIABÁ E REGIÃO</p>
-  </div>
-</div>
-<p-dialog [(visible)]="eventDetailsFirstCalendar" [style]="{width: '30vw'}">
+<p-dialog [(visible)]="eventDetailsFirstCalendar" [modal]="true" [style]="{width: '30vw'}">
   <ng-template pTemplate="header">
-    <p>{{detailEvent.nome}}</p>
+    <p>{{detailEvent.nomeEvento}}</p>
   </ng-template>
   <div class="grid">
     <div class="col-12 md:col-6 lg:col-6">
@@ -100,43 +68,19 @@
     </div>
     <div class="col-12 md:col-6 lg:col-6">
       <div class="locale">
-        <i class="pi pi-map-marker"><span class="text-event local">Local do Evento: {{detailEvent.local}}</span></i>
+        <i class="pi pi-map-marker"><span class="text-event">Local do Evento: <span class="local">{{convertLocalEvento(detailEvent.localSetorId)}}</span></span></i>
       </div>
     </div>
     <div class="linha">
     </div>
     <div class="col-12 md:col-6 lg:col-12">
       <div class="descricao">
-        <span class="text-event" style="width: 150px;"><b>Sobre o Evento:</b> {{detailEvent.descricao}}</span>
+        <span class="text-event"><span style="font-size: 14px;">Sobre o Evento:</span> {{detailEvent.descricaoEvento}}</span>
+      </div>
+      <div class="descricao" style="margin-top: 1em;">
+        <span class="text-event"><span style="font-size: 14px;">Link Acesso:</span><i class="pi pi-external-link" style="margin-left: 0.5em; cursor: pointer;" (click)="redirectLink(detailEvent.linkEvento)"></i></span>
       </div>
     </div>
   </div>
 </p-dialog>
-<p-dialog [(visible)]="eventDetailsSecondCalendar" [style]="{width: '30vw'}">
-  <ng-template pTemplate="header">
-    <p>{{detailEventSecond.nome}}</p>
-  </ng-template>
-  <div class="grid">
-    <div class="col-12 md:col-6 lg:col-6">
-      <div class="day-event">
-        <i class="pi pi-calendar"><span class="text-event date">{{detailEventSecond.dataInicial| date:
-            'dd'}}</span><span class="text-event"> a {{detailEventSecond.dataFinal | date: 'dd MMM yyyy' :
-            'pt'}}</span></i>
-      </div>
-    </div>
-    <div class="col-12 md:col-6 lg:col-6">
-      <div class="locale">
-        <i class="pi pi-map-marker"><span class="text-event local">Local do Evento:
-            {{detailEventSecond.local}}</span></i>
-      </div>
-    </div>
-    <div class="linha">
-    </div>
-    <div class="col-12 md:col-6 lg:col-12">
-      <div class="descricao">
-        <span class="text-event" style="width: 150px;"><b>Sobre o Evento:</b> {{detailEventSecond.descricao}}</span>
-      </div>
-    </div>
-  </div>
-</p-dialog>
-<router-outlet></router-outlet> -->
+<router-outlet></router-outlet>

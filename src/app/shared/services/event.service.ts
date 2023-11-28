@@ -24,7 +24,7 @@ export class EventService {
   }
 
   async showEvent(id: number) {
-    return await this.http.get<IEventos>(`${environment.url}/agendaEvento/findById/${id}`).toPromise();
+    return await this.http.get<IEventos>(`${environment.url}/agendaEventoDetalhe/getById/${id}`).toPromise();
   }
 
   getAllEventByLocalSetor(buscaLocalSetor: IEnvioLocalSetor) {

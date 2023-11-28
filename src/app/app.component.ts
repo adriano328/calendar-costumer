@@ -49,7 +49,6 @@ export class AppComponent implements OnInit {
   initialDate!: string;
   finalDate!: string;
   disableListEvents: boolean = false;
-  disableListEventsSecond: boolean = false;
   listOfEvents: any[] = [];
   listOfEventsSecond: IEventos[] = [];
   paginationFirstValue = 0;
@@ -69,6 +68,8 @@ export class AppComponent implements OnInit {
   agendaNumber!: number;
   events: IEventoDetalhe[] = [];
   localSetor: ISetor[] = [];
+  spinnerView = false;
+  messageReturn = false;
 
   constructor(
     private changeDetector: ChangeDetectorRef,
@@ -78,8 +79,8 @@ export class AppComponent implements OnInit {
   ) {
   }
   async ngOnInit() {
+    this.spinnerView = true;
     const token = localStorage.getItem('token');
-
     if (token) {
       this.loginService.tokenIsValid(token).then(tokenIsValid => {
         if (tokenIsValid) {
@@ -111,6 +112,11 @@ export class AppComponent implements OnInit {
         this.setor = data;
       })
     })
+  }
+
+  convertLocalEvento(local: number) {
+    const localConvertido = this.setor.find(e => e.id == local);
+    return localConvertido?.nome;
   }
 
   getAgendaEvento() {
@@ -220,20 +226,25 @@ export class AppComponent implements OnInit {
     }
 
     if (result) {
+      this.spinnerView = false;
       result?.map(data => {
         data.dataInicial = moment(data.dataInicial).utc().format('DD/MM/YYYY');
         data.dataFinal = moment(data.dataFinal).utc().format('DD/MM/YYYY');
       });
       this.listOfEvents = result!;
       if (this.listOfEvents.length > 0) {
+        this.messageReturn = false;
         this.disableListEvents = true;
-        this.disablePaginatorOne = true;
       } else {
+        this.messageReturn = true;
         this.disableListEvents = false;
-        this.disablePaginatorOne = false;
       }
       this.totalElements = result?.length;
     }
+  }
+
+  redirectLink(link: string) {
+    window.open(link, '_blank');
   }
 
   getAllEventByLocalSetor($event: any) {
@@ -248,10 +259,10 @@ export class AppComponent implements OnInit {
     let firstDay = new Date(date.getFullYear(), date.getMonth(), 1).getDate()
     let lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate()
     const first = "0" + firstDay.toString()
-    
+
     this.initialDate = (`${new Date().getFullYear()}-${month}-${first}`);
     this.finalDate = (`${new Date().getFullYear()}-${month}-${lastDay}`);
-    const local = this.localSetor.map(e => e.id);    
+    const local = this.localSetor.map(e => e.id);
     if (local.length < 1) {
       this.listAllEventsByMonths();
       this.getAgendaEvento()
@@ -264,19 +275,20 @@ export class AppComponent implements OnInit {
       this.eventSrv.getAllEventByLocalSetor(data).subscribe({
         next: (data => {
           if (data) {
+            this.spinnerView = false;
             this.listOfEvents = data;
             const mapedresult = this.listOfEvents.map((item: IEventoDetalhe) => this.convertObjectToEvent(item))
             this.initialEvents = mapedresult;
             if (this.listOfEvents.length > 0) {
+              this.messageReturn = false;
               this.disableListEvents = true;
-              this.disablePaginatorOne = true;
             } else {
+              this.messageReturn = true;
               this.disableListEvents = false;
-              this.disablePaginatorOne = false;
             }
-            this.totalElements = data?.length;
-          }
-        })
+              this.totalElements = data?.length;
+            }
+          })
       })
     }
   }
@@ -295,17 +307,18 @@ export class AppComponent implements OnInit {
       result = await this.eventSrv.listAllEvents(this.initialDate, this.finalDate);
     }
     if (result) {
+      this.spinnerView = false;
       result?.map(data => {
         data.dataInicial = moment(data.dataInicial).utc().format('DD/MM/YYYY');
         data.dataFinal = moment(data.dataFinal).utc().format('DD/MM/YYYY');
       });
       this.listOfEvents = result!;
       if (this.listOfEvents.length > 0) {
+        this.messageReturn = false;
         this.disableListEvents = true;
-        this.disablePaginatorOne = true;
       } else {
+        this.messageReturn = true;
         this.disableListEvents = false;
-        this.disablePaginatorOne = false;
       }
       this.totalElements = result?.length;
     }
@@ -344,6 +357,8 @@ export class AppComponent implements OnInit {
   async opentEventModalCalendarFirst(id: number) {
     const result = await this.eventSrv.showEvent(id);
     this.detailEvent = result!;
+    console.log(this.detailEvent);
+
     if (this.eventDetailsFirstCalendar === true) {
       this.eventDetailsFirstCalendar = false;
     } else {
