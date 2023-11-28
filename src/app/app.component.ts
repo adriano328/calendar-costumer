@@ -11,14 +11,13 @@ import { Paginator } from 'primeng/paginator';
 import { registerLocaleData } from '@angular/common';
 import localePT from '@angular/common/locales/pt';
 
-import { INITIAL_EVENTS, createEventId } from './event-utils';
+import { INITIAL_EVENTS } from './event-utils';
 import { CalendarService } from './shared/services/calendar.service';
 import { IEventos } from './shared/interfaces/IEventos';
 import { LoginService } from './shared/services/login.service';
 import { ISetor } from './shared/interfaces/ISetor';
 import { EventService } from './shared/services/event.service';
 import { IEventoDetalhe } from './shared/interfaces/IEventoDetalhe';
-import { IPage } from './shared/interfaces/Ipage';
 import { IEnvioLocalSetor } from '../app/shared/interfaces/IEnvioLocalSetor';
 
 registerLocaleData(localePT);

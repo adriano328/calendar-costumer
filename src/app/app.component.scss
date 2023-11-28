@@ -334,10 +334,33 @@
 }
 
 
-@media (max-wheight: 754px) {
-  
+@media (max-width: 754px) {
+
+  .wrapper {
+    overflow: auto !important;
+  }
+
+  .container-calendar { 
+    margin-bottom: 3em !important;
+  }
+
+  .container-dropdown {
+    display: flex !important;
+    justify-content: center !important;
+    align-items: center !important;
+    margin-top: -1em !important;
+
+    ::ng-deep .p-multiselect {
+      width: 50vw !important;
+    }
+  }
+ 
   ::ng-deep .fc {
-    width: 70vw !important;
+    width: 90vw !important;
     height: 60vh !important;
+  }
+
+  ::ng-deep .p-panel {
+    width: 90vw !important;
   }
 }
