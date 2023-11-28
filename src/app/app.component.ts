@@ -76,7 +76,7 @@ export class AppComponent implements OnInit {
   }
   async ngOnInit() {
     const token = localStorage.getItem('token');
-
+    
     if (token) {
       this.loginService.tokenIsValid(token).then(tokenIsValid => {
         if(tokenIsValid){
@@ -92,12 +92,12 @@ export class AppComponent implements OnInit {
         localStorage.setItem('token', objectToken.token);
       })
     }
-
+    await this.getInitialEvents();
+    
     this.initiateCalendar();
-    // this.initiateCalendarSecond();
-    const result = await this.getInitialEvents();
-    const mapedresult = result.map((item: IEventoDetalhe) => this.convertObjectToEvent(item))
-    this.initialEvents = mapedresult;
+
+    
+    const result = this.allEventList;    
     this.getAgendaEvento();
     this.getAllLocalSetor();
   }
@@ -117,6 +117,7 @@ export class AppComponent implements OnInit {
       next: (data => {
         this.agendaNumber = data.id;
         this.agendaEventoDetalhe(this.agendaNumber)
+        this.getInitialEvents(this.agendaNumber)
         this.ano = data.ano;        
       })
     })
@@ -262,9 +263,7 @@ export class AppComponent implements OnInit {
         this.disableListEvents = false;
         this.disablePaginatorOne = false;
       }
-      this.totalElements = result?.totalElements;
-      console.log(this.listOfEvents);
-      
+      this.totalElements = result?.totalElements;     
     }
   }
 
@@ -298,45 +297,6 @@ export class AppComponent implements OnInit {
     return '00';
   }
 
-  // async listAllEventsByMonthsSecond($event?: any) {
-  //   let month;
-  //   if (document.getElementsByClassName('calendar-two')) {
-  //     month = document!.getElementsByClassName('calendar-two')[0].textContent;
-  //   }
-  //   if (month) {
-  //     month = this.convertMonthNameToNumberOfMonth(month);
-  //   }
-  //   const date = new Date(`${new Date().getFullYear()}-${month}-01T06:00:00Z`);
-
-  //   let firstDay = new Date(date.getFullYear(), date.getMonth(), 1).getDate()
-  //   let lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate()
-  //   this.initiateDateSecond = (`${new Date().getFullYear()}-${month}-${firstDay}`);
-  //   this.finalDateSecond = (`${new Date().getFullYear()}-${month}-${lastDay}`);
-  //   let result = null;
-  //   if (!$event) {
-  //     result = await this.calendarSrv.listAllEvents(this.initiateDateSecond, this.finalDateSecond, 0);
-  //     this.paginatorb?.changePage(0);
-  //   } else {
-  //     result = await this.calendarSrv.listAllEvents(this.initiateDateSecond, this.finalDateSecond, $event.page);
-  //   }
-  //   if (result) {
-  //     result?.content.map(data => {
-  //       data.dataInicial = moment(data.dataInicial).utc().format('DD/MM/YYYY');
-  //       data.dataFinal = moment(data.dataFinal).utc().format('DD/MM/YYYY');
-  //     });
-
-  //     this.listOfEventsSecond = result?.content!;
-  //     if (this.listOfEventsSecond.length > 0) {
-  //       this.disableListEventsSecond = true;
-  //       this.disablePaginatoTwo = true;
-  //     } else {
-  //       this.disableListEventsSecond = false;
-  //       this.disablePaginatoTwo = false;
-  //     }
-  //     this.totalElementsSecond = result?.totalElements!;
-  //   }
-  // }
-
   async opentEventModalCalendarFirst(id: number) {
     const result = await this.calendarSrv.showEvent(id);
     this.detailEvent = result!;
@@ -347,61 +307,22 @@ export class AppComponent implements OnInit {
     }
   }
 
-  // async opentEventModalCalendarSecond(id: number) {
-  //   const result = await this.calendarSrv.showEvent(id);
-  //   this.detailEventSecond = result!;
-  //   if (this.eventDetailsSecondCalendar === true) {
-  //     this.eventDetailsSecondCalendar = false;
-  //   } else {
-  //     this.eventDetailsSecondCalendar = true;
-  //   }
-  // }
-
-  // async initiateCalendarSecond($event?: any) {
-  //   const date = new Date();
-  //   let firstDay = new Date(date.getFullYear(), date.getMonth(), 1).getDate();
-  //   let lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
-  //   this.initialDate = (`${new Date().getFullYear()}-${new Date().getMonth() + 2}-${firstDay}`);
-  //   this.finalDate = (`${new Date().getFullYear()}-${new Date().getMonth() + 2}-${lastDay}`);
-  //   let result = null;
-  //   if (!$event) {
-  //     result = await this.calendarSrv.listAllEvents(this.initiateDateSecond, this.finalDateSecond, 0);
-  //     this.paginatorb?.changePage(0);
-  //   } else {
-  //     result = await this.calendarSrv.listAllEvents(this.initiateDateSecond, this.finalDateSecond, $event.page);
-  //   }
-  //   if (result) {
-  //     result?.content.map(data => {
-  //       data.dataInicial = moment(data.dataInicial).utc().format('DD/MM/YYYY');
-  //       data.dataFinal = moment(data.dataFinal).utc().format('DD/MM/YYYY');
-  //     });
-
-  //     this.listOfEventsSecond = result?.content!;
-  //     if (this.listOfEventsSecond.length > 0) {
-  //       this.disableListEventsSecond = true;
-  //       this.disablePaginatoTwo = true;
-  //     } else {
-  //       this.disableListEventsSecond = false;
-  //       this.disablePaginatoTwo = false;
-  //     }
-  //     this.totalElementsSecond = result?.totalElements!;
-  //   }
-  // }
-
-  getInitialEvents(){
-    const TODAY_STR = new Date("2023-02-01").toISOString().replace(/T.*$/, '');
-    const END_EVENT = new Date("2023-02-06").toISOString().replace(/T.*$/, '');
-    if (this.agendaNumber) {
+  getInitialEvents(agenda?: number){
+    if (agenda) {
       this.eventSrv.agendaEventoDetalhe(this.agendaNumber).subscribe({
         next: (data => {
-          this.allEventList = data.content;
+          this.allEventList = data.content;     
+          const mapedresult = this.allEventList.map((item: IEventoDetalhe) => this.convertObjectToEvent(item))
+          this.initialEvents = mapedresult;                         
         })
       });
-    }
-    return this.allEventList;
+    }        
+    return this.allEventList
   }
 
-  convertObjectToEvent(eventObject: IEventoDetalhe): EventInput {
+  convertObjectToEvent(eventObject: IEventoDetalhe): EventInput {  
+    console.log('Color', eventObject);
+      
     const colors = ["#4169E1", "#228B22", "##DAA520", "#F08080", "#FFD700"];
     const random = Math.floor(Math.random() * colors.length);
     return { id: eventObject.id.toString(), title: eventObject.nomeEvento, start: moment(eventObject.dataInicial).utc().format('YYYY-MM-DD'), end: moment(eventObject.dataFinal).utc().format('YYYY-MM-DD'), color: colors[random] }
