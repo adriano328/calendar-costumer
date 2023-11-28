@@ -19,6 +19,7 @@ import { ISetor } from './shared/interfaces/ISetor';
 import { EventService } from './shared/services/event.service';
 import { IEventoDetalhe } from './shared/interfaces/IEventoDetalhe';
 import { IEnvioLocalSetor } from '../app/shared/interfaces/IEnvioLocalSetor';
+import { Observable } from 'rxjs';
 
 registerLocaleData(localePT);
 
@@ -80,29 +81,41 @@ export class AppComponent implements OnInit {
   async ngOnInit() {
     this.spinnerView = true;
     const token = localStorage.getItem('token');
+
+    this.loadToken(token!).then(() => {
+      this.getInitialEvents();
+
+      this.initiateCalendar();
+      this.getAgendaEvento();
+      this.getAllLocalSetor();
+    })
+
+
+  }
+
+  async loadToken(token: string): Promise<string> {
     if (token) {
-      this.loginService.tokenIsValid(token).then(tokenIsValid => {
-        if (tokenIsValid) {
-          localStorage.setItem('token', token);
-        } else {
-          this.loginService.authenticate({ login: 'orlando.junior', senha: '020484', campoEclesiastico: { id: 1 } }).then(objectToken => {
-            localStorage.setItem('token', objectToken.token);
-          })
-        }
-      })
-    } else {
-      this.loginService.authenticate({ login: 'orlando.junior', senha: '020484', campoEclesiastico: { id: 1 } }).then(objectToken => {
+      const tokenIsValid = await this.loginService.tokenIsValid(token);
+      if (tokenIsValid) {
+        localStorage.setItem('token', token);
+      } else {
+        const objectToken = await this.loginService.authenticate({
+          login: 'orlando.junior',
+          senha: '020484',
+          campoEclesiastico: { id: 1 },
+        });
         localStorage.setItem('token', objectToken.token);
-      })
+      }
+    } else {
+      const objectToken = await this.loginService.authenticate({
+        login: 'orlando.junior',
+        senha: '020484',
+        campoEclesiastico: { id: 1 },
+      });
+      localStorage.setItem('token', objectToken.token);
     }
-    await this.getInitialEvents();
 
-    this.initiateCalendar();
-
-
-    const result = this.allEventList;
-    this.getAgendaEvento();
-    this.getAllLocalSetor();
+    return localStorage.getItem('token')!;
   }
 
   getAllLocalSetor() {
