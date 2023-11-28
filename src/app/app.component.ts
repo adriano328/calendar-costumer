@@ -84,7 +84,6 @@ export class AppComponent implements OnInit {
 
     this.loadToken(token!).then(() => {
       this.getInitialEvents();
-
       this.initiateCalendar();
       this.getAgendaEvento();
       this.getAllLocalSetor();
