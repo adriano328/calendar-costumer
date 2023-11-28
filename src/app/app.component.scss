@@ -328,9 +328,16 @@
   width: 90%;
 }
 
-
-
 .pi-map-marker,
 .pi-calendar {
   margin-right: 0.5em;
+}
+
+
+@media (max-wheight: 754px) {
+  
+  ::ng-deep .fc {
+    width: 70vw !important;
+    height: 60vh !important;
+  }
 }
