@@ -19,6 +19,8 @@ import { ISetor } from './shared/interfaces/ISetor';
 import { EventService } from './shared/services/event.service';
 import { IEventoDetalhe } from './shared/interfaces/IEventoDetalhe';
 import { IPage } from './shared/interfaces/Ipage';
+import { IEnvioLocalSetor } from '../app/shared/interfaces/IEnvioLocalSetor';
+
 registerLocaleData(localePT);
 
 interface City {
@@ -126,7 +128,7 @@ export class AppComponent implements OnInit {
   agendaEventoDetalhe(agenda: number) {
     this.eventSrv.agendaEventoDetalhe(agenda!).subscribe({
       next: (data => {
-        this.events = data.content;
+        this.events = data;
       })
     })
   }
@@ -211,18 +213,18 @@ export class AppComponent implements OnInit {
 
     let result = null;
     if (!$event) {
-      result = await this.eventSrv.listAllEvents(this.initialDate, this.finalDate, 0);
+      result = await this.eventSrv.listAllEvents(this.initialDate, this.finalDate);
       this.paginator?.changePage(0);
     } else {
-      result = await this.eventSrv.listAllEvents(this.initialDate, this.finalDate, $event.page);
+      result = await this.eventSrv.listAllEvents(this.initialDate, this.finalDate);
     }
 
     if (result) {
-      result?.content.map(data => {
+      result?.map(data => {
         data.dataInicial = moment(data.dataInicial).utc().format('DD/MM/YYYY');
         data.dataFinal = moment(data.dataFinal).utc().format('DD/MM/YYYY');
       });
-      this.listOfEvents = result?.content!;      
+      this.listOfEvents = result!;
       if (this.listOfEvents.length > 0) {
         this.disableListEvents = true;
         this.disablePaginatorOne = true;
@@ -230,7 +232,7 @@ export class AppComponent implements OnInit {
         this.disableListEvents = false;
         this.disablePaginatorOne = false;
       }
-      this.totalElements = result?.totalElements;
+      this.totalElements = result?.length;
     }
   }
 
@@ -245,17 +247,24 @@ export class AppComponent implements OnInit {
     const date = new Date(`${new Date().getFullYear()}-${month}-01T06:00:00Z`);
     let firstDay = new Date(date.getFullYear(), date.getMonth(), 1).getDate()
     let lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate()
-    this.initialDate = (`${new Date().getFullYear()}-${month}-${firstDay}`);
+    const first = "0" + firstDay.toString()
+    
+    this.initialDate = (`${new Date().getFullYear()}-${month}-${first}`);
     this.finalDate = (`${new Date().getFullYear()}-${month}-${lastDay}`);
-    const local = this.localSetor.map(e => e.id)[0]
-    if(local == undefined) {      
-      const result = this.eventSrv.listAllEvents(this.initialDate, this.finalDate, 0);
-      
+    const local = this.localSetor.map(e => e.id);    
+    if (local.length < 1) {
+      this.listAllEventsByMonths();
+      this.getAgendaEvento()
     } else {
-      this.eventSrv.getAllEventByLocalSetor(this.initialDate, this.finalDate, local).subscribe({
+      const data: IEnvioLocalSetor = {
+        initialDate: this.initialDate,
+        finalDate: this.finalDate,
+        locaisSetoresIds: local
+      }
+      this.eventSrv.getAllEventByLocalSetor(data).subscribe({
         next: (data => {
           if (data) {
-            this.listOfEvents = data.content;
+            this.listOfEvents = data;
             const mapedresult = this.listOfEvents.map((item: IEventoDetalhe) => this.convertObjectToEvent(item))
             this.initialEvents = mapedresult;
             if (this.listOfEvents.length > 0) {
@@ -265,7 +274,7 @@ export class AppComponent implements OnInit {
               this.disableListEvents = false;
               this.disablePaginatorOne = false;
             }
-            this.totalElements = data?.totalElements;
+            this.totalElements = data?.length;
           }
         })
       })
@@ -280,17 +289,17 @@ export class AppComponent implements OnInit {
     this.finalDate = (`${new Date().getFullYear()}-${new Date().getMonth() + 1}-${lastDay}`);
     let result = null;
     if (!$event) {
-      result = await this.eventSrv.listAllEvents(this.initialDate, this.finalDate, 0);
+      result = await this.eventSrv.listAllEvents(this.initialDate, this.finalDate);
       this.paginator?.changePage(0);
     } else {
-      result = await this.eventSrv.listAllEvents(this.initialDate, this.finalDate, $event.page);
+      result = await this.eventSrv.listAllEvents(this.initialDate, this.finalDate);
     }
     if (result) {
-      result?.content.map(data => {
+      result?.map(data => {
         data.dataInicial = moment(data.dataInicial).utc().format('DD/MM/YYYY');
         data.dataFinal = moment(data.dataFinal).utc().format('DD/MM/YYYY');
       });
-      this.listOfEvents = result?.content!;
+      this.listOfEvents = result!;
       if (this.listOfEvents.length > 0) {
         this.disableListEvents = true;
         this.disablePaginatorOne = true;
@@ -298,7 +307,7 @@ export class AppComponent implements OnInit {
         this.disableListEvents = false;
         this.disablePaginatorOne = false;
       }
-      this.totalElements = result?.totalElements;
+      this.totalElements = result?.length;
     }
   }
 
@@ -346,7 +355,7 @@ export class AppComponent implements OnInit {
     if (agenda) {
       this.eventSrv.agendaEventoDetalhe(this.agendaNumber).subscribe({
         next: (data => {
-          this.allEventList = data.content;         
+          this.allEventList = data;
           const mapedresult = this.allEventList.map((item: IEventoDetalhe) => this.convertObjectToEvent(item))
           this.initialEvents = mapedresult;
         })

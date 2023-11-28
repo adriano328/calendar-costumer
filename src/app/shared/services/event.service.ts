@@ -4,6 +4,7 @@ import { IPage } from '../interfaces/Ipage';
 import { IEventoDetalhe } from '../interfaces/IEventoDetalhe';
 import { environment } from 'src/environments/environment';
 import { IEventos } from '../interfaces/IEventos';
+import { IEnvioLocalSetor } from '../interfaces/IEnvioLocalSetor';
 
 @Injectable({
   providedIn: 'root'
@@ -15,19 +16,19 @@ export class EventService {
   ) { }
 
   agendaEventoDetalhe(agendaNumber: number) {
-    return this.http.get<IPage<IEventoDetalhe>>(`${environment.url}/agendaEventoDetalhe/getByAgendaEventoId/${agendaNumber}`)
+    return this.http.get<IEventoDetalhe[]>(`${environment.url}/agendaEventoDetalhe/getByAgendaEventoId/${agendaNumber}`)
   }
 
-  async listAllEvents(dataInicio: string, dataFim: string, page?: number) {
-    return await this.http.get<IPage<IEventos>>(`${environment.url}/agendaEventoDetalhe/findAllEntryDates`, { params: new HttpParams().set('dataInicio', dataInicio!).set('dataFim', dataFim!).set('page', page!) }).toPromise();
+  async listAllEvents(dataInicio: string, dataFim: string) {
+    return await this.http.get<IEventos[]>(`${environment.url}/agendaEventoDetalhe/findAllEntryDates`, { params: new HttpParams().set('dataInicio', dataInicio!).set('dataFim', dataFim!)}).toPromise();
   }
 
   async showEvent(id: number) {
     return await this.http.get<IEventos>(`${environment.url}/agendaEvento/findById/${id}`).toPromise();
   }
 
-  getAllEventByLocalSetor(dataInicio: string, dataFim: string, localSetorId: number, page?: number) {
-    return this.http.get<IPage<IEventoDetalhe>>(`${environment.url}/agendaEventoDetalhe/findAllEntryDatesByLocalSetor`, { params: new HttpParams().set('dataInicio', dataInicio!).set('dataFim', dataFim!).set('localSetorId', localSetorId).set('page', page!) });
+  getAllEventByLocalSetor(buscaLocalSetor: IEnvioLocalSetor) {
+    return this.http.post<IEventoDetalhe[]>(`${environment.url}/agendaEventoDetalhe/findAllEntryDatesByLocalSetor`, buscaLocalSetor);
   }
 
 }
