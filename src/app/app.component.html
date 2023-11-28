@@ -35,11 +35,11 @@
                   <tr class="events" (click)="opentEventModalCalendarFirst(event.id)">
                       <td>
                         <span class="nome"><b style="margin-right: 0.2em;">Evento:</b> {{ event.nomeEvento }}</span>
-                        <div class="periodo">
+                        <div class="periodo" *ngIf="!localSetor">
                           <span><b style="margin-right: 0.2em;">Inicio:</b> {{event.dataInicial}}</span>   <span style="margin-left: 2em;"><b style="margin-right: 0.2em;">Fim:</b> {{event.dataFinal}}</span>
                         </div>
-                        <div class="periodo">
-                          <span><b style="margin-right: 0.2em;">Inicio:</b> {{event.dataInicial}}</span>   <span style="margin-left: 2em;"><b style="margin-right: 0.2em;">Fim:</b> {{event.dataFinal}}</span>
+                        <div class="periodo" *ngIf="localSetor">
+                          <span><b style="margin-right: 0.2em;">Inicio:</b> {{event.dataInicial | date: 'dd/MM/YYYY'}}</span>   <span style="margin-left: 2em;"><b style="margin-right: 0.2em;">Fim:</b> {{event.dataFinal | date: 'dd/MM/YYYY'}}</span>
                         </div>
                         <div class="local-evento">
                           <span><b style="margin-right: 0.2em;">Local do Evento:</b> <span class="local">{{convertLocalEvento(event.localSetorId)}}</span></span>
