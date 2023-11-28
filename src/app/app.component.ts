@@ -18,6 +18,7 @@ import { LoginService } from './shared/services/login.service';
 import { ISetor } from './shared/interfaces/ISetor';
 import { EventService } from './shared/services/event.service';
 import { IEventoDetalhe } from './shared/interfaces/IEventoDetalhe';
+import { IPage } from './shared/interfaces/Ipage';
 registerLocaleData(localePT);
 
 interface City {
@@ -58,7 +59,7 @@ export class AppComponent implements OnInit {
   disablePaginatoTwo: boolean = true;
   calendarVisible = true;
   initialEvents: any[] = [];
-  allEventList: IEventos[] = [];
+  allEventList: IEventoDetalhe[] = [];
   locale: string = 'pt';
   cities!: City[];
   setor: ISetor[] = [];
@@ -92,24 +93,13 @@ export class AppComponent implements OnInit {
       })
     }
 
-    this.prepareDates()
-    // this.initiateCalendar();
+    this.initiateCalendar();
     // this.initiateCalendarSecond();
-    // const result = await this.getInitialEvents();
-    // const mapedresult = result.map(item => this.convertObjectToEvent(item))
-    // this.initialEvents = mapedresult;
+    const result = await this.getInitialEvents();
+    const mapedresult = result.map((item: IEventoDetalhe) => this.convertObjectToEvent(item))
+    this.initialEvents = mapedresult;
     this.getAgendaEvento();
     this.getAllLocalSetor();
-  }
-
-  prepareDates() {
-    this.cities = [
-      { name: 'New York', code: 'NY' },
-      { name: 'Rome', code: 'RM' },
-      { name: 'London', code: 'LDN' },
-      { name: 'Istanbul', code: 'IST' },
-      { name: 'Paris', code: 'PRS' }
-    ];
   }
 
   getAllLocalSetor() {
@@ -136,7 +126,6 @@ export class AppComponent implements OnInit {
     this.eventSrv.agendaEventoDetalhe(agenda!).subscribe({
       next: (data => {
         this.events = data.content;      
-        console.log(this.events);
       })
     })
   }
@@ -205,7 +194,7 @@ export class AppComponent implements OnInit {
   currentEvents: EventApi[] = [];
 
   async listAllEventsByMonths($event?: any) {
-    const idCampoEclesiastico = JSON.parse(localStorage.getItem('idCampoEclesiastico')!);
+    
     let month;
     if (document.getElementsByClassName('calendar-one')) {
       month = document!.getElementsByClassName('calendar-one')[0].textContent;
@@ -221,11 +210,11 @@ export class AppComponent implements OnInit {
     this.finalDate = (`${new Date().getFullYear()}-${month}-${lastDay}`);
 
     let result = null;
-    if (!$event) {
-      result = await this.calendarSrv.listAllEvents(idCampoEclesiastico, this.initialDate, this.finalDate, 0);
+    if (!$event) {  
+      result = await this.calendarSrv.listAllEvents(this.initialDate, this.finalDate, 0);
       this.paginator?.changePage(0);
     } else {
-      result = await this.calendarSrv.listAllEvents(idCampoEclesiastico, this.initialDate, this.finalDate, $event.page);
+      result = await this.calendarSrv.listAllEvents(this.initialDate, this.finalDate, $event.page);
     }
 
     if (result) {
@@ -246,18 +235,18 @@ export class AppComponent implements OnInit {
   }
 
   async initiateCalendar($event?: any) {
-    const idCampoEclesiastico = JSON.parse(localStorage.getItem('idCampoEclesiastico')!);
     const date = new Date();
     let firstDay = new Date(date.getFullYear(), date.getMonth(), 1).getDate();
     let lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
-    this.initialDate = (`${new Date().getFullYear()}-${new Date().getMonth() + 1}-${firstDay}`);
+    this.initialDate = (`${new Date().getFullYear()}-${new Date().getMonth() + 1}-${firstDay}`);   
+    
     this.finalDate = (`${new Date().getFullYear()}-${new Date().getMonth() + 1}-${lastDay}`);
     let result = null;
     if (!$event) {
-      result = await this.calendarSrv.listAllEvents(idCampoEclesiastico, this.initialDate, this.finalDate, 0);
+      result = await this.calendarSrv.listAllEvents(this.initialDate, this.finalDate, 0);    
       this.paginator?.changePage(0);
     } else {
-      result = await this.calendarSrv.listAllEvents(idCampoEclesiastico, this.initialDate, this.finalDate, $event.page);
+      result = await this.calendarSrv.listAllEvents(this.initialDate, this.finalDate, $event.page);
     }
 
     if (result) {
@@ -274,6 +263,8 @@ export class AppComponent implements OnInit {
         this.disablePaginatorOne = false;
       }
       this.totalElements = result?.totalElements;
+      console.log(this.listOfEvents);
+      
     }
   }
 
@@ -307,45 +298,44 @@ export class AppComponent implements OnInit {
     return '00';
   }
 
-  async listAllEventsByMonthsSecond($event?: any) {
-    const idCampoEclesiastico = JSON.parse(localStorage.getItem('idCampoEclesiastico')!);
-    let month;
-    if (document.getElementsByClassName('calendar-two')) {
-      month = document!.getElementsByClassName('calendar-two')[0].textContent;
-    }
-    if (month) {
-      month = this.convertMonthNameToNumberOfMonth(month);
-    }
-    const date = new Date(`${new Date().getFullYear()}-${month}-01T06:00:00Z`);
+  // async listAllEventsByMonthsSecond($event?: any) {
+  //   let month;
+  //   if (document.getElementsByClassName('calendar-two')) {
+  //     month = document!.getElementsByClassName('calendar-two')[0].textContent;
+  //   }
+  //   if (month) {
+  //     month = this.convertMonthNameToNumberOfMonth(month);
+  //   }
+  //   const date = new Date(`${new Date().getFullYear()}-${month}-01T06:00:00Z`);
 
-    let firstDay = new Date(date.getFullYear(), date.getMonth(), 1).getDate()
-    let lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate()
-    this.initiateDateSecond = (`${new Date().getFullYear()}-${month}-${firstDay}`);
-    this.finalDateSecond = (`${new Date().getFullYear()}-${month}-${lastDay}`);
-    let result = null;
-    if (!$event) {
-      result = await this.calendarSrv.listAllEvents(idCampoEclesiastico, this.initiateDateSecond, this.finalDateSecond, 0);
-      this.paginatorb?.changePage(0);
-    } else {
-      result = await this.calendarSrv.listAllEvents(idCampoEclesiastico, this.initiateDateSecond, this.finalDateSecond, $event.page);
-    }
-    if (result) {
-      result?.content.map(data => {
-        data.dataInicial = moment(data.dataInicial).utc().format('DD/MM/YYYY');
-        data.dataFinal = moment(data.dataFinal).utc().format('DD/MM/YYYY');
-      });
+  //   let firstDay = new Date(date.getFullYear(), date.getMonth(), 1).getDate()
+  //   let lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate()
+  //   this.initiateDateSecond = (`${new Date().getFullYear()}-${month}-${firstDay}`);
+  //   this.finalDateSecond = (`${new Date().getFullYear()}-${month}-${lastDay}`);
+  //   let result = null;
+  //   if (!$event) {
+  //     result = await this.calendarSrv.listAllEvents(this.initiateDateSecond, this.finalDateSecond, 0);
+  //     this.paginatorb?.changePage(0);
+  //   } else {
+  //     result = await this.calendarSrv.listAllEvents(this.initiateDateSecond, this.finalDateSecond, $event.page);
+  //   }
+  //   if (result) {
+  //     result?.content.map(data => {
+  //       data.dataInicial = moment(data.dataInicial).utc().format('DD/MM/YYYY');
+  //       data.dataFinal = moment(data.dataFinal).utc().format('DD/MM/YYYY');
+  //     });
 
-      this.listOfEventsSecond = result?.content!;
-      if (this.listOfEventsSecond.length > 0) {
-        this.disableListEventsSecond = true;
-        this.disablePaginatoTwo = true;
-      } else {
-        this.disableListEventsSecond = false;
-        this.disablePaginatoTwo = false;
-      }
-      this.totalElementsSecond = result?.totalElements!;
-    }
-  }
+  //     this.listOfEventsSecond = result?.content!;
+  //     if (this.listOfEventsSecond.length > 0) {
+  //       this.disableListEventsSecond = true;
+  //       this.disablePaginatoTwo = true;
+  //     } else {
+  //       this.disableListEventsSecond = false;
+  //       this.disablePaginatoTwo = false;
+  //     }
+  //     this.totalElementsSecond = result?.totalElements!;
+  //   }
+  // }
 
   async opentEventModalCalendarFirst(id: number) {
     const result = await this.calendarSrv.showEvent(id);
@@ -357,69 +347,63 @@ export class AppComponent implements OnInit {
     }
   }
 
-  async opentEventModalCalendarSecond(id: number) {
-    const result = await this.calendarSrv.showEvent(id);
-    this.detailEventSecond = result!;
-    if (this.eventDetailsSecondCalendar === true) {
-      this.eventDetailsSecondCalendar = false;
-    } else {
-      this.eventDetailsSecondCalendar = true;
-    }
-  }
+  // async opentEventModalCalendarSecond(id: number) {
+  //   const result = await this.calendarSrv.showEvent(id);
+  //   this.detailEventSecond = result!;
+  //   if (this.eventDetailsSecondCalendar === true) {
+  //     this.eventDetailsSecondCalendar = false;
+  //   } else {
+  //     this.eventDetailsSecondCalendar = true;
+  //   }
+  // }
 
-  async initiateCalendarSecond($event?: any) {
-    const idCampoEclesiastico = JSON.parse(localStorage.getItem('idCampoEclesiastico')!);
-    const date = new Date();
-    let firstDay = new Date(date.getFullYear(), date.getMonth(), 1).getDate();
-    let lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
-    this.initialDate = (`${new Date().getFullYear()}-${new Date().getMonth() + 2}-${firstDay}`);
-    this.finalDate = (`${new Date().getFullYear()}-${new Date().getMonth() + 2}-${lastDay}`);
-    let result = null;
-    if (!$event) {
-      result = await this.calendarSrv.listAllEvents(idCampoEclesiastico, this.initiateDateSecond, this.finalDateSecond, 0);
-      this.paginatorb?.changePage(0);
-    } else {
-      result = await this.calendarSrv.listAllEvents(idCampoEclesiastico, this.initiateDateSecond, this.finalDateSecond, $event.page);
-    }
-    if (result) {
-      result?.content.map(data => {
-        data.dataInicial = moment(data.dataInicial).utc().format('DD/MM/YYYY');
-        data.dataFinal = moment(data.dataFinal).utc().format('DD/MM/YYYY');
-      });
+  // async initiateCalendarSecond($event?: any) {
+  //   const date = new Date();
+  //   let firstDay = new Date(date.getFullYear(), date.getMonth(), 1).getDate();
+  //   let lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate();
+  //   this.initialDate = (`${new Date().getFullYear()}-${new Date().getMonth() + 2}-${firstDay}`);
+  //   this.finalDate = (`${new Date().getFullYear()}-${new Date().getMonth() + 2}-${lastDay}`);
+  //   let result = null;
+  //   if (!$event) {
+  //     result = await this.calendarSrv.listAllEvents(this.initiateDateSecond, this.finalDateSecond, 0);
+  //     this.paginatorb?.changePage(0);
+  //   } else {
+  //     result = await this.calendarSrv.listAllEvents(this.initiateDateSecond, this.finalDateSecond, $event.page);
+  //   }
+  //   if (result) {
+  //     result?.content.map(data => {
+  //       data.dataInicial = moment(data.dataInicial).utc().format('DD/MM/YYYY');
+  //       data.dataFinal = moment(data.dataFinal).utc().format('DD/MM/YYYY');
+  //     });
 
-      this.listOfEventsSecond = result?.content!;
-      if (this.listOfEventsSecond.length > 0) {
-        this.disableListEventsSecond = true;
-        this.disablePaginatoTwo = true;
-      } else {
-        this.disableListEventsSecond = false;
-        this.disablePaginatoTwo = false;
-      }
-      this.totalElementsSecond = result?.totalElements!;
-    }
-  }
+  //     this.listOfEventsSecond = result?.content!;
+  //     if (this.listOfEventsSecond.length > 0) {
+  //       this.disableListEventsSecond = true;
+  //       this.disablePaginatoTwo = true;
+  //     } else {
+  //       this.disableListEventsSecond = false;
+  //       this.disablePaginatoTwo = false;
+  //     }
+  //     this.totalElementsSecond = result?.totalElements!;
+  //   }
+  // }
 
-  async getInitialEvents(): Promise<IEventos[]> {
+  getInitialEvents(){
     const TODAY_STR = new Date("2023-02-01").toISOString().replace(/T.*$/, '');
     const END_EVENT = new Date("2023-02-06").toISOString().replace(/T.*$/, '');
-
-    const idCampoeclesiastico = localStorage.getItem('idCampoEclesiastico');
-
-    if (idCampoeclesiastico) {
-      const result = await this.calendarSrv.listAllEventsByCampoEclesiastico(parseInt(idCampoeclesiastico));
-
-      if (result) {
-        this.allEventList = result.content;
-      }
-
+    if (this.agendaNumber) {
+      this.eventSrv.agendaEventoDetalhe(this.agendaNumber).subscribe({
+        next: (data => {
+          this.allEventList = data.content;
+        })
+      });
     }
-
     return this.allEventList;
   }
 
-  convertObjectToEvent(eventObject: IEventos): EventInput {
+  convertObjectToEvent(eventObject: IEventoDetalhe): EventInput {
     const colors = ["#4169E1", "#228B22", "##DAA520", "#F08080", "#FFD700"];
     const random = Math.floor(Math.random() * colors.length);
-    return { id: eventObject.id.toString(), title: eventObject.nome, start: moment(eventObject.dataInicial).utc().format('YYYY-MM-DD'), end: moment(eventObject.dataFinal).utc().format('YYYY-MM-DD'), color: colors[random] }
+    return { id: eventObject.id.toString(), title: eventObject.nomeEvento, start: moment(eventObject.dataInicial).utc().format('YYYY-MM-DD'), end: moment(eventObject.dataFinal).utc().format('YYYY-MM-DD'), color: colors[random] }
   }
 }

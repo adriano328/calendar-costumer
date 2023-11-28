@@ -15,12 +15,8 @@ export class CalendarService {
     private http: HttpClient
   ) { }
 
-  async listAllEvents(idCampoEclesiastico: number, initialDate: string, finalDate: string, page?: number) {
-    return await this.http.get<IPage<IEventos>>(`${environment.url}/agendaEvento/findAllEntryDatesAndIdCampoEclesiastico`, {params: new HttpParams().set('idCampoEclesiastico', idCampoEclesiastico!).set('initialDate', initialDate!).set('finalDate', finalDate!).set('page', page!)}).toPromise();
-  }
-
-  async listAllEventsByCampoEclesiastico(idCampoEclesiastico: number){
-    return this.http.get<IPage<IEventos>>(`${environment.url}/agendaEvento/findAllBycampoEclesiastico/${idCampoEclesiastico}`).toPromise();
+  async listAllEvents(dataInicio: string, dataFim: string, page?: number) {
+    return await this.http.get<IPage<IEventos>>(`${environment.url}/agendaEventoDetalhe/findAllEntryDates`, {params: new HttpParams().set('dataInicio', dataInicio!).set('dataFim', dataFim!).set('page', page!)}).toPromise();
   }
 
   async showEvent(id: number) {
