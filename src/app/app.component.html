@@ -35,10 +35,10 @@
                   <tr class="events" (click)="opentEventModalCalendarFirst(event.id)">
                       <td>
                         <span class="nome"><b style="margin-right: 0.2em;">Evento:</b> {{ event.nomeEvento }}</span>
-                        <div class="periodo" *ngIf="!localSetor">
+                        <div class="periodo" *ngIf="!dataFomat">
                           <span><b style="margin-right: 0.2em;">Inicio:</b> {{event.dataInicial}}</span>   <span style="margin-left: 2em;"><b style="margin-right: 0.2em;">Fim:</b> {{event.dataFinal}}</span>
                         </div>
-                        <div class="periodo" *ngIf="localSetor">
+                        <div class="periodo" *ngIf="dataFomat">
                           <span><b style="margin-right: 0.2em;">Inicio:</b> {{event.dataInicial | date: 'dd/MM/YYYY'}}</span>   <span style="margin-left: 2em;"><b style="margin-right: 0.2em;">Fim:</b> {{event.dataFinal | date: 'dd/MM/YYYY'}}</span>
                         </div>
                         <div class="local-evento">
@@ -54,8 +54,8 @@
   </div>
   <div class="borda"></div>
   <div class="base-footer">
-    <p class="footer" style="text-align: center;">ASSEMBLÉIA DE DEUS <img src="/assets/logo.png" class="img-footer"> EM
-      CUIABÁ E REGIÃO</p>
+    <p class="footer" style="text-align: center;">{{igreja}} <img [src]="imageCampo" class="img-footer">
+      {{campo}}</p>
   </div>
 </div>
 <p-dialog [(visible)]="eventDetailsFirstCalendar" [modal]="true" [style]="{width: '30vw'}">

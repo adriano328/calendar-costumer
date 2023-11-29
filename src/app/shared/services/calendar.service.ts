@@ -23,4 +23,8 @@ export class CalendarService {
     return this.http.get<any>(`${environment.url}/localsetor/getAllList`)
   }
 
+  getInfoCampoEclesiastico(campo: number) {
+    return this.http.get<any>(`${environment.url}/campoEclesiastico/getFotoCampoeclesiastico/${campo}`)
+  }
+
 }

@@ -20,6 +20,7 @@ import { EventService } from './shared/services/event.service';
 import { IEventoDetalhe } from './shared/interfaces/IEventoDetalhe';
 import { IEnvioLocalSetor } from '../app/shared/interfaces/IEnvioLocalSetor';
 import { Observable } from 'rxjs';
+import { DomSanitizer } from '@angular/platform-browser';
 
 registerLocaleData(localePT);
 
@@ -70,12 +71,17 @@ export class AppComponent implements OnInit {
   localSetor: ISetor[] = [];
   spinnerView = false;
   messageReturn = false;
+  dataFomat = false;
+  imageCampo: any;
+  igreja!: string;
+  campo!: string;
 
   constructor(
     private changeDetector: ChangeDetectorRef,
     private calendarSrv: CalendarService,
     private eventSrv: EventService,
-    private loginService: LoginService
+    private loginService: LoginService,
+    private _sanitizer: DomSanitizer
   ) {
   }
   async ngOnInit() {
@@ -88,8 +94,6 @@ export class AppComponent implements OnInit {
       this.getAgendaEvento();
       this.getAllLocalSetor();
     })
-
-
   }
 
   async loadToken(token: string): Promise<string> {
@@ -134,6 +138,7 @@ export class AppComponent implements OnInit {
     const ano = new Date().getFullYear()
     this.calendarSrv.getAgendaEvento(ano).subscribe({
       next: (data => {
+        this.getInfoCampoEclesiastico(data.campoEclesiastico)
         this.agendaNumber = data.id;
         this.agendaEventoDetalhe(this.agendaNumber)
         this.getInitialEvents(this.agendaNumber)
@@ -211,6 +216,22 @@ export class AppComponent implements OnInit {
     this.changeDetector.detectChanges();
   }
 
+  getInfoCampoEclesiastico(agenda?: number) {
+    this.calendarSrv.getInfoCampoEclesiastico(agenda!).subscribe({
+      next: (data => {
+        console.log(data);
+        this.imageCampo = data.logotipocabecalhorelatorio;
+        this.imageCampo = this._sanitizer.bypassSecurityTrustResourceUrl('data:image/jpg;base64,' + this.imageCampo);
+        const igreja = data.denominacao;
+        this.igreja = igreja.slice(0,36);
+                
+        const campo = data.denominacao;
+        this.campo = campo.slice(36,55)
+
+      })
+    })
+  }
+
   currentEvents: EventApi[] = [];
 
   async listAllEventsByMonths($event?: any) {
@@ -278,6 +299,7 @@ export class AppComponent implements OnInit {
       this.listAllEventsByMonths();
       this.getAgendaEvento()
     } else {
+      this.dataFomat = true;  
       const data: IEnvioLocalSetor = {
         initialDate: this.initialDate,
         finalDate: this.finalDate,
@@ -368,8 +390,6 @@ export class AppComponent implements OnInit {
   async opentEventModalCalendarFirst(id: number) {
     const result = await this.eventSrv.showEvent(id);
     this.detailEvent = result!;
-    console.log(this.detailEvent);
-
     if (this.eventDetailsFirstCalendar === true) {
       this.eventDetailsFirstCalendar = false;
     } else {
