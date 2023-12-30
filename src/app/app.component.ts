@@ -188,7 +188,11 @@ export class AppComponent implements OnInit {
     selectMirror: true,
     dayMaxEvents: true,
     dateClick: function (info) {
-      window.myGlobalClickedInfo = info;
+      const data = info.dateStr;
+      this.teste(data)
+      window.myGlobalClickedInfo = info.date;
+      info.date
+      console.log(info.date, 'Dentro');
     },
     eventDisplay: 'background',
     eventsSet: this.handleEvents.bind(this), 
@@ -199,11 +203,10 @@ export class AppComponent implements OnInit {
   handleEvents(events: EventApi[]) {
     this.currentEvents = events;
     this.changeDetector.detectChanges();
-    // this.teste()
   }
 
-  teste() {
-    console.log(window.myGlobalClickedInfo);
+  teste(text: string) {
+    console.log(window.myGlobalClickedInfo, 'Fora');
     
   }
 
