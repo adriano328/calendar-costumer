@@ -6,8 +6,8 @@
     <div class="grid">
       <div class="flex justify-content-center col-12 md:col-6 lg:col-6">
         <div class="first-calendar">
-          <full-calendar (click)="listAllEventsByMonths()" class="calendar-one" *ngIf='calendarVisible'
-            [options]='calendarOptionsOne' [events]="initialEvents">
+          <full-calendar (click)="listAllEventsByMonths()" (click)="teste()" class="calendar-one" *ngIf='calendarVisible'
+            [options]='calendarOptionsOne' [events]="initialEvents" id="calendario">
             <ng-template #eventContent let-arg>
               <b>{{ arg.timeText }}</b>
               <i>{{ arg.event.title }} </i>
@@ -28,21 +28,18 @@
             <div class="flex justify-content-center align-items-center message-return" *ngIf="messageReturn">
               <span style="font-size: 14px;">Não existem eventos programados para este mês!</span>
             </div>
-            <p-table [value]="listOfEvents" [paginator]="true" [rows]="3" *ngIf="disableListEvents">
+            <p-table [value]="listOfEvents" [paginator]="true" [rows]="50" *ngIf="disableListEvents">
               <ng-template pTemplate="header">
               </ng-template>
               <ng-template pTemplate="body" let-event>
                   <tr class="events" (click)="opentEventModalCalendarFirst(event.id)">
                       <td>
                         <span class="nome"><b style="margin-right: 0.2em;">Evento:</b> {{ event.nomeEvento }}</span>
-                        <div class="periodo" *ngIf="!dataFomat">
+                        <div class="periodo">
                           <span><b style="margin-right: 0.2em;">Inicio:</b> {{event.dataInicial}}</span>   <span style="margin-left: 2em;"><b style="margin-right: 0.2em;">Fim:</b> {{event.dataFinal}}</span>
                         </div>
-                        <div class="periodo" *ngIf="dataFomat">
-                          <span><b style="margin-right: 0.2em;">Inicio:</b> {{event.dataInicial | date: 'dd/MM/YYYY'}}</span>   <span style="margin-left: 2em;"><b style="margin-right: 0.2em;">Fim:</b> {{event.dataFinal | date: 'dd/MM/YYYY'}}</span>
-                        </div>
                         <div class="local-evento">
-                          <span><b style="margin-right: 0.2em;">Local do Evento:</b> <span class="local">{{convertLocalEvento(event.localSetorId)}}</span></span>
+                          <span><b style="margin-right: 0.2em;">Local do Evento:</b> <span class="local">{{event.nomeLocalSetor}}</span></span>
                         </div>
                       </td>
                   </tr>

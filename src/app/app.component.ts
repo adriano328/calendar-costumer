@@ -21,12 +21,19 @@ import { IEventoDetalhe } from './shared/interfaces/IEventoDetalhe';
 import { IEnvioLocalSetor } from '../app/shared/interfaces/IEnvioLocalSetor';
 import { Observable } from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
+import { FullCalendarComponent } from '@fullcalendar/angular';
 
 registerLocaleData(localePT);
 
 interface City {
   name: string,
   code: string
+}
+
+declare global {
+  interface Window {
+    myGlobalClickedInfo: any;
+  }
 }
 
 @Component({
@@ -75,6 +82,7 @@ export class AppComponent implements OnInit {
   imageCampo: any;
   igreja!: string;
   campo!: string;
+  data: any;
 
   constructor(
     private changeDetector: ChangeDetectorRef,
@@ -155,8 +163,8 @@ export class AppComponent implements OnInit {
     })
   }
 
+  
   calendarOptionsOne: CalendarOptions = {
-
     dayHeaderFormat: {
       weekday: 'short'
     },
@@ -179,54 +187,36 @@ export class AppComponent implements OnInit {
     selectable: true,
     selectMirror: true,
     dayMaxEvents: true,
+    dateClick: function (info) {
+      window.myGlobalClickedInfo = info;
+    },
     eventDisplay: 'background',
-    eventsSet: this.handleEvents.bind(this),
+    eventsSet: this.handleEvents.bind(this), 
   };
 
-  calendarOptionsTwo: CalendarOptions = {
-    initialDate: new Date().getFullYear() + '-' + moment(new Date()).add('month', 1).format('MM'),
-    dayHeaderFormat: {
-      weekday: 'short'
-    },
-    buttonText: {
-      today: 'Hoje'
-    },
-    moreLinkText: 'Todos',
-    locale: "pt-br",
-    plugins: [
-      interactionPlugin,
-      dayGridPlugin,
-      timeGridPlugin,
-      listPlugin,
-      momentPlugin
-    ],
-    initialView: 'dayGridMonth',
-    initialEvents: INITIAL_EVENTS,
-    weekends: true,
-    editable: true,
-    selectable: true,
-    selectMirror: true,
-    dayMaxEvents: true,
-    eventDisplay: 'background',
-    eventsSet: this.handleEvents.bind(this),
-  };
+
 
   handleEvents(events: EventApi[]) {
     this.currentEvents = events;
     this.changeDetector.detectChanges();
+    // this.teste()
+  }
+
+  teste() {
+    console.log(window.myGlobalClickedInfo);
+    
   }
 
   getInfoCampoEclesiastico(agenda?: number) {
     this.calendarSrv.getInfoCampoEclesiastico(agenda!).subscribe({
       next: (data => {
-        console.log(data);
         this.imageCampo = data.logotipocabecalhorelatorio;
         this.imageCampo = this._sanitizer.bypassSecurityTrustResourceUrl('data:image/jpg;base64,' + this.imageCampo);
         const igreja = data.denominacao;
-        this.igreja = igreja.slice(0,36);
-                
+        this.igreja = igreja.slice(0, 36);
+
         const campo = data.denominacao;
-        this.campo = campo.slice(36,55)
+        this.campo = campo.slice(36, 55)
 
       })
     })
@@ -259,12 +249,12 @@ export class AppComponent implements OnInit {
 
     if (result) {
       this.spinnerView = false;
-      result?.map(data => {
+      result.content?.map(data => {
         data.dataInicial = moment(data.dataInicial).utc().format('DD/MM/YYYY');
         data.dataFinal = moment(data.dataFinal).utc().format('DD/MM/YYYY');
       });
-      this.listOfEvents = result!;
-      if (this.listOfEvents.length > 0) {
+      this.listOfEvents = result.content;
+      if (this.listOfEvents?.length > 0) {
         this.messageReturn = false;
         this.disableListEvents = true;
       } else {
@@ -296,10 +286,11 @@ export class AppComponent implements OnInit {
     this.finalDate = (`${new Date().getFullYear()}-${month}-${lastDay}`);
     const local = this.localSetor.map(e => e.id);
     if (local.length < 1) {
+      this.dataFomat = false;
       this.listAllEventsByMonths();
       this.getAgendaEvento()
     } else {
-      this.dataFomat = true;  
+      this.dataFomat = true;
       const data: IEnvioLocalSetor = {
         initialDate: this.initialDate,
         finalDate: this.finalDate,
@@ -319,11 +310,19 @@ export class AppComponent implements OnInit {
               this.messageReturn = true;
               this.disableListEvents = false;
             }
-              this.totalElements = data?.length;
-            }
-          })
+            this.totalElements = data?.length;
+          }
+          this.listOfEvents.map(data => {
+            data.dataInicial = moment(data.dataInicial).utc().format('DD/MM/YYYY');
+            data.dataFinal = moment(data.dataFinal).utc().format('DD/MM/YYYY');
+          });
+        })
       })
     }
+  }
+
+  pegarEvento() {
+
   }
 
   async initiateCalendar($event?: any) {
@@ -341,12 +340,8 @@ export class AppComponent implements OnInit {
     }
     if (result) {
       this.spinnerView = false;
-      result?.map(data => {
-        data.dataInicial = moment(data.dataInicial).utc().format('DD/MM/YYYY');
-        data.dataFinal = moment(data.dataFinal).utc().format('DD/MM/YYYY');
-      });
-      this.listOfEvents = result!;
-      if (this.listOfEvents.length > 0) {
+      this.listOfEvents = result.content;
+      if (this.listOfEvents?.length > 0) {
         this.messageReturn = false;
         this.disableListEvents = true;
       } else {
@@ -354,7 +349,15 @@ export class AppComponent implements OnInit {
         this.disableListEvents = false;
       }
       this.totalElements = result?.length;
+      this.listOfEvents.map(data => {
+        data.dataInicial = moment(data.dataInicial).utc().format('DD/MM/YYYY');
+        data.dataFinal = moment(data.dataFinal).utc().format('DD/MM/YYYY');
+      });
     }
+  }
+
+  handleDateClick(selectInfo: any) {
+
   }
 
   convertMonthNameToNumberOfMonth(month: string): string {
@@ -386,6 +389,13 @@ export class AppComponent implements OnInit {
 
     return '00';
   }
+
+  converterFormatoData(dataFormatoOriginal: string) {
+    var partesDaData = dataFormatoOriginal.split("-");
+    var dataFormatoNovo = partesDaData[2] + "/" + partesDaData[1] + "/" + partesDaData[0];
+    return dataFormatoNovo;
+  }
+
 
   async opentEventModalCalendarFirst(id: number) {
     const result = await this.eventSrv.showEvent(id);
