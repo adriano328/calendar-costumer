@@ -164,7 +164,7 @@ export class AppComponent implements OnInit {
   }
 
   
-  calendarOptionsOne: CalendarOptions = {
+  calendarOptionsOne: any = {
     dayHeaderFormat: {
       weekday: 'short'
     },
@@ -187,12 +187,8 @@ export class AppComponent implements OnInit {
     selectable: true,
     selectMirror: true,
     dayMaxEvents: true,
-    dateClick: function (info) {
-      const data = info.dateStr;
-      this.teste(data)
-      window.myGlobalClickedInfo = info.date;
-      info.date
-      console.log(info.date, 'Dentro');
+    dateClick: function (info: { dateStr: any; date: any; }) {
+      this.data = info.dateStr;
     },
     eventDisplay: 'background',
     eventsSet: this.handleEvents.bind(this), 
@@ -205,8 +201,15 @@ export class AppComponent implements OnInit {
     this.changeDetector.detectChanges();
   }
 
-  teste(text: string) {
-    console.log(window.myGlobalClickedInfo, 'Fora');
+  teste(text?: string) {
+    console.log(this.data);
+    
+    const dateAnterior = new Date(this.data)
+    
+    const datePosterior = new Date(this.data)
+    console.log(dateAnterior, 'Data Anterior');
+    console.log(datePosterior, 'Data Posterior');
+    
     
   }
 
