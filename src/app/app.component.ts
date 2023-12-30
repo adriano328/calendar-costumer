@@ -189,6 +189,42 @@ export class AppComponent implements OnInit {
     dayMaxEvents: true,
     dateClick: function (info: { dateStr: any; date: any; }) {
       this.data = info.dateStr;
+      const diaAnterior = moment(this.data).subtract(1, 'days').format('YYYY-MM-DD')
+      const diaPosterior = moment(this.data).add(1, 'days').format('YYYY-MM-DD');
+      
+      console.log();
+      
+      const local = this.localSetor?.map((e: any) => e.id);
+      const data: IEnvioLocalSetor = {
+        initialDate: diaAnterior,
+        finalDate: diaPosterior,
+        locaisSetoresIds: local
+      }
+      
+      this.eventSrv?.getAllEventByLocalSetor(data).subscribe({
+        next: ((data: any) => {
+          console.log(data);
+          
+          if (data) {
+            this.spinnerView = false;
+            this.listOfEvents = data;
+            const mapedresult = this.listOfEvents.map((item: IEventoDetalhe) => this.convertObjectToEvent(item))
+            this.initialEvents = mapedresult;
+            if (this.listOfEvents.length > 0) {
+              this.messageReturn = false;
+              this.disableListEvents = true;
+            } else {
+              this.messageReturn = true;
+              this.disableListEvents = false;
+            }
+            this.totalElements = data?.length;
+          }
+          this.listOfEvents.map((e: any) => {
+            data.dataInicial = moment(data.dataInicial).utc().format('DD/MM/YYYY');
+            data.dataFinal = moment(data.dataFinal).utc().format('DD/MM/YYYY');
+          });
+        })
+      })
     },
     eventDisplay: 'background',
     eventsSet: this.handleEvents.bind(this), 
@@ -199,18 +235,6 @@ export class AppComponent implements OnInit {
   handleEvents(events: EventApi[]) {
     this.currentEvents = events;
     this.changeDetector.detectChanges();
-  }
-
-  teste(text?: string) {
-    console.log(this.data);
-    
-    const dateAnterior = new Date(this.data)
-    
-    const datePosterior = new Date(this.data)
-    console.log(dateAnterior, 'Data Anterior');
-    console.log(datePosterior, 'Data Posterior');
-    
-    
   }
 
   getInfoCampoEclesiastico(agenda?: number) {
@@ -275,13 +299,14 @@ export class AppComponent implements OnInit {
     window.open(link, '_blank');
   }
 
-  getAllEventByLocalSetor($event: any) {
+  getAllEventByLocalSetor($event?: any, tipoSelecionado?: string) {    
     let month;
     if (document.getElementsByClassName('calendar-one')) {
       month = document!.getElementsByClassName('calendar-one')[0].textContent;
     }
     if (month) {
       month = this.convertMonthNameToNumberOfMonth(month);
+      console.log(month);
     }
     const date = new Date(`${new Date().getFullYear()}-${month}-01T06:00:00Z`);
     let firstDay = new Date(date.getFullYear(), date.getMonth(), 1).getDate()
@@ -291,6 +316,7 @@ export class AppComponent implements OnInit {
     this.initialDate = (`${new Date().getFullYear()}-${month}-${first}`);
     this.finalDate = (`${new Date().getFullYear()}-${month}-${lastDay}`);
     const local = this.localSetor.map(e => e.id);
+
     if (local.length < 1) {
       this.dataFomat = false;
       this.listAllEventsByMonths();
