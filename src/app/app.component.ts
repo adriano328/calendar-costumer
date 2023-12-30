@@ -87,7 +87,7 @@ export class AppComponent implements OnInit {
   constructor(
     private changeDetector: ChangeDetectorRef,
     private calendarSrv: CalendarService,
-    private eventSrv: EventService,
+    public eventSrv: EventService,
     private loginService: LoginService,
     private _sanitizer: DomSanitizer
   ) {
@@ -163,8 +163,8 @@ export class AppComponent implements OnInit {
     })
   }
 
-  
-  calendarOptionsOne: any = {
+
+  calendarOptionsOne: CalendarOptions = {
     dayHeaderFormat: {
       weekday: 'short'
     },
@@ -187,47 +187,9 @@ export class AppComponent implements OnInit {
     selectable: true,
     selectMirror: true,
     dayMaxEvents: true,
-    dateClick: function (info: { dateStr: any; date: any; }) {
-      this.data = info.dateStr;
-      const diaAnterior = moment(this.data).subtract(1, 'days').format('YYYY-MM-DD')
-      const diaPosterior = moment(this.data).add(1, 'days').format('YYYY-MM-DD');
-      
-      console.log();
-      
-      const local = this.localSetor?.map((e: any) => e.id);
-      const data: IEnvioLocalSetor = {
-        initialDate: diaAnterior,
-        finalDate: diaPosterior,
-        locaisSetoresIds: local
-      }
-      
-      this.eventSrv?.getAllEventByLocalSetor(data).subscribe({
-        next: ((data: any) => {
-          console.log(data);
-          
-          if (data) {
-            this.spinnerView = false;
-            this.listOfEvents = data;
-            const mapedresult = this.listOfEvents.map((item: IEventoDetalhe) => this.convertObjectToEvent(item))
-            this.initialEvents = mapedresult;
-            if (this.listOfEvents.length > 0) {
-              this.messageReturn = false;
-              this.disableListEvents = true;
-            } else {
-              this.messageReturn = true;
-              this.disableListEvents = false;
-            }
-            this.totalElements = data?.length;
-          }
-          this.listOfEvents.map((e: any) => {
-            data.dataInicial = moment(data.dataInicial).utc().format('DD/MM/YYYY');
-            data.dataFinal = moment(data.dataFinal).utc().format('DD/MM/YYYY');
-          });
-        })
-      })
-    },
+    dateClick: this.handleDateClick.bind(this),
     eventDisplay: 'background',
-    eventsSet: this.handleEvents.bind(this), 
+    eventsSet: this.handleEvents.bind(this),
   };
 
 
@@ -299,7 +261,7 @@ export class AppComponent implements OnInit {
     window.open(link, '_blank');
   }
 
-  getAllEventByLocalSetor($event?: any, tipoSelecionado?: string) {    
+  getAllEventByLocalSetor($event?: any, tipoSelecionado?: string) {
     let month;
     if (document.getElementsByClassName('calendar-one')) {
       month = document!.getElementsByClassName('calendar-one')[0].textContent;
@@ -389,6 +351,39 @@ export class AppComponent implements OnInit {
   }
 
   handleDateClick(selectInfo: any) {
+    this.data = selectInfo.dateStr;
+      const diaAnterior = moment(this.data).subtract(1, 'days').format('YYYY-MM-DD')
+      const diaPosterior = moment(this.data).add(1, 'days').format('YYYY-MM-DD');
+
+      const local = this.localSetor?.map((e: any) => e.id);
+      const data: IEnvioLocalSetor = {
+        initialDate: diaAnterior,
+        finalDate: diaPosterior,
+        locaisSetoresIds: local
+      }
+
+      this.eventSrv.getAllEventByLocalSetor(data).subscribe({
+        next: ((data: any) => {
+          if (data) {
+            this.spinnerView = false;
+            this.listOfEvents = data;
+            const mapedresult = this.listOfEvents.map((item: IEventoDetalhe) => this.convertObjectToEvent(item))
+            this.initialEvents = mapedresult;
+            if (this.listOfEvents.length > 0) {
+              this.messageReturn = false;
+              this.disableListEvents = true;
+            } else {
+              this.messageReturn = true;
+              this.disableListEvents = false;
+            }
+            this.totalElements = data?.length;
+          }
+          this.listOfEvents.map((e: any) => {
+            data.dataInicial = moment(data.dataInicial).utc().format('DD/MM/YYYY');
+            data.dataFinal = moment(data.dataFinal).utc().format('DD/MM/YYYY');
+          });
+        })
+      })
 
   }
 
