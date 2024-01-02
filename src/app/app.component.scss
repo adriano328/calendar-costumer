@@ -341,6 +341,17 @@
     overflow: auto !important;
   }
 
+  .first-calendar {
+    margin-right: 0em !important;
+
+    .container-dropdown {
+
+      ::ng-deep .p-multiselect {
+        width: 80vw !important;
+      }
+    }
+  }
+
   .base-footer {
     flex-wrap: wrap !important;
   }

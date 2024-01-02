@@ -206,10 +206,8 @@ export class AppComponent implements OnInit {
         this.imageCampo = this._sanitizer.bypassSecurityTrustResourceUrl('data:image/jpg;base64,' + this.imageCampo);
         const igreja = data.denominacao;
         this.igreja = igreja.slice(0, 36);
-
         const campo = data.denominacao;
         this.campo = campo.slice(36, 55)
-
       })
     })
   }
