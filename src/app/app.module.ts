@@ -14,6 +14,7 @@ import { MultiSelectModule } from 'primeng/multiselect';
 import { AuthInterceptor } from './shared/interceptors/auth-interceptor';
 import { TableModule } from 'primeng/table';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
+import {ButtonModule} from 'primeng/button';
 
 @NgModule({
   declarations: [
@@ -31,7 +32,8 @@ import { ProgressSpinnerModule } from 'primeng/progressspinner';
     InputTextareaModule,
     MultiSelectModule,
     TableModule,
-    ProgressSpinnerModule
+    ProgressSpinnerModule,
+    ButtonModule
   ],
   providers: [
     {

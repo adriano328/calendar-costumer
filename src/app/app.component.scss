@@ -33,6 +33,22 @@
       margin-right: 1em;
       margin-top: 2em;
 
+      .container-button{
+        
+        ::ng-deep .p-button.p-button-outlined {
+          margin-top: 0.3em;
+          border: 1px solid white;
+          width: 9em;
+          padding: 0.5em;
+        }
+        
+        ::ng-deep .p-button .p-button-label {
+          font-weight: 100;
+          color: white;
+          font-size: 13px;
+        }
+      }
+
       ::ng-deep .pi-angle-double-right:before,
       .pi-angle-double-left:before,
       .pi-angle-left:before,
@@ -379,9 +395,4 @@
   ::ng-deep .p-panel {
     width: 90vw !important;
   }
-
-  // ::ng-deep .p-dialog-content, 
-  // ::ng-deep .p-dialog-header  {
-  //   width: 70vw !important;
-  // }
 }
