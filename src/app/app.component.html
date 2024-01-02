@@ -55,7 +55,7 @@
       {{campo}}</p>
   </div>
 </div>
-<p-dialog [(visible)]="eventDetailsFirstCalendar" [modal]="true" [style]="{width: '30vw'}">
+<p-dialog [(visible)]="eventDetailsFirstCalendar" [modal]="true" [breakpoints]="{ '960px': '75vw' , '700px': '92vw'}" [position]="'center'">
   <ng-template pTemplate="header">
     <p>{{detailEvent.nomeEvento}}</p>
   </ng-template>

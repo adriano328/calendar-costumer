@@ -373,10 +373,15 @@
  
   ::ng-deep .fc {
     width: 90vw !important;
-    height: 60vh !important;
+    height: 80vh !important;
   }
 
   ::ng-deep .p-panel {
     width: 90vw !important;
   }
+
+  // ::ng-deep .p-dialog-content, 
+  // ::ng-deep .p-dialog-header  {
+  //   width: 70vw !important;
+  // }
 }
