@@ -15,6 +15,7 @@ import { AuthInterceptor } from './shared/interceptors/auth-interceptor';
 import { TableModule } from 'primeng/table';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import {ButtonModule} from 'primeng/button';
+import { TagModule } from 'primeng/tag';
 
 @NgModule({
   declarations: [
@@ -33,7 +34,8 @@ import {ButtonModule} from 'primeng/button';
     MultiSelectModule,
     TableModule,
     ProgressSpinnerModule,
-    ButtonModule
+    ButtonModule,
+    TagModule
   ],
   providers: [
     {

@@ -22,6 +22,7 @@ import { IEnvioLocalSetor } from '../app/shared/interfaces/IEnvioLocalSetor';
 import { Observable } from 'rxjs';
 import { DomSanitizer } from '@angular/platform-browser';
 import { FullCalendarComponent } from '@fullcalendar/angular';
+import { SituacaoEvento } from './shared/core/constants/situacaoEvento';
 
 registerLocaleData(localePT);
 
@@ -83,6 +84,9 @@ export class AppComponent implements OnInit {
   igreja!: string;
   campo!: string;
   data: any;
+  monthOption = false;
+  dayOption = false;
+  situacaoEvento = SituacaoEvento;
 
   constructor(
     private changeDetector: ChangeDetectorRef,
@@ -101,6 +105,11 @@ export class AppComponent implements OnInit {
       this.getAgendaEvento();
       this.getAllLocalSetor();
     })
+  }
+
+  converteSituacaoEvento(situacao: string) {
+    const situacaoConvert = this.situacaoEvento.find(e => e.value == situacao);
+    return situacaoConvert?.label;
   }
 
   async loadToken(token: string): Promise<string> {
@@ -212,7 +221,9 @@ export class AppComponent implements OnInit {
   currentEvents: EventApi[] = [];
 
   async listAllEventsByMonths($event?: any) {
-
+    this.dayOption = false;
+    this.monthOption = false;
+    this.spinnerView = true;
     let month;
     if (document.getElementsByClassName('calendar-one')) {
       month = document!.getElementsByClassName('calendar-one')[0].textContent;
@@ -236,11 +247,10 @@ export class AppComponent implements OnInit {
 
     if (result) {
       this.spinnerView = false;
-      result.content?.map(data => {
-        // data.dataInicial = moment(data.dataInicial).utc().format('DD/MM/YYYY');
-        // data.dataFinal = moment(data.dataFinal).utc().format('DD/MM/YYYY');
-      });
       this.listOfEvents = result.content;
+      if(this.listOfEvents.length < 1) {
+        this.monthOption = true;
+      }
       this.totalElements = result?.length;
     }
   }
@@ -250,6 +260,10 @@ export class AppComponent implements OnInit {
   }
 
   getAllEventByLocalSetor($event?: any, tipoSelecionado?: string) {
+    this.dayOption = false;
+    this.monthOption = false;
+    this.spinnerView = true;
+
     let month;
     if (document.getElementsByClassName('calendar-one')) {
       month = document!.getElementsByClassName('calendar-one')[0].textContent;
@@ -284,10 +298,6 @@ export class AppComponent implements OnInit {
             this.listOfEvents = data;
             this.totalElements = data?.length;
           }
-          // this.listOfEvents.map(data => {
-          //   data.dataInicial = moment(data.dataInicial).utc().format('DD/MM/YYYY');
-          //   data.dataFinal = moment(data.dataFinal).utc().format('DD/MM/YYYY');
-          // });
         })
       })
     }
@@ -311,29 +321,27 @@ export class AppComponent implements OnInit {
       this.listOfEvents = result.content;
       this.totalElements = result?.length;
       this.listOfEvents.map(data => {
-        // data.dataInicial = moment(data.dataInicial).utc().format('DD/MM/YYYY');
-        // data.dataFinal = moment(data.dataFinal).utc().format('DD/MM/YYYY');
       });
     }
   }
 
   handleDateClick(selectInfo: any) {
+    this.dayOption = false;
+    this.monthOption = false;
     this.data = selectInfo.dateStr;
     const local = this.localSetor?.map((e: any) => e.id);
     const data: IEnvioLocalSetor = {
       data: this.data,
       locaisSetoresIds: local
     }
-
     this.eventSrv.getEventByClick(data).subscribe({
       next: ((data: any) => {
-        // moment(data.dataInicial).utc().format('DD/MM/YYYY');
-        // moment(data.dataFinal).utc().format('DD/MM/YYYY');
         this.listOfEvents = data;
-
         if (this.listOfEvents.length > 0) {
           this.spinnerView = false;
           this.totalElements = data?.length;
+        } else {
+          this.dayOption = true;
         }
       })
     })

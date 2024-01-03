@@ -74,13 +74,14 @@
         border-radius: 8px;
         margin-bottom: 0.5em;
         cursor: pointer;
+        padding: 0.3em;
 
         .nome,
         .periodo,
         .descricao,
         .local-evento {
           margin-bottom: 0.1em;
-          font-size: 13px;
+          font-size: 12px;
           font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif;
         }
 
@@ -100,7 +101,7 @@
 
       ::ng-deep .fc {
         width: 40vw;
-        height: 80vh;
+        height: 85vh;
       }
 
       ::ng-deep .fc .fc-col-header-cell-cushion {
