@@ -32,12 +32,11 @@
     .first-calendar {
       margin-right: 1em;
       margin-top: 2em;
-      height: 100vh;
 
       .container-button{
         
         ::ng-deep .p-button.p-button-outlined {
-          margin-top: 0.3em;
+          margin-top: 0.5em;
           border: 1px solid white;
           width: 9em;
           padding: 0.5em;
@@ -362,6 +361,14 @@
     margin-right: 0em !important;
 
     .container-dropdown {
+      display: flex !important;
+      flex-direction: column !important;
+
+      .label {
+        display: flex !important;
+        margin-bottom: 0.2em !important;
+        justify-content: center !important;
+      }
 
       ::ng-deep .p-multiselect {
         width: 80vw !important;
@@ -371,10 +378,6 @@
 
   .base-footer {
     flex-wrap: wrap !important;
-  }
-
-  .container-calendar { 
-    margin-bottom: 3em !important;
   }
 
   .container-dropdown {
