@@ -192,8 +192,8 @@ export class AppComponent implements OnInit {
   };
 
   handleEvents(events: EventApi[]) {
-    this.currentEvents = events;
-    this.changeDetector.detectChanges();
+    this.listAllEventsByMonths();
+
   }
 
   getInfoCampoEclesiastico(agenda?: number) {
@@ -241,13 +241,6 @@ export class AppComponent implements OnInit {
         data.dataFinal = moment(data.dataFinal).utc().format('DD/MM/YYYY');
       });
       this.listOfEvents = result.content;
-      if (this.listOfEvents?.length > 0) {
-        this.messageReturn = false;
-        this.disableListEvents = true;
-      } else {
-        this.messageReturn = true;
-        this.disableListEvents = false;
-      }
       this.totalElements = result?.length;
     }
   }
@@ -290,15 +283,6 @@ export class AppComponent implements OnInit {
           if (data) {
             this.spinnerView = false;
             this.listOfEvents = data;
-            const mapedresult = this.listOfEvents.map((item: IEventoDetalhe) => this.convertObjectToEvent(item))
-            this.initialEvents = mapedresult;
-            if (this.listOfEvents.length > 0) {
-              this.messageReturn = false;
-              this.disableListEvents = true;
-            } else {
-              this.messageReturn = true;
-              this.disableListEvents = false;
-            }
             this.totalElements = data?.length;
           }
           this.listOfEvents.map(data => {
@@ -330,13 +314,6 @@ export class AppComponent implements OnInit {
     if (result) {
       this.spinnerView = false;
       this.listOfEvents = result.content;
-      if (this.listOfEvents?.length > 0) {
-        this.messageReturn = false;
-        this.disableListEvents = true;
-      } else {
-        this.messageReturn = true;
-        this.disableListEvents = false;
-      }
       this.totalElements = result?.length;
       this.listOfEvents.map(data => {
         data.dataInicial = moment(data.dataInicial).utc().format('DD/MM/YYYY');
@@ -359,18 +336,10 @@ export class AppComponent implements OnInit {
 
       this.eventSrv.getAllEventByLocalSetor(data).subscribe({
         next: ((data: any) => {
-          if (data) {
+          this.listOfEvents = data;
+
+          if (this.listOfEvents.length > 0) {
             this.spinnerView = false;
-            this.listOfEvents = data;
-            const mapedresult = this.listOfEvents.map((item: IEventoDetalhe) => this.convertObjectToEvent(item))
-            this.initialEvents = mapedresult;
-            if (this.listOfEvents.length > 0) {
-              this.messageReturn = false;
-              this.disableListEvents = true;
-            } else {
-              this.messageReturn = true;
-              this.disableListEvents = false;
-            }
             this.totalElements = data?.length;
           }
           this.listOfEvents.map((e: any) => {

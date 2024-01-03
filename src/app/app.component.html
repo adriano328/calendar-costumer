@@ -6,7 +6,7 @@
     <div class="grid">
       <div class="flex justify-content-center col-12 md:col-6 lg:col-6">
         <div class="first-calendar">
-          <full-calendar (click)="listAllEventsByMonths(); getAllEventByLocalSetor()" class="calendar-one" *ngIf='calendarVisible'
+          <full-calendar class="calendar-one" *ngIf='calendarVisible'
             [options]='calendarOptionsOne' [events]="initialEvents" id="calendario">
             <ng-template #eventContent let-arg>
               <b>{{ arg.timeText }}</b>
@@ -30,10 +30,10 @@
             <div class="flex justify-content-center align-items-center spinner">
               <p-progressSpinner styleClass="w-4rem h-4rem" strokeWidth="8" fill="var(--surface-ground)" animationDuration=".5s" *ngIf="spinnerView"></p-progressSpinner>
             </div>
-            <div class="flex justify-content-center align-items-center message-return" *ngIf="messageReturn">
+            <div class="flex justify-content-center align-items-center message-return" *ngIf="listOfEvents.length < 1">
               <span style="font-size: 14px;">Não existem eventos programados para este mês!</span>
             </div>
-            <p-table [value]="listOfEvents" [paginator]="true" [rows]="50" *ngIf="disableListEvents">
+            <p-table [value]="listOfEvents" [paginator]="true" [rows]="50" *ngIf="listOfEvents.length > 0">
               <ng-template pTemplate="header">
               </ng-template>
               <ng-template pTemplate="body" let-event>
