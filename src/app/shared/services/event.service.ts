@@ -31,4 +31,8 @@ export class EventService {
     return this.http.post<IEventoDetalhe[]>(`${environment.url}/agendaEventoDetalhe/findAllEntryDatesByLocalSetor`, buscaLocalSetor);
   }
 
+  getEventByClick(buscaLocalSetor: IEnvioLocalSetor) {
+    return this.http.post<IEventoDetalhe[]>(`${environment.url}/agendaEventoDetalhe/findAllEntryDatesByLocalSetorClickData`, buscaLocalSetor);
+  }
+
 }

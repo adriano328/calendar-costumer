@@ -237,8 +237,8 @@ export class AppComponent implements OnInit {
     if (result) {
       this.spinnerView = false;
       result.content?.map(data => {
-        data.dataInicial = moment(data.dataInicial).utc().format('DD/MM/YYYY');
-        data.dataFinal = moment(data.dataFinal).utc().format('DD/MM/YYYY');
+        // data.dataInicial = moment(data.dataInicial).utc().format('DD/MM/YYYY');
+        // data.dataFinal = moment(data.dataFinal).utc().format('DD/MM/YYYY');
       });
       this.listOfEvents = result.content;
       this.totalElements = result?.length;
@@ -256,7 +256,6 @@ export class AppComponent implements OnInit {
     }
     if (month) {
       month = this.convertMonthNameToNumberOfMonth(month);
-      console.log(month);
     }
     const date = new Date(`${new Date().getFullYear()}-${month}-01T06:00:00Z`);
     let firstDay = new Date(date.getFullYear(), date.getMonth(), 1).getDate()
@@ -285,17 +284,13 @@ export class AppComponent implements OnInit {
             this.listOfEvents = data;
             this.totalElements = data?.length;
           }
-          this.listOfEvents.map(data => {
-            data.dataInicial = moment(data.dataInicial).utc().format('DD/MM/YYYY');
-            data.dataFinal = moment(data.dataFinal).utc().format('DD/MM/YYYY');
-          });
+          // this.listOfEvents.map(data => {
+          //   data.dataInicial = moment(data.dataInicial).utc().format('DD/MM/YYYY');
+          //   data.dataFinal = moment(data.dataFinal).utc().format('DD/MM/YYYY');
+          // });
         })
       })
     }
-  }
-
-  pegarEvento() {
-
   }
 
   async initiateCalendar($event?: any) {
@@ -316,38 +311,32 @@ export class AppComponent implements OnInit {
       this.listOfEvents = result.content;
       this.totalElements = result?.length;
       this.listOfEvents.map(data => {
-        data.dataInicial = moment(data.dataInicial).utc().format('DD/MM/YYYY');
-        data.dataFinal = moment(data.dataFinal).utc().format('DD/MM/YYYY');
+        // data.dataInicial = moment(data.dataInicial).utc().format('DD/MM/YYYY');
+        // data.dataFinal = moment(data.dataFinal).utc().format('DD/MM/YYYY');
       });
     }
   }
 
   handleDateClick(selectInfo: any) {
     this.data = selectInfo.dateStr;
-      const diaAnterior = moment(this.data).subtract(1, 'days').format('YYYY-MM-DD')
-      const diaPosterior = moment(this.data).add(1, 'days').format('YYYY-MM-DD');
+    const local = this.localSetor?.map((e: any) => e.id);
+    const data: IEnvioLocalSetor = {
+      data: this.data,
+      locaisSetoresIds: local
+    }
 
-      const local = this.localSetor?.map((e: any) => e.id);
-      const data: IEnvioLocalSetor = {
-        initialDate: diaAnterior,
-        finalDate: diaPosterior,
-        locaisSetoresIds: local
-      }
+    this.eventSrv.getEventByClick(data).subscribe({
+      next: ((data: any) => {
+        // moment(data.dataInicial).utc().format('DD/MM/YYYY');
+        // moment(data.dataFinal).utc().format('DD/MM/YYYY');
+        this.listOfEvents = data;
 
-      this.eventSrv.getAllEventByLocalSetor(data).subscribe({
-        next: ((data: any) => {
-          this.listOfEvents = data;
-
-          if (this.listOfEvents.length > 0) {
-            this.spinnerView = false;
-            this.totalElements = data?.length;
-          }
-          this.listOfEvents.map((e: any) => {
-            data.dataInicial = moment(data.dataInicial).utc().format('DD/MM/YYYY');
-            data.dataFinal = moment(data.dataFinal).utc().format('DD/MM/YYYY');
-          });
-        })
+        if (this.listOfEvents.length > 0) {
+          this.spinnerView = false;
+          this.totalElements = data?.length;
+        }
       })
+    })
 
   }
 

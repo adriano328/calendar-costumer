@@ -1,4 +1,9 @@
 <div class="wrapper">
+  <div class="borda"></div>
+  <div class="base-footer">
+    <p class="footer" style="text-align: center;">{{igreja}} <img [src]="imageCampo" class="img-footer">
+      {{campo}}</p>
+  </div>
   <div class="flex justify-content-center container-agenda">
     <span class="title">AGENDA DE EVENTOS {{ano}}</span>
   </div>
@@ -41,7 +46,7 @@
                       <td>
                         <span class="nome"><b style="margin-right: 0.2em;">Evento:</b> {{ event.nomeEvento }}</span>
                         <div class="periodo">
-                          <span><b style="margin-right: 0.2em;">Inicio:</b> {{event.dataInicial}}</span>   <span style="margin-left: 2em;"><b style="margin-right: 0.2em;">Fim:</b> {{event.dataFinal}}</span>
+                          <span><b style="margin-right: 0.2em;">Inicio:</b> {{event.dataInicial | date: 'dd/MM/YYYY'}}</span>   <span style="margin-left: 2em;"><b style="margin-right: 0.2em;">Fim:</b> {{event.dataFinal | date: 'dd/MM/YYYY'}}</span>
                         </div>
                         <div class="local-evento">
                           <span><b style="margin-right: 0.2em;">Local do Evento:</b> <span class="local">{{event.nomeLocalSetor}}</span></span>
@@ -53,11 +58,6 @@
           </p-panel>
         </div>
       </div>
-  </div>
-  <div class="borda"></div>
-  <div class="base-footer">
-    <p class="footer" style="text-align: center;">{{igreja}} <img [src]="imageCampo" class="img-footer">
-      {{campo}}</p>
   </div>
 </div>
 <p-dialog [(visible)]="eventDetailsFirstCalendar" [modal]="true" [breakpoints]="{ '960px': '75vw' , '700px': '92vw'}" [position]="'center'">
