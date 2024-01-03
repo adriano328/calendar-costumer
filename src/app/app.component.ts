@@ -95,7 +95,6 @@ export class AppComponent implements OnInit {
   async ngOnInit() {
     this.spinnerView = true;
     const token = localStorage.getItem('token');
-
     this.loadToken(token!).then(() => {
       this.getInitialEvents();
       this.initiateCalendar();
@@ -191,8 +190,6 @@ export class AppComponent implements OnInit {
     eventDisplay: 'background',
     eventsSet: this.handleEvents.bind(this),
   };
-
-
 
   handleEvents(events: EventApi[]) {
     this.currentEvents = events;
