@@ -46,7 +46,7 @@
                   <tr>
                       <td class="events" style="width: 99%;" (click)="opentEventModalCalendarFirst(event.id)">
                         <div class="grid">
-                          <div class="col-9 md:col-9 lg:col-9">
+                          <div class="col-12 md:col-9 lg:col-9">
                             <span class="nome"><b style="margin-right: 0.2em;">Evento:</b> {{ event.nomeEvento }}</span>
                             <div class="periodo">
                               <span><b style="margin-right: 0.2em;">Inicio:</b> {{event.dataInicial | date: 'dd/MM/YYYY'}}</span>   <span style="margin-left: 2em;"><b style="margin-right: 0.2em;">Fim:</b> {{event.dataFinal | date: 'dd/MM/YYYY'}}</span>
@@ -61,7 +61,7 @@
                               <span><b style="margin-right: 0.2em;">Descrição do local do evento:</b> <br> <span class="local">{{event.localRealizacao | uppercase}}</span></span>
                             </div>
                           </div>
-                          <div class="flex align-items-center justify-content-center col-3 md:col-3 lg:col-3">
+                          <div class="flex align-items-center justify-content-center col-12 md:col-3 lg:col-3">
                             <div class="flex justify-content-center align-items-center local-evento">
                               <span class="flex flex-column justify-content-center align-items-center"><b style="margin-right: 0.2em; text-align: center; margin-bottom: 0.2em;">Situação:</b> <span class="local">
                                 <p-tag value="PROGRAMADO" severity="success" *ngIf="event.situacaoEvento == 'PROGRAMADO'"></p-tag>
