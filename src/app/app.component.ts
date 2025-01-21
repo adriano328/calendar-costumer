@@ -224,19 +224,17 @@ export class AppComponent implements OnInit {
     this.dayOption = false;
     this.monthOption = false;
     this.spinnerView = true;
-    let month;
+    let data: any;
     if (document.getElementsByClassName('calendar-one')) {
-      month = document!.getElementsByClassName('calendar-one')[0].textContent;
+      data = document!.getElementsByClassName('calendar-one')[0].textContent;      
     }
-    if (month) {
-      month = this.convertMonthNameToNumberOfMonth(month);
+    if (data) {
+      data = this.convertMonthNameToNumberAndYear(data);
     }
-    const date = new Date(`${new Date().getFullYear()}-${month}-01T06:00:00Z`);
-    let firstDay = new Date(date.getFullYear(), date.getMonth(), 1).getDate()
-    let lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate()
-    this.initialDate = (`${new Date().getFullYear()}-${month}-${firstDay}`);
-    this.finalDate = (`${new Date().getFullYear()}-${month}-${lastDay}`);
 
+    const date = this.getFirstAndLastDayOfMonth(data.month, data.year)
+    this.initialDate = date.firstDay;
+    this.finalDate = date.lastDay;
     let result = null;
     if (!$event) {
       result = await this.eventSrv.listAllEvents(this.initialDate, this.finalDate);
@@ -248,12 +246,25 @@ export class AppComponent implements OnInit {
     if (result) {
       this.spinnerView = false;
       this.listOfEvents = result.content;
+
       if(this.listOfEvents.length < 1) {
         this.monthOption = true;
       }
       this.totalElements = result?.length;
     }
   }
+
+  getFirstAndLastDayOfMonth(month: string, year: string): { firstDay: string; lastDay: string } {
+    const monthIndex = parseInt(month, 10) - 1; 
+        const firstDayDate = new Date(parseInt(year, 10), monthIndex, 1);
+    const lastDayDate = new Date(parseInt(year, 10), monthIndex + 1, 0);
+      const firstDay = firstDayDate.toISOString().split('T')[0];
+    const lastDay = lastDayDate.toISOString().split('T')[0];
+  
+    return { firstDay, lastDay };
+  }
+  
+  
 
   redirectLink(link: string) {
     window.open(link, '_blank');
@@ -269,8 +280,9 @@ export class AppComponent implements OnInit {
       month = document!.getElementsByClassName('calendar-one')[0].textContent;
     }
     if (month) {
-      month = this.convertMonthNameToNumberOfMonth(month);
+      month = this.convertMonthNameToNumberAndYear(month);
     }
+    
     const date = new Date(`${new Date().getFullYear()}-${month}-01T06:00:00Z`);
     let firstDay = new Date(date.getFullYear(), date.getMonth(), 1).getDate()
     let lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate()
@@ -348,34 +360,38 @@ export class AppComponent implements OnInit {
 
   }
 
-  convertMonthNameToNumberOfMonth(month: string): string {
-    if (month.includes('janeiro')) {
-      return '01';
-    } else if (month.includes('fevereiro')) {
-      return '02';
-    } else if (month.includes('março')) {
-      return '03';
-    } else if (month.includes('abril')) {
-      return '04';
-    } else if (month.includes('maio')) {
-      return '05';
-    } else if (month.includes('junho')) {
-      return '06';
-    } else if (month.includes('julho')) {
-      return '07';
-    } else if (month.includes('agosto')) {
-      return '08';
-    } else if (month.includes('setembro')) {
-      return '09';
-    } else if (month.includes('outubro')) {
-      return '10';
-    } else if (month.includes('novembro')) {
-      return '11';
-    } else if (month.includes('dezembro')) {
-      return '12';
+  convertMonthNameToNumberAndYear(input: string): { month: string; year: string } {
+    const monthMap = {
+      janeiro: '01',
+      fevereiro: '02',
+      março: '03',
+      abril: '04',
+      maio: '05',
+      junho: '06',
+      julho: '07',
+      agosto: '08',
+      setembro: '09',
+      outubro: '10',
+      novembro: '11',
+      dezembro: '12',
+    };
+  
+    let month = '00';
+    let year = '';
+  
+    const yearMatch = input.match(/\d{4}/);
+    if (yearMatch) {
+      year = yearMatch[0];
     }
-
-    return '00';
+  
+    for (const [key, value] of Object.entries(monthMap)) {
+      if (input.includes(key)) {
+        month = value;
+        break;
+      }
+    }
+  
+    return { month, year };
   }
 
   converterFormatoData(dataFormatoOriginal: string) {
@@ -383,7 +399,6 @@ export class AppComponent implements OnInit {
     var dataFormatoNovo = partesDaData[2] + "/" + partesDaData[1] + "/" + partesDaData[0];
     return dataFormatoNovo;
   }
-
 
   async opentEventModalCalendarFirst(id: number) {
     const result = await this.eventSrv.showEvent(id);
@@ -396,16 +411,18 @@ export class AppComponent implements OnInit {
   }
 
   getInitialEvents(agenda?: number) {
-    if (agenda) {
-      this.eventSrv.agendaEventoDetalhe(this.agendaNumber).subscribe({
-        next: (data => {
-          this.allEventList = data;
-          const mapedresult = this.allEventList.map((item: IEventoDetalhe) => this.convertObjectToEvent(item))
-          this.initialEvents = mapedresult;
-        })
-      });
-    }
-    return this.allEventList
+    // if (agenda) {
+    //   this.eventSrv.agendaEventoDetalhe(this.agendaNumber).subscribe({
+    //     next: (data => {
+    //       this.allEventList = data;          
+    //       const mapedresult = this.allEventList.map((item: IEventoDetalhe) => this.convertObjectToEvent(item))
+    //       this.initialEvents = mapedresult;          
+    //     })
+    //   });
+    // }
+    // console.log();
+    
+    // return this.allEventList
   }
 
   convertObjectToEvent(eventObject: IEventoDetalhe): EventInput {
