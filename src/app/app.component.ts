@@ -301,7 +301,6 @@ export class AppComponent implements OnInit {
 
   getAllEventByLocalSetor($event?: any, tipoSelecionado?: string) {
     this.skipHandleEvents = true;
-    
     if ($event.length > 0) {
       this.dayOption = false;
       this.monthOption = false;
