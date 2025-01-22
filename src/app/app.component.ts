@@ -221,61 +221,63 @@ export class AppComponent implements OnInit {
   currentEvents: EventApi[] = [];
 
   async listAllEventsByMonths($event?: any) {
-    this.dayOption = false;
-    this.monthOption = false;
-    this.spinnerView = true;
-    let data: any;
-    if (document.getElementsByClassName('calendar-one')) {
-      data = document!.getElementsByClassName('calendar-one')[0].textContent;      
-    }
-    if (data) {
-      data = this.convertMonthNameToNumberAndYear(data);
-    }
+    // this.dayOption = false;
+    // this.monthOption = false;
+    // this.spinnerView = true;
+    // let data: any;
+    // if (document.getElementsByClassName('calendar-one')) {
+    //   data = document!.getElementsByClassName('calendar-one')[0].textContent;      
+    // }
+    // if (data) {
+    //   data = this.convertMonthNameToNumberAndYear(data);
+    // }
 
-    const date = this.getFirstAndLastDayOfMonth(data.month, data.year)
-    this.initialDate = date.firstDay;
-    this.finalDate = date.lastDay;
-    let result = null;
-    if (!$event) {
-      result = await this.eventSrv.listAllEvents(this.initialDate, this.finalDate);
-      this.paginator?.changePage(0);
-    } else {
-      result = await this.eventSrv.listAllEvents(this.initialDate, this.finalDate);
-    }
+    // const date = this.getFirstAndLastDayOfMonth(data.month, data.year)
+    // this.initialDate = date.firstDay;
+    // this.finalDate = date.lastDay;
+    // let result = null;
+    // if (!$event) {
+    //   result = await this.eventSrv.listAllEvents(this.initialDate, this.finalDate);
+    //   this.paginator?.changePage(0);
+    // } else {
+    //   result = await this.eventSrv.listAllEvents(this.initialDate, this.finalDate);
+    // }
 
-    if (result) {
-      this.spinnerView = false;
-      this.listOfEvents = result.content;
+    // if (result) {
+    //   this.spinnerView = false;
+    //   this.listOfEvents = result.content;
 
-      if(this.listOfEvents.length < 1) {
-        this.monthOption = true;
-      }
-      this.totalElements = result?.length;
-    }
+    //   if(this.listOfEvents.length < 1) {
+    //     this.monthOption = true;
+    //   }
+    //   this.totalElements = result?.length;
+    // }
   }
 
   getFirstAndLastDayOfMonth(month: string, year: string): { firstDay: string; lastDay: string } {
-    const monthIndex = parseInt(month, 10) - 1; 
-        const firstDayDate = new Date(parseInt(year, 10), monthIndex, 1);
+    const monthIndex = parseInt(month, 10) - 1;
+    const firstDayDate = new Date(parseInt(year, 10), monthIndex, 1);
     const lastDayDate = new Date(parseInt(year, 10), monthIndex + 1, 0);
-      const firstDay = firstDayDate.toISOString().split('T')[0];
+    const firstDay = firstDayDate.toISOString().split('T')[0];
     const lastDay = lastDayDate.toISOString().split('T')[0];
-  
+
     return { firstDay, lastDay };
   }
-  
-  
+
+
 
   redirectLink(link: string) {
     window.open(link, '_blank');
   }
 
   getAllEventByLocalSetor($event?: any, tipoSelecionado?: string) {
-    if($event) {
+    console.log($event);
+    
+    if ($event.length > 0) {
       this.dayOption = false;
       this.monthOption = false;
       this.spinnerView = true;
-  
+
       let month;
       if (document.getElementsByClassName('calendar-one')) {
         month = document!.getElementsByClassName('calendar-one')[0].textContent;
@@ -283,20 +285,20 @@ export class AppComponent implements OnInit {
       if (month) {
         month = this.convertMonthNameToNumberAndYear(month);
       }
-      
+
       let data: any;
       if (document.getElementsByClassName('calendar-one')) {
-        data = document!.getElementsByClassName('calendar-one')[0].textContent;      
+        data = document!.getElementsByClassName('calendar-one')[0].textContent;
       }
       if (data) {
         data = this.convertMonthNameToNumberAndYear(data);
       }
-  
+
       const date = this.getFirstAndLastDayOfMonth(data.month, data.year)
       this.initialDate = date.firstDay;
       this.finalDate = date.lastDay;
       const local = this.localSetor.map(e => e.id);
-  
+
       if (local.length < 1) {
         this.dataFomat = false;
       } else {
@@ -312,12 +314,26 @@ export class AppComponent implements OnInit {
               this.spinnerView = false;
               this.listOfEvents = data;
               const mapedresult = this.listOfEvents.map((item: IEventoDetalhe) => this.convertObjectToEvent(item))
-              this.initialEvents = mapedresult;       
+              this.initialEvents = mapedresult;
               this.totalElements = data?.length;
             }
           })
         })
       }
+    } else {
+      this.getAgendaEvento()
+      this.eventSrv.listAllEvents(this.initialDate, this.finalDate).subscribe({
+        next: (data) => {
+          this.spinnerView = false;
+          this.listOfEvents = data.content;
+          this.paginator?.changePage(0);
+
+          if (this.listOfEvents.length < 1) {
+            this.monthOption = true;
+          }
+          this.totalElements = data?.length;
+        }
+      });
     }
   }
 
@@ -329,16 +345,31 @@ export class AppComponent implements OnInit {
     this.finalDate = (`${new Date().getFullYear()}-${new Date().getMonth() + 1}-${lastDay}`);
     let result = null;
     if (!$event) {
-      result = await this.eventSrv.listAllEvents(this.initialDate, this.finalDate);
-      this.paginator?.changePage(0);
-    } else {
-      result = await this.eventSrv.listAllEvents(this.initialDate, this.finalDate);
-    }
-    if (result) {
-      this.spinnerView = false;
-      this.listOfEvents = result.content;
-      this.totalElements = result?.length;
+      this.eventSrv.listAllEvents(this.initialDate, this.finalDate).subscribe({
+        next: (data) => {
+          this.spinnerView = false;
+          this.listOfEvents = data.content;
+          this.paginator?.changePage(0);
 
+          if (this.listOfEvents.length < 1) {
+            this.monthOption = true;
+          }
+          this.totalElements = data?.length;
+        }
+      });
+    } else {
+      this.eventSrv.listAllEvents(this.initialDate, this.finalDate).subscribe({
+        next: (data) => {
+          this.spinnerView = false;
+          this.listOfEvents = data.content;
+          this.paginator?.changePage(0);
+
+          if (this.listOfEvents.length < 1) {
+            this.monthOption = true;
+          }
+          this.totalElements = data?.length;
+        }
+      });
     }
   }
 
@@ -380,22 +411,22 @@ export class AppComponent implements OnInit {
       novembro: '11',
       dezembro: '12',
     };
-  
+
     let month = '00';
     let year = '';
-  
+
     const yearMatch = input.match(/\d{4}/);
     if (yearMatch) {
       year = yearMatch[0];
     }
-  
+
     for (const [key, value] of Object.entries(monthMap)) {
       if (input.includes(key)) {
         month = value;
         break;
       }
     }
-  
+
     return { month, year };
   }
 
@@ -419,13 +450,13 @@ export class AppComponent implements OnInit {
     if (agenda) {
       this.eventSrv.agendaEventoDetalhe(this.agendaNumber).subscribe({
         next: (data => {
-          this.allEventList = data;                    
+          this.allEventList = data;
           const mapedresult = this.allEventList.map((item: IEventoDetalhe) => this.convertObjectToEvent(item))
-          this.initialEvents = mapedresult;          
+          this.initialEvents = mapedresult;
         })
       });
     }
-    
+
     // return this.allEventList;
   }
 

@@ -19,8 +19,8 @@ export class EventService {
     return this.http.get<IEventoDetalhe[]>(`${environment.url}/agendaEventoDetalhe/getByAgendaEventoId/${agendaNumber}`)
   }
 
-  async listAllEvents(dataInicio: string, dataFim: string) {
-    return await this.http.get<IPage<IEventos>>(`${environment.url}/agendaEventoDetalhe/findAllEntryDatesPaginaded`, { params: new HttpParams().set('dataInicio', dataInicio!).set('dataFim', dataFim!)}).toPromise();
+  listAllEvents(dataInicio: string, dataFim: string) {
+    return this.http.get<IPage<IEventos>>(`${environment.url}/agendaEventoDetalhe/findAllEntryDatesPaginaded`, { params: new HttpParams().set('dataInicio', dataInicio!).set('dataFim', dataFim!)});
   }
 
   async showEvent(id: number) {
