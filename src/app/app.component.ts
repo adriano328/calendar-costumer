@@ -412,7 +412,7 @@ export class AppComponent implements OnInit {
 
   getInitialEvents(agenda?: number) {
     if (agenda) {
-      this.eventSrv.agendaEventoDetalhe(this.agendaNumber).subscribe({
+      this.eventSrv.agendaEventoDetalhe(1).subscribe({
         next: (data => {
           this.allEventList = data;          
           const mapedresult = this.allEventList.map((item: IEventoDetalhe) => this.convertObjectToEvent(item))
