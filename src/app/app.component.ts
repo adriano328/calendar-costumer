@@ -87,6 +87,7 @@ export class AppComponent implements OnInit {
   monthOption = false;
   dayOption = false;
   situacaoEvento = SituacaoEvento;
+  skipHandleEvents: boolean = false;
 
   constructor(
     private changeDetector: ChangeDetectorRef,
@@ -201,8 +202,13 @@ export class AppComponent implements OnInit {
   };
 
   handleEvents(events: EventApi[]) {
-    this.listAllEventsByMonths();
-
+    if (this.skipHandleEvents) {
+      this.skipHandleEvents = false;
+      return;
+    }
+    if (events) {
+      this.listAllEventsByMonths();
+    }
   }
 
   getInfoCampoEclesiastico(agenda?: number) {
@@ -221,27 +227,50 @@ export class AppComponent implements OnInit {
   currentEvents: EventApi[] = [];
 
   async listAllEventsByMonths($event?: any) {
-    // this.dayOption = false;
-    // this.monthOption = false;
-    // this.spinnerView = true;
-    // let data: any;
-    // if (document.getElementsByClassName('calendar-one')) {
-    //   data = document!.getElementsByClassName('calendar-one')[0].textContent;      
-    // }
-    // if (data) {
-    //   data = this.convertMonthNameToNumberAndYear(data);
-    // }
+    this.dayOption = false;
+    this.monthOption = false;
+    this.spinnerView = true;
+    let data: any;
+    if (document.getElementsByClassName('calendar-one')) {
+      data = document!.getElementsByClassName('calendar-one')[0].textContent;      
+    }
+    if (data) {
+      data = this.convertMonthNameToNumberAndYear(data);
+    }
 
-    // const date = this.getFirstAndLastDayOfMonth(data.month, data.year)
-    // this.initialDate = date.firstDay;
-    // this.finalDate = date.lastDay;
-    // let result = null;
-    // if (!$event) {
-    //   result = await this.eventSrv.listAllEvents(this.initialDate, this.finalDate);
-    //   this.paginator?.changePage(0);
-    // } else {
-    //   result = await this.eventSrv.listAllEvents(this.initialDate, this.finalDate);
-    // }
+    console.log(data);
+    
+
+    const date = this.getFirstAndLastDayOfMonth(data.month, data.year)
+    this.initialDate = date.firstDay;
+    this.finalDate = date.lastDay;
+    let result = null;
+    if (!$event) {
+      this.eventSrv.listAllEvents(this.initialDate, this.finalDate).subscribe({
+        next: (data) => {
+          this.spinnerView = false;
+          this.listOfEvents = data.content;
+          this.paginator?.changePage(0);
+
+          if (this.listOfEvents.length < 1) {
+            this.monthOption = true;
+          }
+          this.totalElements = data?.length;
+        }
+      });
+    } else {
+      this.eventSrv.listAllEvents(this.initialDate, this.finalDate).subscribe({
+        next: (data) => {
+          this.spinnerView = false;
+          this.listOfEvents = data.content;
+          this.paginator?.changePage(0);
+
+          if (this.listOfEvents.length < 1) {
+            this.monthOption = true;
+          }
+          this.totalElements = data?.length;
+        }
+      });    }
 
     // if (result) {
     //   this.spinnerView = false;
@@ -271,7 +300,7 @@ export class AppComponent implements OnInit {
   }
 
   getAllEventByLocalSetor($event?: any, tipoSelecionado?: string) {
-    console.log($event);
+    this.skipHandleEvents = true;
     
     if ($event.length > 0) {
       this.dayOption = false;
