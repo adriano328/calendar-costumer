@@ -100,7 +100,7 @@ export class AppComponent implements OnInit {
     this.spinnerView = true;
     const token = localStorage.getItem('token');
     this.loadToken(token!).then(() => {
-      this.getInitialEvents();
+      // this.getInitialEvents();
       this.initiateCalendar();
       this.getAgendaEvento();
       this.getAllLocalSetor();
@@ -163,13 +163,13 @@ export class AppComponent implements OnInit {
     })
   }
 
-  agendaEventoDetalhe(agenda: number) {
-    this.eventSrv.agendaEventoDetalhe(agenda!).subscribe({
-      next: (data => {
-        this.events = data;
-      })
-    })
-  }
+  // agendaEventoDetalhe(agenda: number) {
+  //   this.eventSrv.agendaEventoDetalhe(agenda!).subscribe({
+  //     next: (data => {
+  //       this.events = data;
+  //     })
+  //   })
+  // }
 
 
   calendarOptionsOne: CalendarOptions = {
@@ -271,47 +271,53 @@ export class AppComponent implements OnInit {
   }
 
   getAllEventByLocalSetor($event?: any, tipoSelecionado?: string) {
-    this.dayOption = false;
-    this.monthOption = false;
-    this.spinnerView = true;
-
-    let month;
-    if (document.getElementsByClassName('calendar-one')) {
-      month = document!.getElementsByClassName('calendar-one')[0].textContent;
-    }
-    if (month) {
-      month = this.convertMonthNameToNumberAndYear(month);
-    }
-    
-    const date = new Date(`${new Date().getFullYear()}-${month}-01T06:00:00Z`);
-    let firstDay = new Date(date.getFullYear(), date.getMonth(), 1).getDate()
-    let lastDay = new Date(date.getFullYear(), date.getMonth() + 1, 0).getDate()
-    const first = "0" + firstDay.toString()
-
-    this.initialDate = (`${new Date().getFullYear()}-${month}-${first}`);
-    this.finalDate = (`${new Date().getFullYear()}-${month}-${lastDay}`);
-    const local = this.localSetor.map(e => e.id);
-
-    if (local.length < 1) {
-      this.dataFomat = false;
-      this.listAllEventsByMonths();
-      this.getAgendaEvento()
-    } else {
-      this.dataFomat = true;
-      const data: IEnvioLocalSetor = {
-        initialDate: this.initialDate,
-        finalDate: this.finalDate,
-        locaisSetoresIds: local
+    if($event) {
+      this.dayOption = false;
+      this.monthOption = false;
+      this.spinnerView = true;
+  
+      let month;
+      if (document.getElementsByClassName('calendar-one')) {
+        month = document!.getElementsByClassName('calendar-one')[0].textContent;
       }
-      this.eventSrv.getAllEventByLocalSetor(data).subscribe({
-        next: (data => {
-          if (data) {
-            this.spinnerView = false;
-            this.listOfEvents = data;
-            this.totalElements = data?.length;
-          }
+      if (month) {
+        month = this.convertMonthNameToNumberAndYear(month);
+      }
+      
+      let data: any;
+      if (document.getElementsByClassName('calendar-one')) {
+        data = document!.getElementsByClassName('calendar-one')[0].textContent;      
+      }
+      if (data) {
+        data = this.convertMonthNameToNumberAndYear(data);
+      }
+  
+      const date = this.getFirstAndLastDayOfMonth(data.month, data.year)
+      this.initialDate = date.firstDay;
+      this.finalDate = date.lastDay;
+      const local = this.localSetor.map(e => e.id);
+  
+      if (local.length < 1) {
+        this.dataFomat = false;
+      } else {
+        this.dataFomat = true;
+        const data: IEnvioLocalSetor = {
+          initialDate: this.initialDate,
+          finalDate: this.finalDate,
+          locaisSetoresIds: local
+        }
+        this.eventSrv.getAllEventByLocalSetor(data).subscribe({
+          next: (data => {
+            if (data) {
+              this.spinnerView = false;
+              this.listOfEvents = data;
+              const mapedresult = this.listOfEvents.map((item: IEventoDetalhe) => this.convertObjectToEvent(item))
+              this.initialEvents = mapedresult;       
+              this.totalElements = data?.length;
+            }
+          })
         })
-      })
+      }
     }
   }
 
@@ -332,8 +338,7 @@ export class AppComponent implements OnInit {
       this.spinnerView = false;
       this.listOfEvents = result.content;
       this.totalElements = result?.length;
-      this.listOfEvents.map(data => {
-      });
+
     }
   }
 
@@ -412,16 +417,16 @@ export class AppComponent implements OnInit {
 
   getInitialEvents(agenda?: number) {
     if (agenda) {
-      this.eventSrv.agendaEventoDetalhe(1).subscribe({
+      this.eventSrv.agendaEventoDetalhe(this.agendaNumber).subscribe({
         next: (data => {
-          this.allEventList = data;          
+          this.allEventList = data;                    
           const mapedresult = this.allEventList.map((item: IEventoDetalhe) => this.convertObjectToEvent(item))
           this.initialEvents = mapedresult;          
         })
       });
     }
     
-    return this.allEventList
+    // return this.allEventList;
   }
 
   convertObjectToEvent(eventObject: IEventoDetalhe): EventInput {
