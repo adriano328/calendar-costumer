@@ -156,7 +156,7 @@ export class AppComponent implements OnInit {
       next: (data => {
         this.getInfoCampoEclesiastico(data.campoEclesiastico)
         this.agendaNumber = data.id;
-        this.agendaEventoDetalhe(this.agendaNumber)
+        // this.agendaEventoDetalhe(this.agendaNumber)
         this.getInitialEvents(this.agendaNumber)
         this.ano = data.ano;
       })
@@ -411,18 +411,17 @@ export class AppComponent implements OnInit {
   }
 
   getInitialEvents(agenda?: number) {
-    // if (agenda) {
-    //   this.eventSrv.agendaEventoDetalhe(this.agendaNumber).subscribe({
-    //     next: (data => {
-    //       this.allEventList = data;          
-    //       const mapedresult = this.allEventList.map((item: IEventoDetalhe) => this.convertObjectToEvent(item))
-    //       this.initialEvents = mapedresult;          
-    //     })
-    //   });
-    // }
-    // console.log();
+    if (agenda) {
+      this.eventSrv.agendaEventoDetalhe(this.agendaNumber).subscribe({
+        next: (data => {
+          this.allEventList = data;          
+          const mapedresult = this.allEventList.map((item: IEventoDetalhe) => this.convertObjectToEvent(item))
+          this.initialEvents = mapedresult;          
+        })
+      });
+    }
     
-    // return this.allEventList
+    return this.allEventList
   }
 
   convertObjectToEvent(eventObject: IEventoDetalhe): EventInput {
