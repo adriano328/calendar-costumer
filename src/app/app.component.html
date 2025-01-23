@@ -25,7 +25,7 @@
               <p-multiSelect [options]="setor" placeholder="Selecione" [(ngModel)]="localSetor" (onChange)="getAllEventByLocalSetor($event)" optionLabel="nome"></p-multiSelect>
             </div>
             <div class="flex justify-content-center align-items-center container-button w-full mt-2">
-              <button pButton type="button" (click)="listAllEventsByMonths(); getAllEventByLocalSetor()" label="Eventos do mês" class="p-button-outlined"></button>
+              <button pButton type="button" (click)="getAllEventByLocalSetor('reseta')" label="Eventos do mês" class="p-button-outlined"></button>
             </div>
           </div>
           <p-panel header="Eventos">

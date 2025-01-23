@@ -221,7 +221,7 @@ export class AppComponent implements OnInit {
     this.spinnerView = true;
     let data: any;
     if (document.getElementsByClassName('calendar-one')) {
-      data = document!.getElementsByClassName('calendar-one')[0].textContent;      
+      data = document!.getElementsByClassName('calendar-one')[0].textContent;
     }
     if (data) {
       data = this.convertMonthNameToNumberAndYear(data);
@@ -256,7 +256,8 @@ export class AppComponent implements OnInit {
           }
           this.totalElements = data?.length;
         }
-      });    }
+      });
+    }
   }
 
   getFirstAndLastDayOfMonth(month: string, year: string): { firstDay: string; lastDay: string } {
@@ -274,55 +275,55 @@ export class AppComponent implements OnInit {
     window.open(link, '_blank');
   }
 
-  getAllEventByLocalSetor($event?: any, tipoSelecionado?: string) {
+  getAllEventByLocalSetor($event?: any) {
     this.skipHandleEvents = true;
-      this.dayOption = false;
-      this.monthOption = false;
-      this.spinnerView = true;
+    this.dayOption = false;
+    this.monthOption = false;
+    this.spinnerView = true;
 
-      let month;
-      if (document.getElementsByClassName('calendar-one')) {
-        month = document!.getElementsByClassName('calendar-one')[0].textContent;
-      }
-      if (month) {
-        month = this.convertMonthNameToNumberAndYear(month);
-      }
+    let month;
+    if (document.getElementsByClassName('calendar-one')) {
+      month = document!.getElementsByClassName('calendar-one')[0].textContent;
+    }
+    if (month) {
+      month = this.convertMonthNameToNumberAndYear(month);
+    }
 
-      let data: any;
-      if (document.getElementsByClassName('calendar-one')) {
-        data = document!.getElementsByClassName('calendar-one')[0].textContent;
-      }
-      if (data) {
-        data = this.convertMonthNameToNumberAndYear(data);
-      }
+    let data: any;
+    if (document.getElementsByClassName('calendar-one')) {
+      data = document!.getElementsByClassName('calendar-one')[0].textContent;
+    }
+    if (data) {
+      data = this.convertMonthNameToNumberAndYear(data);
+    }
 
-      const date = this.getFirstAndLastDayOfMonth(data.month, data.year)
-      this.initialDate = date.firstDay;
-      this.finalDate = date.lastDay;
-      const local = this.localSetor.map(e => e.id);
+    const date = this.getFirstAndLastDayOfMonth(data.month, data.year)
+    this.initialDate = date.firstDay;
+    this.finalDate = date.lastDay;
+    const local = this.localSetor.map(e => e.id);
 
-      if (local.length < 1) {
-        this.getAgendaEvento()
-        this.dataFomat = false;
-      } else {
-        this.dataFomat = true;
-        const data: IEnvioLocalSetor = {
-          initialDate: this.initialDate,
-          finalDate: this.finalDate,
-          locaisSetoresIds: local
-        }
-        this.eventSrv.getAllEventByLocalSetor(data).subscribe({
-          next: (data => {
-            if (data) {
-              this.spinnerView = false;
-              this.listOfEvents = data;
-              const mapedresult = this.listOfEvents.map((item: IEventoDetalhe) => this.convertObjectToEvent(item))
-              this.initialEvents = mapedresult;
-              this.totalElements = data?.length;
-            }
-          })
+    if (local.length < 1) {
+      this.getAgendaEvento()
+      this.dataFomat = false;
+    } else {
+      this.dataFomat = true;
+      const data: IEnvioLocalSetor = {
+        initialDate: this.initialDate,
+        finalDate: this.finalDate,
+        locaisSetoresIds: local
+      }
+      this.eventSrv.getAllEventByLocalSetor(data).subscribe({
+        next: (data => {
+          if (data) {
+            this.spinnerView = false;
+            this.listOfEvents = data;
+            const mapedresult = this.listOfEvents.map((item: IEventoDetalhe) => this.convertObjectToEvent(item))
+            this.initialEvents = mapedresult;
+            this.totalElements = data?.length;
+          }
         })
-      }
+      })
+    }
   }
 
   async initiateCalendar($event?: any) {
