@@ -156,22 +156,12 @@ export class AppComponent implements OnInit {
       next: (data => {
         this.getInfoCampoEclesiastico(data.campoEclesiastico)
         this.agendaNumber = data.id;
-        // this.agendaEventoDetalhe(this.agendaNumber)
         this.getInitialEvents(this.agendaNumber);
         this.listAllEventsByMonths()
         this.ano = data.ano;
       })
     })
   }
-
-  // agendaEventoDetalhe(agenda: number) {
-  //   this.eventSrv.agendaEventoDetalhe(agenda!).subscribe({
-  //     next: (data => {
-  //       this.events = data;
-  //     })
-  //   })
-  // }
-
 
   calendarOptionsOne: CalendarOptions = {
     dayHeaderFormat: {
@@ -333,18 +323,6 @@ export class AppComponent implements OnInit {
           })
         })
       }
-      // this.eventSrv.listAllEvents(this.initialDate, this.finalDate).subscribe({
-      //   next: (data) => {
-      //     this.spinnerView = false;
-      //     this.listOfEvents = data.content;
-      //     this.paginator?.changePage(0);
-
-      //     if (this.listOfEvents.length < 1) {
-      //       this.monthOption = true;
-      //     }
-      //     this.totalElements = data?.length;
-      //   }
-      // });
   }
 
   async initiateCalendar($event?: any) {
@@ -466,8 +444,6 @@ export class AppComponent implements OnInit {
         })
       });
     }
-
-    // return this.allEventList;
   }
 
   convertObjectToEvent(eventObject: IEventoDetalhe): EventInput {

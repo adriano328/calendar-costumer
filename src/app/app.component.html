@@ -8,8 +8,7 @@
     <span class="title">AGENDA DE EVENTOS {{ano}}</span>
   </div>
   <div class="container-calendar">
-    <div class="grid flex flex-row+">
-      <div class="flex justify-content-center col-12 md:col-6 lg:col-6">
+    <div class="grid flex flex-column">
         <div class="first-calendar">
           <full-calendar class="calendar-one" *ngIf='calendarVisible'
             [options]='calendarOptionsOne' [events]="initialEvents" id="calendario">
@@ -18,9 +17,7 @@
               <i>{{ arg.event.title }} </i>
             </ng-template>
           </full-calendar>
-        </div>
       </div>
-      <div class="flex justify-content-center col-12 md:col-6 lg:col-6">
         <div class="first-calendar">
           <div class="flex justify-content-start flex-row align-items-start container-dropdown">
             <div class="flex flex-column container-multiselect-local-setor" >
@@ -78,7 +75,6 @@
           </p-table>
           </p-panel>
         </div>
-      </div>
   </div>
 </div>
 <p-dialog [(visible)]="eventDetailsFirstCalendar" [modal]="true" [breakpoints]="{ '960px': '75vw' , '700px': '92vw'}" [position]="'center'">
