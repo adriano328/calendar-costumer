@@ -90,7 +90,6 @@ export class AppComponent implements OnInit {
   skipHandleEvents: boolean = false;
 
   constructor(
-    private changeDetector: ChangeDetectorRef,
     private calendarSrv: CalendarService,
     public eventSrv: EventService,
     private loginService: LoginService,
@@ -158,7 +157,8 @@ export class AppComponent implements OnInit {
         this.getInfoCampoEclesiastico(data.campoEclesiastico)
         this.agendaNumber = data.id;
         // this.agendaEventoDetalhe(this.agendaNumber)
-        this.getInitialEvents(this.agendaNumber)
+        this.getInitialEvents(this.agendaNumber);
+        this.listAllEventsByMonths()
         this.ano = data.ano;
       })
     })
@@ -205,9 +205,8 @@ export class AppComponent implements OnInit {
     if (this.skipHandleEvents) {
       this.skipHandleEvents = false;
       return;
-    }
-    if (events) {
-      this.listAllEventsByMonths();
+    } else {
+      this.getAllEventByLocalSetor();
     }
   }
 
@@ -237,9 +236,6 @@ export class AppComponent implements OnInit {
     if (data) {
       data = this.convertMonthNameToNumberAndYear(data);
     }
-
-    console.log(data);
-    
 
     const date = this.getFirstAndLastDayOfMonth(data.month, data.year)
     this.initialDate = date.firstDay;
@@ -271,16 +267,6 @@ export class AppComponent implements OnInit {
           this.totalElements = data?.length;
         }
       });    }
-
-    // if (result) {
-    //   this.spinnerView = false;
-    //   this.listOfEvents = result.content;
-
-    //   if(this.listOfEvents.length < 1) {
-    //     this.monthOption = true;
-    //   }
-    //   this.totalElements = result?.length;
-    // }
   }
 
   getFirstAndLastDayOfMonth(month: string, year: string): { firstDay: string; lastDay: string } {
@@ -294,14 +280,12 @@ export class AppComponent implements OnInit {
   }
 
 
-
   redirectLink(link: string) {
     window.open(link, '_blank');
   }
 
   getAllEventByLocalSetor($event?: any, tipoSelecionado?: string) {
     this.skipHandleEvents = true;
-    if ($event.length > 0) {
       this.dayOption = false;
       this.monthOption = false;
       this.spinnerView = true;
@@ -328,6 +312,7 @@ export class AppComponent implements OnInit {
       const local = this.localSetor.map(e => e.id);
 
       if (local.length < 1) {
+        this.getAgendaEvento()
         this.dataFomat = false;
       } else {
         this.dataFomat = true;
@@ -348,21 +333,18 @@ export class AppComponent implements OnInit {
           })
         })
       }
-    } else {
-      this.getAgendaEvento()
-      this.eventSrv.listAllEvents(this.initialDate, this.finalDate).subscribe({
-        next: (data) => {
-          this.spinnerView = false;
-          this.listOfEvents = data.content;
-          this.paginator?.changePage(0);
+      // this.eventSrv.listAllEvents(this.initialDate, this.finalDate).subscribe({
+      //   next: (data) => {
+      //     this.spinnerView = false;
+      //     this.listOfEvents = data.content;
+      //     this.paginator?.changePage(0);
 
-          if (this.listOfEvents.length < 1) {
-            this.monthOption = true;
-          }
-          this.totalElements = data?.length;
-        }
-      });
-    }
+      //     if (this.listOfEvents.length < 1) {
+      //       this.monthOption = true;
+      //     }
+      //     this.totalElements = data?.length;
+      //   }
+      // });
   }
 
   async initiateCalendar($event?: any) {
