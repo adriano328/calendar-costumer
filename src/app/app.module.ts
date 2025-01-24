@@ -3,7 +3,6 @@ import { BrowserModule } from '@angular/platform-browser';
 
 import { AppRoutingModule } from './app-routing.module';
 import { AppComponent } from './app.component';
-import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import {PanelModule} from 'primeng/panel';
 import { BrowserAnimationsModule } from '@angular/platform-browser/animations';
 import { FullCalendarModule } from '@fullcalendar/angular';
@@ -16,6 +15,12 @@ import { TableModule } from 'primeng/table';
 import { ProgressSpinnerModule } from 'primeng/progressspinner';
 import {ButtonModule} from 'primeng/button';
 import { TagModule } from 'primeng/tag';
+import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
+import { IConfig, NgxMaskModule } from 'ngx-mask';
+
+const maskConfig: Partial<IConfig> = {
+  validation: true, // Validação habilitada
+};
 
 @NgModule({
   declarations: [
@@ -35,14 +40,15 @@ import { TagModule } from 'primeng/tag';
     TableModule,
     ProgressSpinnerModule,
     ButtonModule,
-    TagModule
+    TagModule,
+    NgxMaskModule.forRoot(), 
   ],
   providers: [
     {
     provide: HTTP_INTERCEPTORS,
     useClass: AuthInterceptor,
     multi: true
-    }
+    },
   ],
   bootstrap: [AppComponent]
 })

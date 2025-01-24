@@ -26,6 +26,7 @@
     "@fullcalendar/moment": "^6.1.1",
     "@fullcalendar/timegrid": "^6.1.1",
     "moment": "^2.29.4",
+    "ngx-mask": "^13.2.2",
     "primeflex": "^3.3.0",
     "primeicons": "^6.0.1",
     "primeng": "^15.2.0",
