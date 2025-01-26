@@ -438,10 +438,6 @@
     .container-calendar {
 
       .calendario {
-        // ::ng-deep .fc {
-        //   width: 600px !important;
-        //   height: 1000px !important;
-        // }
 
         .calendar-one {
           width: 80vw !important;
@@ -452,11 +448,6 @@
           overflow: hidden !important;
 
         }
-
-        // ::ng-deep .fc-event {
-        //   width: 50px !important; /* Ajusta a largura */
-        //   height: 50px !important; /* Ajusta a altura */
-        // }
       }
 
       .carousel {
