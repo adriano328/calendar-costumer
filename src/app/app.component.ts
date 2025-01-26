@@ -166,9 +166,9 @@ export class AppComponent implements OnInit {
 
   responsiveOptions = [
     {
-      breakpoint: '1024px',
-      numVisible: 3,
-      numScroll: 3
+      breakpoint: '992px',
+      numVisible: 2,
+      numScroll: 2
     },
     {
       breakpoint: '768px',
@@ -300,6 +300,7 @@ export class AppComponent implements OnInit {
     dateClick: this.handleDateClick.bind(this),
     eventDisplay: 'background',
     eventsSet: this.handleEvents.bind(this),
+    
   };
 
   handleEvents(events: EventApi[]) {

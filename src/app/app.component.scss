@@ -409,9 +409,58 @@
 
       .calendario {
         ::ng-deep .fc {
-          width: 900px !important;
+          width: 700px !important;
           height: 1000px !important;
         }
+
+        ::ng-deep .fc-daygrid-day {
+          height: 50px !important;
+          width: 50px !important;
+        }
+
+        ::ng-deep .fc td,
+        .fc th {
+          height: 50px !important;
+          width: 50px !important;
+        }
+      }
+
+      .carousel {
+        width: 80vw !important;
+      }
+    }
+  }
+}
+
+
+@media(max-width: 768px) {
+  .container-agenda {
+    .container-calendar {
+
+      .calendario {
+        // ::ng-deep .fc {
+        //   width: 600px !important;
+        //   height: 1000px !important;
+        // }
+
+        .calendar-one {
+          width: 80vw !important;
+          height: 50vh !important;
+        }
+
+        ::ng-deep .fc .fc-scroller-liquid-absolute {
+          overflow: hidden !important;
+
+        }
+
+        // ::ng-deep .fc-event {
+        //   width: 50px !important; /* Ajusta a largura */
+        //   height: 50px !important; /* Ajusta a altura */
+        // }
+      }
+
+      .carousel {
+        width: 90vw !important;
       }
     }
   }
