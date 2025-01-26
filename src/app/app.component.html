@@ -2,29 +2,29 @@
   <div class="flex justify-content-center container-agenda">
     <div class="flex flex-column align-items-center container-calendar">
       <div class="flex justify-content-center align-items-center container-imagem">
-        <p class="footer" style="text-align: center;"> <img [src]="imageCampo" class="img-footer">
-          </p>
+        <p class="footer" style="text-align: center;"> <img src="/assets/logo.png" height="200px" class="img-footer">
+        </p>
       </div>
       <span class="descricao mb-2">{{igreja}} {{campo}}</span>
       <span class="title">AGENDA DE EVENTOS {{ano}}</span>
       <div class="container-filtro mt-3">
-        <div class="grid">
-          <div class="col-12 sm:col-12 md:col-6 lg:col-6 xl:col-6">
+        <div class="grid filtros">
+          <div class="col-12 sm:col-12 md:col-12 lg:col-6 xl:col-6 filtro">
             <span class="mb-1" class="label">Eventos por Local/Setor:</span>
             <p-multiSelect [options]="setor" placeholder="Selecione" [(ngModel)]="localSetor"
               (onChange)="getAllEventByLocalSetor($event)" optionLabel="nome"></p-multiSelect>
           </div>
-          <div class="col-12 sm:col-12 md:col-6 lg:col-6 xl:col-6">
+          <div class="col-12 sm:col-12 md:col-12 lg:col-6 xl:col-6 filtro">
             <span class="mb-1" class="label">Tipo de Evento:</span>
             <p-multiSelect [options]="setor" placeholder="Selecione" [(ngModel)]="localSetor"
               (onChange)="getAllEventByLocalSetor($event)" optionLabel="nome"></p-multiSelect>
           </div>
-          <div class="col-12 sm:col-12 md:col-6 lg:col-6 xl:col-6">
+          <div class="col-12 sm:col-12 md:col-12 lg:col-6 xl:col-6 filtro">
             <span class="mb-1" class="label">Tipo de Atividade:</span>
             <p-multiSelect [options]="setor" placeholder="Selecione" [(ngModel)]="localSetor"
               (onChange)="getAllEventByLocalSetor($event)" optionLabel="nome"></p-multiSelect>
           </div>
-          <div class="flex gap-2 col-12 sm:col-12 md:col-6 lg:col-6 xl:col-6">
+          <div class="flex gap-2 col-12 sm:col-12 md:col-12 lg:col-12 xl:col-6">
             <div class="flex flex-column container-input">
               <span class="mb-1" class="label">Ínicio:</span>
               <input type="text" mask="00/00/0000" placeholder="Digite a data" />
@@ -50,6 +50,33 @@
             <i>{{ arg.event.title }} </i>
           </ng-template>
         </full-calendar>
+      </div>
+      <div class="carousel w-full mt-4" *ngIf="listOfEvents.length > 0">
+        <p-carousel 
+        [value]="listOfEvents" 
+        [numVisible]="3" 
+        [numScroll]="3" 
+        [circular]="true" 
+        [autoplayInterval]="3000" 
+        [responsiveOptions]="responsiveOptions">
+        <ng-template let-event pTemplate="item">
+            <div class="p-3 flex align-items-center justify-content-center border-round surface-card shadow-1">
+                <div class="flex flex-column justify-content-center align-items-center text-center">
+                    <!-- <img src="https://rosesfotos.com.br/wp-content/uploads/2021/04/Debut2019-110-1200x857.jpg" height="100" alt="Evento"> -->
+                    <div class="mb-2 titulo">{{ event?.nomeEvento}}</div>
+                    <div class="local mb-3">{{ event?.localRealizacao }}</div>
+                    <div class="data">{{ event?.dataInicial | date: 'dd/MM/YYYY'}} - {{ event?.dataFinal | date: 'dd/MM/YYYY'}}</div>
+                    <p-tag  class="mt-3"
+                        [value]="event?.situacaoEvento" 
+                        [severity]="getSeverity(event?.situacaoEvento)">
+                    </p-tag>
+                </div>
+            </div>
+        </ng-template>
+    </p-carousel>
+    
+    
+    
       </div>
       <!-- <div class="first-calendar">
         <div class="flex justify-content-start flex-row align-items-start container-dropdown">

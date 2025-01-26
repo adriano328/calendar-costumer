@@ -17,6 +17,7 @@ import {ButtonModule} from 'primeng/button';
 import { TagModule } from 'primeng/tag';
 import { HTTP_INTERCEPTORS, HttpClientModule } from '@angular/common/http';
 import { IConfig, NgxMaskModule } from 'ngx-mask';
+import { CarouselModule } from 'primeng/carousel';
 
 const maskConfig: Partial<IConfig> = {
   validation: true, // Validação habilitada
@@ -42,6 +43,7 @@ const maskConfig: Partial<IConfig> = {
     ButtonModule,
     TagModule,
     NgxMaskModule.forRoot(), 
+    CarouselModule
   ],
   providers: [
     {
