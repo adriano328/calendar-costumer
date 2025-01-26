@@ -42,16 +42,6 @@
           </div>
         </div>
       </div>
-      <div class="calendario">
-        <full-calendar class="calendar-one" *ngIf='calendarVisible' [options]='calendarOptionsOne'
-          [events]="initialEvents" id="calendario">
-          <ng-template #eventContent let-arg>
-            <b>{{ arg.timeText }}</b>
-            <i>{{ arg.event.title }} </i>
-          </ng-template>
-          
-        </full-calendar>
-      </div>
       <div class="carousel w-full mt-4" *ngIf="listOfEvents.length > 0">
         <p-carousel 
         [value]="listOfEvents" 
@@ -78,6 +68,16 @@
     
     
     
+      </div>
+      <div class="calendario">
+        <full-calendar class="calendar-one" *ngIf='calendarVisible' [options]='calendarOptionsOne'
+          [events]="initialEvents" id="calendario">
+          <ng-template #eventContent let-arg>
+            <b>{{ arg.timeText }}</b>
+            <i>{{ arg.event.title }} </i>
+          </ng-template>
+          
+        </full-calendar>
       </div>
       <!-- <div class="first-calendar">
         <div class="flex justify-content-start flex-row align-items-start container-dropdown">
