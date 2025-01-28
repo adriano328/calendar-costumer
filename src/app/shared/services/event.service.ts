@@ -5,6 +5,7 @@ import { IEventoDetalhe } from '../interfaces/IEventoDetalhe';
 import { environment } from 'src/environments/environment';
 import { IEventos } from '../interfaces/IEventos';
 import { IEnvioLocalSetor } from '../interfaces/IEnvioLocalSetor';
+import { tipoAtividade } from '../interfaces/tipoAtividade';
 
 @Injectable({
   providedIn: 'root'
@@ -33,6 +34,10 @@ export class EventService {
 
   getEventByClick(buscaLocalSetor: IEnvioLocalSetor) {
     return this.http.post<IEventoDetalhe[]>(`${environment.url}/agendaEventoDetalhe/findAllEntryDatesByLocalSetorClickData`, buscaLocalSetor);
+  }
+  
+  getTipoDeAtividades() {
+    return this.http.get<tipoAtividade[]>(`${environment.url}/agenda-tipo-atividade/listar`)
   }
 
 }

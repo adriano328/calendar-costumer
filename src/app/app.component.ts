@@ -24,6 +24,8 @@ import { DomSanitizer } from '@angular/platform-browser';
 import { FullCalendarComponent } from '@fullcalendar/angular';
 import { SituacaoEvento } from './shared/core/constants/situacaoEvento';
 import { IProdutos } from './shared/core/constants/produtos';
+import { tipoEvento } from './shared/core/constants/tipoEvento';
+import { tipoAtividade } from './shared/interfaces/tipoAtividade';
 
 registerLocaleData(localePT);
 
@@ -89,6 +91,8 @@ export class AppComponent implements OnInit {
   dayOption = false;
   situacaoEvento = SituacaoEvento;
   skipHandleEvents: boolean = false;
+  tipoEvento = tipoEvento;
+  tipoAtividade: tipoAtividade[] = [];
   products = [
     {
       id: 1000,
@@ -197,6 +201,7 @@ export class AppComponent implements OnInit {
       this.initiateCalendar();
       this.getAgendaEvento();
       this.getAllLocalSetor();
+      this.carregaTipoAtividade();
     })
   }
 
@@ -472,6 +477,14 @@ export class AppComponent implements OnInit {
         }
       });
     }
+  }
+
+  carregaTipoAtividade() {
+    this.eventSrv.getTipoDeAtividades().subscribe({
+      next: (data) => {
+        this.tipoAtividade = data;
+      }
+    })
   }
 
   handleDateClick(selectInfo: any) {
