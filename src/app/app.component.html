@@ -32,10 +32,14 @@
               <input type="text" mask="00/00/0000" placeholder="Digite a data" />
             </div>
           </div>
-          <div class="flex justify-content-center mt-3 align-items-center sm:col-12 md:col-12 lg:col-12 xl:col-12">
+          <div class="flex justify-content-center mt-3 gap-3 align-items-center sm:col-12 md:col-12 lg:col-12 xl:col-12">
             <div class="flex gap-2 justify-content-center align-items-center container-botao-pesquisar">
               <i class="material-icons">search</i>
               <span>Pesquisar</span>
+            </div>
+            <div class="flex gap-2 justify-content-center align-items-center container-botao-pesquisar">
+              <i class="material-icons">close</i>
+              <span>Limpar</span>
             </div>
           </div>
         </div>
@@ -68,77 +72,8 @@
             <b>{{ arg.timeText }}</b>
             <i>{{ arg.event.title }} </i>
           </ng-template>
-
         </full-calendar>
       </div>
-      <!-- <div class="first-calendar">
-        <div class="flex justify-content-start flex-row align-items-start container-dropdown">
-          <div class="flex flex-column container-multiselect-local-setor">
-            <span class="mb-1"
-              style="font-family: 'Segoe UI', Tahoma, Geneva, Verdana, sans-serif; font-size: 13px; color: white"
-              class="label">Eventos por Local/Setor:</span>
-            <p-multiSelect [options]="setor" placeholder="Selecione" [(ngModel)]="localSetor"
-              (onChange)="getAllEventByLocalSetor($event)" optionLabel="nome"></p-multiSelect>
-          </div>
-        </div>
-        <p-panel header="Eventos">
-          <div class="flex justify-content-center align-items-center spinner">
-            <p-progressSpinner styleClass="w-4rem h-4rem" strokeWidth="8" fill="var(--surface-ground)"
-              animationDuration=".5s" *ngIf="spinnerView"></p-progressSpinner>
-          </div>
-          <div class="flex justify-content-center align-items-center message-return" *ngIf="listOfEvents.length < 1">
-            <span style="font-size: 14px;" *ngIf="monthOption">Não existem eventos programados para este mês!</span>
-            <span style="font-size: 14px;" *ngIf="dayOption">Não existem eventos programados para este dia!</span>
-          </div>
-          <p-table [value]="listOfEvents" [paginator]="true" [rows]="50"
-            *ngIf="listOfEvents.length > 0 && spinnerView == false">
-            <ng-template pTemplate="header">
-            </ng-template>
-            <ng-template pTemplate="body" let-event>
-              <tr>
-                <td class="events" style="width: 99%;" (click)="opentEventModalCalendarFirst(event.id)">
-                  <div class="grid">
-                    <div class="col-12 md:col-9 lg:col-9">
-                      <span class="nome"><b style="margin-right: 0.2em;">Evento:</b> {{ event.nomeEvento }}</span>
-                      <div class="periodo">
-                        <span><b style="margin-right: 0.2em;">Inicio:</b> {{event.dataInicial | date:
-                          'dd/MM/YYYY'}}</span> <span style="margin-left: 2em;"><b style="margin-right: 0.2em;">Fim:</b>
-                          {{event.dataFinal | date: 'dd/MM/YYYY'}}</span>
-                      </div>
-                      <div class="local-evento" *ngIf="event.setor">
-                        <span><b style="margin-right: 0.2em;">Setor:</b> <span class="local">{{event?.setor |
-                            uppercase}}</span></span>
-                      </div>
-                      <div class="local-evento" *ngIf="event.congregacao && event.congregacao != event.setor">
-                        <span><b style="margin-right: 0.2em;">Congregação:</b> <span class="local">{{event?.congregacao |
-                            uppercase}}</span></span>
-                      </div>
-                      <div class="local-evento mt-3">
-                        <span><b style="margin-right: 0.2em;">Descrição do local do evento:</b> <br> <span
-                            class="local">{{event.localRealizacao | uppercase}}</span></span>
-                      </div>
-                    </div>
-                    <div class="flex align-items-center justify-content-center col-12 md:col-3 lg:col-3">
-                      <div class="flex justify-content-center align-items-center local-evento">
-                        <span class="flex flex-column justify-content-center align-items-center"><b
-                            style="margin-right: 0.2em; text-align: center; margin-bottom: 0.2em;">Situação:</b> <span
-                            class="local">
-                            <p-tag value="PROGRAMADO" severity="success"
-                              *ngIf="event.situacaoEvento == 'PROGRAMADO'"></p-tag>
-                            <p-tag value="ADIADO" severity="warning" *ngIf="event.situacaoEvento == 'ADIADO'"></p-tag>
-                            <p-tag value="CANCELADO" severity="danger"
-                              *ngIf="event.situacaoEvento == 'CANCELADO'"></p-tag>
-                            <p-tag value="EM ABERTO" *ngIf="event.situacaoEvento == 'EM_ABERTO'"></p-tag>
-                          </span></span>
-                      </div>
-                    </div>
-                  </div>
-                </td>
-              </tr>
-            </ng-template>
-          </p-table>
-        </p-panel>
-      </div> -->
     </div>
   </div>
   <p-dialog [(visible)]="eventDetailsFirstCalendar" [modal]="true" [breakpoints]="{ '960px': '75vw' , '700px': '92vw'}"
