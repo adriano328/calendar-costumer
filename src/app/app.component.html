@@ -61,9 +61,6 @@
             </div>
           </ng-template>
         </p-carousel>
-
-
-
       </div>
       <div class="calendario">
         <full-calendar class="calendar-one" *ngIf='calendarVisible' [options]='calendarOptionsOne'
@@ -73,6 +70,14 @@
             <i>{{ arg.event.title }} </i>
           </ng-template>
         </full-calendar>
+      </div>
+      <div class="flex flex-row justify-content-between gap-2 container-quadros">
+        <div class="flex justify-content-center align-items-center flex-column container-lista p-2 mt-4" *ngFor="let item of initialEvents">
+          <span class="texto">{{item.title}}</span>
+          <span class="texto mt-1">DATA INICIO: {{item.start | date: 'dd/MM/YYYY'}}</span>
+          <span class="texto mt-1">DATA FIM: {{item.end | date: 'dd/MM/YYYY'}}</span>
+
+        </div>
       </div>
     </div>
   </div>
