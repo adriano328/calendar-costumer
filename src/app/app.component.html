@@ -12,15 +12,15 @@
           <div class="flex flex-column col-12 sm:col-12 md:col-12 lg:col-6 xl:col-6 filtro">
             <span class="mb-1" class="label">Eventos por Local/Setor:</span>
             <p-multiSelect [options]="setor" placeholder="Selecione" [(ngModel)]="localSetor"
-              (onChange)="getAllEventByLocalSetor($event)" optionLabel="nome"></p-multiSelect>
+               optionLabel="nome"></p-multiSelect>
           </div>
           <div class="flex flex-column col-12 sm:col-12 md:col-12 lg:col-6 xl:col-6 filtro">
-            <span class="mb-1" class="label">Tipo de Evento:</span>
-            <p-dropdown [options]="tipoEvento" (onChange)="getAllEventByLocalSetor($event)" [(ngModel)]="tipoEventoSelecionado" optionLabel="nome" optionValue="valor" placeholder="Selecione" />
+            <span class="mb-1" class="label">Por espaço:</span>
+            <p-dropdown [options]="tipoEvento" [(ngModel)]="tipoEventoSelecionado" optionLabel="nome" optionValue="valor" placeholder="Selecione" />
           </div>
           <div class="flex flex-column col-12 sm:col-12 md:col-12 lg:col-6 xl:col-6 filtro">
             <span class="mb-1" class="label">Tipo de Atividade:</span>
-              <p-dropdown [options]="tipoAtividade" (onChange)="getAllEventByLocalSetor($event)" [(ngModel)]="tipoAtividadeSelecionado" optionLabel="descricao" optionValue="id"  placeholder="Selecione" />
+              <p-dropdown [options]="tipoAtividade" [(ngModel)]="tipoAtividadeSelecionado" optionLabel="descricao" optionValue="id"  placeholder="Selecione" />
           </div>
           <div class="flex gap-2 col-12 sm:col-12 md:col-12 lg:col-12 xl:col-6">
             <div class="flex flex-column container-input">
@@ -37,7 +37,7 @@
               <i class="material-icons">search</i>
               <span>Pesquisar</span>
             </div>
-            <div class="flex gap-2 justify-content-center align-items-center container-botao-pesquisar">
+            <div class="flex gap-2 justify-content-center align-items-center container-botao-pesquisar" (click)="limpar()">
               <i class="material-icons">close</i>
               <span>Limpar</span>
             </div>

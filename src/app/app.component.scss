@@ -488,8 +488,32 @@
 
 @media(max-width: 768px) {
   .container-agenda {
+
     .container-calendar {
 
+      .title {
+        font-size: 13px !important;
+      }
+  
+      .descricao {
+        font-size: 13px !important;
+      }
+
+      .container-filtro {
+        .filtros {
+
+          .filtro {
+
+            ::ng-deep .p-multiselect-label-container {
+              width: 300px !important
+            }
+
+            ::ng-deep .p-dropdown {
+              width: 350px !important
+            }
+          }
+        }
+      }
       .calendario {
 
         .calendar-one {
@@ -505,6 +529,11 @@
 
       .carousel {
         width: 90vw !important;
+      }
+
+      .container-quadros {
+        display: flex !important;
+        flex-direction: column !important;
       }
     }
   }

@@ -95,7 +95,7 @@ export class AppComponent implements OnInit {
   tipoEvento = tipoEvento;
   tipoEventoSelecionado!: string;
   tipoAtividade: tipoAtividade[] = [];
-  tipoAtividadeSelecionado!: number;
+  tipoAtividadeSelecionado!: number | null;
   responsiveOptions = [
     {
       breakpoint: '992px',
@@ -355,7 +355,7 @@ export class AppComponent implements OnInit {
       finalDate: this.dataFim ? this.validarEFormatarData(this.dataFim) : this.finalDate,
       locaisSetoresIds: local,
       tipoEvento: this.tipoEventoSelecionado,
-      idTipoAtividade: this.tipoAtividadeSelecionado
+      idTipoAtividade: this.tipoAtividadeSelecionado!
     }
     this.eventSrv.getAllEventByLocalSetor(dado).subscribe({
       next: (data => {
@@ -391,6 +391,15 @@ export class AppComponent implements OnInit {
     }
 
     return `${ano}-${String(mes).padStart(2, '0')}-${String(dia).padStart(2, '0')}`;
+  }
+
+  limpar() {
+    this.localSetor = [];
+    this.tipoEventoSelecionado = '';
+    this.tipoAtividadeSelecionado = null;
+    this.dataInicio = '';
+    this.dataFim = '';
+    this.getAllEventByLocalSetor();
   }
 
   async initiateCalendar($event?: any) {
@@ -446,7 +455,7 @@ export class AppComponent implements OnInit {
       data: this.data,
       locaisSetoresIds: local,
       tipoEvento: this.tipoEventoSelecionado,
-      idTipoAtividade: this.tipoAtividadeSelecionado
+      idTipoAtividade: this.tipoAtividadeSelecionado!
     }
     this.eventSrv.getEventByClick(data).subscribe({
       next: ((data: any) => {
