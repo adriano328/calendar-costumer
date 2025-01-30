@@ -16,24 +16,24 @@
           </div>
           <div class="flex flex-column col-12 sm:col-12 md:col-12 lg:col-6 xl:col-6 filtro">
             <span class="mb-1" class="label">Tipo de Evento:</span>
-            <p-dropdown [options]="tipoEvento" (onChange)="getAllEventByLocalSetor($event)" optionLabel="nome" placeholder="Selecione" />
+            <p-dropdown [options]="tipoEvento" (onChange)="getAllEventByLocalSetor($event)" [(ngModel)]="tipoEventoSelecionado" optionLabel="nome" optionValue="valor" placeholder="Selecione" />
           </div>
           <div class="flex flex-column col-12 sm:col-12 md:col-12 lg:col-6 xl:col-6 filtro">
             <span class="mb-1" class="label">Tipo de Atividade:</span>
-              <p-dropdown [options]="tipoAtividade" (onChange)="getAllEventByLocalSetor($event)" optionLabel="descricao" placeholder="Selecione" />
+              <p-dropdown [options]="tipoAtividade" (onChange)="getAllEventByLocalSetor($event)" [(ngModel)]="tipoAtividadeSelecionado" optionLabel="descricao" optionValue="id"  placeholder="Selecione" />
           </div>
           <div class="flex gap-2 col-12 sm:col-12 md:col-12 lg:col-12 xl:col-6">
             <div class="flex flex-column container-input">
               <span class="mb-1" class="label">Ínicio:</span>
-              <input type="text" mask="00/00/0000" placeholder="Digite a data" />
+              <input type="text" mask="00/00/0000" [(ngModel)]="dataInicio" placeholder="Digite a data" />
             </div>
             <div class="flex flex-column container-input">
               <span class="mb-1" class="label">Fim:</span>
-              <input type="text" mask="00/00/0000" placeholder="Digite a data" />
+              <input type="text" mask="00/00/0000" [(ngModel)]="dataFim" placeholder="Digite a data" />
             </div>
           </div>
           <div class="flex justify-content-center mt-3 gap-3 align-items-center sm:col-12 md:col-12 lg:col-12 xl:col-12">
-            <div class="flex gap-2 justify-content-center align-items-center container-botao-pesquisar">
+            <div class="flex gap-2 justify-content-center align-items-center container-botao-pesquisar" (click)="getAllEventByLocalSetor()">
               <i class="material-icons">search</i>
               <span>Pesquisar</span>
             </div>
@@ -73,10 +73,10 @@
       </div>
       <div class="flex flex-row justify-content-between gap-2 container-quadros">
         <div class="flex justify-content-center align-items-center flex-column container-lista p-2 mt-4" *ngFor="let item of initialEvents">
+          <img alt="">
           <span class="texto">{{item.title}}</span>
           <span class="texto mt-1">DATA INICIO: {{item.start | date: 'dd/MM/YYYY'}}</span>
           <span class="texto mt-1">DATA FIM: {{item.end | date: 'dd/MM/YYYY'}}</span>
-
         </div>
       </div>
     </div>

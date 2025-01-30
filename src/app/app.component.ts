@@ -26,6 +26,7 @@ import { SituacaoEvento } from './shared/core/constants/situacaoEvento';
 import { IProdutos } from './shared/core/constants/produtos';
 import { tipoEvento } from './shared/core/constants/tipoEvento';
 import { tipoAtividade } from './shared/interfaces/tipoAtividade';
+import { MessageService } from './shared/services/message.service';
 
 registerLocaleData(localePT);
 
@@ -92,82 +93,9 @@ export class AppComponent implements OnInit {
   situacaoEvento = SituacaoEvento;
   skipHandleEvents: boolean = false;
   tipoEvento = tipoEvento;
+  tipoEventoSelecionado!: string;
   tipoAtividade: tipoAtividade[] = [];
-  products = [
-    {
-      id: 1000,
-      code: 'f230fh0g3',
-      name: 'Bamboo Watch',
-      description: 'Product Description',
-      image: 'bamboo-watch.jpg',
-      price: 65,
-      category: 'Accessories',
-      quantity: 24,
-      inventoryStatus: 'INSTOCK',
-      rating: 5
-    },
-    {
-      id: 1001,
-      code: 'nvklal433',
-      name: 'Black Watch',
-      description: 'Product Description',
-      image: 'black-watch.jpg',
-      price: 72,
-      category: 'Accessories',
-      quantity: 61,
-      inventoryStatus: 'INSTOCK',
-      rating: 4
-    },
-    {
-      id: 1002,
-      code: 'zz21cz3c1',
-      name: 'Blue Band',
-      description: 'Product Description',
-      image: 'blue-band.jpg',
-      price: 79,
-      category: 'Fitness',
-      quantity: 2,
-      inventoryStatus: 'LOWSTOCK',
-      rating: 3
-    },
-    {
-      id: 1000,
-      code: 'f230fh0g3',
-      name: 'Bamboo Watch',
-      description: 'Product Description',
-      image: 'bamboo-watch.jpg',
-      price: 65,
-      category: 'Accessories',
-      quantity: 24,
-      inventoryStatus: 'INSTOCK',
-      rating: 5
-    },
-    {
-      id: 1001,
-      code: 'nvklal433',
-      name: 'Black Watch',
-      description: 'Product Description',
-      image: 'black-watch.jpg',
-      price: 72,
-      category: 'Accessories',
-      quantity: 61,
-      inventoryStatus: 'INSTOCK',
-      rating: 4
-    },
-    {
-      id: 1002,
-      code: 'zz21cz3c1',
-      name: 'Blue Band',
-      description: 'Product Description',
-      image: 'blue-band.jpg',
-      price: 79,
-      category: 'Fitness',
-      quantity: 2,
-      inventoryStatus: 'LOWSTOCK',
-      rating: 3
-    }
-  ];
-
+  tipoAtividadeSelecionado!: number;
   responsiveOptions = [
     {
       breakpoint: '992px',
@@ -186,11 +114,15 @@ export class AppComponent implements OnInit {
     }
   ];
 
+  dataInicio!: string;
+  dataFim!: string;
+
   constructor(
     private calendarSrv: CalendarService,
     public eventSrv: EventService,
     private loginService: LoginService,
-    private _sanitizer: DomSanitizer
+    private _sanitizer: DomSanitizer,
+    private messageService: MessageService
   ) {
   }
   async ngOnInit() {
@@ -305,7 +237,7 @@ export class AppComponent implements OnInit {
     dateClick: this.handleDateClick.bind(this),
     eventDisplay: 'background',
     eventsSet: this.handleEvents.bind(this),
-    
+
   };
 
   handleEvents(events: EventApi[]) {
@@ -418,29 +350,47 @@ export class AppComponent implements OnInit {
     this.initialDate = date.firstDay;
     this.finalDate = date.lastDay;
     const local = this.localSetor.map(e => e.id);
-
-    if (local.length < 1) {
-      this.getAgendaEvento()
-      this.dataFomat = false;
-    } else {
-      this.dataFomat = true;
-      const data: IEnvioLocalSetor = {
-        initialDate: this.initialDate,
-        finalDate: this.finalDate,
-        locaisSetoresIds: local
-      }
-      this.eventSrv.getAllEventByLocalSetor(data).subscribe({
-        next: (data => {
-          if (data) {
-            this.spinnerView = false;
-            this.listOfEvents = data;
-            const mapedresult = this.listOfEvents.map((item: IEventoDetalhe) => this.convertObjectToEvent(item))
-            this.initialEvents = mapedresult;
-            this.totalElements = data?.length;
-          }
-        })
-      })
+    const dado: IEnvioLocalSetor = {
+      initialDate: this.dataInicio ? this.validarEFormatarData(this.dataInicio) : this.initialDate,
+      finalDate: this.dataFim ? this.validarEFormatarData(this.dataFim) : this.finalDate,
+      locaisSetoresIds: local,
+      tipoEvento: this.tipoEventoSelecionado,
+      idTipoAtividade: this.tipoAtividadeSelecionado
     }
+    this.eventSrv.getAllEventByLocalSetor(dado).subscribe({
+      next: (data => {
+        if (data) {
+          this.spinnerView = false;
+          this.listOfEvents = data;
+          const mapedresult = this.listOfEvents.map((item: IEventoDetalhe) => this.convertObjectToEvent(item))
+          this.initialEvents = mapedresult;
+          this.totalElements = data?.length;
+        }
+      })
+    })
+    // }
+  }
+
+  validarEFormatarData(data: string) {
+    if (!/^\d{8}$/.test(data)) {
+      this.messageService.warn('Formato inválido. A data deve ter 8 dígitos numéricos.')
+    }
+
+    const dia = parseInt(data.substring(0, 2), 10);
+    const mes = parseInt(data.substring(2, 4), 10);
+    const ano = parseInt(data.substring(4, 8), 10);
+
+    if (mes < 1 || mes > 12) {
+      this.messageService.warn('Mês inválido.')
+    }
+
+    const ultimoDiaDoMes = new Date(ano, mes, 0).getDate();
+
+    if (dia < 1 || dia > ultimoDiaDoMes) {
+      this.messageService.warn('Dia inválido para o mês.')
+    }
+
+    return `${ano}-${String(mes).padStart(2, '0')}-${String(dia).padStart(2, '0')}`;
   }
 
   async initiateCalendar($event?: any) {
@@ -494,7 +444,9 @@ export class AppComponent implements OnInit {
     const local = this.localSetor?.map((e: any) => e.id);
     const data: IEnvioLocalSetor = {
       data: this.data,
-      locaisSetoresIds: local
+      locaisSetoresIds: local,
+      tipoEvento: this.tipoEventoSelecionado,
+      idTipoAtividade: this.tipoAtividadeSelecionado
     }
     this.eventSrv.getEventByClick(data).subscribe({
       next: ((data: any) => {
