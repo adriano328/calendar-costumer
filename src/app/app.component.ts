@@ -93,9 +93,10 @@ export class AppComponent implements OnInit {
   situacaoEvento = SituacaoEvento;
   skipHandleEvents: boolean = false;
   tipoEvento = tipoEvento;
-  tipoEventoSelecionado!: string;
+  tipoEspacoSelecionado!: number | null;
   tipoAtividade: tipoAtividade[] = [];
   tipoAtividadeSelecionado!: number | null;
+  espaco: any[] = [];
   responsiveOptions = [
     {
       breakpoint: '992px',
@@ -134,6 +135,7 @@ export class AppComponent implements OnInit {
       this.getAgendaEvento();
       this.getAllLocalSetor();
       this.carregaTipoAtividade();
+      this.getAllEspaco();
     })
   }
 
@@ -204,8 +206,9 @@ export class AppComponent implements OnInit {
       next: (data => {
         this.getInfoCampoEclesiastico(data.campoEclesiastico)
         this.agendaNumber = data.id;
-        this.getInitialEvents(this.agendaNumber);
-        this.listAllEventsByMonths()
+        // this.getInitialEvents(this.agendaNumber);
+        // this.listAllEventsByMonths()
+        this.getAllEventByLocalSetor()
         this.ano = data.ano;
       })
     })
@@ -309,6 +312,14 @@ export class AppComponent implements OnInit {
     }
   }
 
+  getAllEspaco() {
+    this.eventSrv.getTipoEspaco().subscribe({
+      next: (data) => {
+        this.espaco = data;
+      }
+    })
+  }
+
   getFirstAndLastDayOfMonth(month: string, year: string): { firstDay: string; lastDay: string } {
     const monthIndex = parseInt(month, 10) - 1;
     const firstDayDate = new Date(parseInt(year, 10), monthIndex, 1);
@@ -354,7 +365,7 @@ export class AppComponent implements OnInit {
       initialDate: this.dataInicio ? this.validarEFormatarData(this.dataInicio) : this.initialDate,
       finalDate: this.dataFim ? this.validarEFormatarData(this.dataFim) : this.finalDate,
       locaisSetoresIds: local,
-      tipoEvento: this.tipoEventoSelecionado,
+      idEspacoLocal: this.tipoEspacoSelecionado!,
       idTipoAtividade: this.tipoAtividadeSelecionado!
     }
     this.eventSrv.getAllEventByLocalSetor(dado).subscribe({
@@ -395,7 +406,7 @@ export class AppComponent implements OnInit {
 
   limpar() {
     this.localSetor = [];
-    this.tipoEventoSelecionado = '';
+    this.tipoEspacoSelecionado = null;
     this.tipoAtividadeSelecionado = null;
     this.dataInicio = '';
     this.dataFim = '';
@@ -454,7 +465,7 @@ export class AppComponent implements OnInit {
     const data: IEnvioLocalSetor = {
       data: this.data,
       locaisSetoresIds: local,
-      tipoEvento: this.tipoEventoSelecionado,
+      idEspacoLocal: this.tipoEspacoSelecionado!,
       idTipoAtividade: this.tipoAtividadeSelecionado!
     }
     this.eventSrv.getEventByClick(data).subscribe({

@@ -3,6 +3,7 @@ export interface IEnvioLocalSetor {
     finalDate?: string,
     data?: string,
     locaisSetoresIds: number[];
-    tipoEvento: string;
-    idTipoAtividade: number;
+    tipoEvento?: string;
+    idTipoAtividade?: number;
+    idEspacoLocal?: number;
 }

@@ -40,4 +40,8 @@ export class EventService {
     return this.http.get<tipoAtividade[]>(`${environment.url}/agenda-tipo-atividade/listar`)
   }
 
+  getTipoEspaco() {
+    return this.http.get<any[]>(`${environment.url}/agenda-espaco-local/listar`)
+  }
+
 }
