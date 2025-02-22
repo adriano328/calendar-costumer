@@ -1,4 +1,6 @@
 export const environment = {
-  url: 'https://api-portal.ieadcuiaba.com',
+  url: 'http://82.180.163.22:1024',
   production: true
 };
+
+

@@ -2,10 +2,11 @@ export interface IEventos {
   campoEclesiastico: number;
   dataFinal: string;
   dataInicial: string;
-  descricao: string;
+  descricaoEvento: string;
   id: number;
   imagem: string;
-  local: string;
-  nome: string;
-  tipo: number
+  localSetorId: number;
+  nomeEvento: string;
+  tipo: number;
+  linkEvento: string;
 }
