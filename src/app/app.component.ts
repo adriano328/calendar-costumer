@@ -146,6 +146,7 @@ export class AppComponent implements OnInit {
 
   getSeverity(status: string): string {
     switch (status) {
+
       case 'PROGRAMADO':
         return 'success';
       case 'CANCELADO':
