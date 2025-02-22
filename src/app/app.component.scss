@@ -421,7 +421,13 @@
 
           ::ng-deep .p-multiselect-label-container {
             height: 2em;
-            border-radius: 10px;
+            border-radius: 6px;
+            width: 390px !important
+          }
+
+          ::ng-deep .p-dropdown {
+            height: 2em;
+            border-radius: 6px;
             width: 390px !important
           }
         }
