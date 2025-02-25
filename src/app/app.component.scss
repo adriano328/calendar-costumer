@@ -110,7 +110,6 @@
       }
 
       .container-quadros {
-        // width: 900px;
         box-sizing: border-box;
         flex-wrap: wrap;
         
@@ -495,8 +494,12 @@
 
 
 @media(max-width: 768px) {
+  .wrapper {
+    height: 100vh !important;
+  }
+  
   .container-agenda {
-
+    
     .container-calendar {
 
       .title {
@@ -523,10 +526,12 @@
         }
       }
       .calendario {
-
+        display: flex !important;
+        justify-content: center !important;
+        align-items: center !important;
         .calendar-one {
-          width: 80vw !important;
-          height: 50vh !important;
+          width: 95vw !important;
+          height: 48vh !important;
         }
 
         ::ng-deep .fc .fc-scroller-liquid-absolute {

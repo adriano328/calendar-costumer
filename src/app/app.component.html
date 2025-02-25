@@ -1,6 +1,6 @@
 <div class="wrapper">
   <div class="flex justify-content-center container-agenda">
-    <div class="flex flex-column align-items-center container-calendar">
+    <div class="flex flex-column justify-content-center align-items-center container-calendar">
       <div class="flex justify-content-center align-items-center container-imagem">
         <p class="footer" style="text-align: center;"> <img src="/assets/logo.png" height="200px" class="img-footer">
         </p>
@@ -57,7 +57,7 @@
           </ng-template>
         </p-carousel>
       </div>
-      <div class="calendario">
+      <div class="flex justify-content-center align-items-center calendario">
         <full-calendar class="calendar-one" *ngIf='calendarVisible' [options]='calendarOptionsOne'
           [events]="initialEvents" id="calendario">
           <ng-template #eventContent let-arg>
