@@ -494,9 +494,6 @@
 
 
 @media(max-width: 768px) {
-  .wrapper {
-    height: 100vh !important;
-  }
   
   .container-agenda {
     
@@ -525,18 +522,16 @@
           }
         }
       }
-      .calendario {
-        display: flex !important;
-        justify-content: center !important;
-        align-items: center !important;
+      .calendario { 
+
         .calendar-one {
-          width: 95vw !important;
-          height: 48vh !important;
+          width: 85vw !important;
+          min-width: 5em !important;
+          height: 55vh !important;
         }
 
         ::ng-deep .fc .fc-scroller-liquid-absolute {
           overflow: hidden !important;
-
         }
       }
 
